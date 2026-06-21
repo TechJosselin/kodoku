@@ -429,31 +429,6 @@
                   "RemoveUnownedItems": true,
                   "Source": "OwnerConnection",
                   "WorkshopItems": []
-                },
-                {
-                  "__type": "Kodoku.Glue.WorldInventoryInteractionBridge",
-                  "__guid": "1baf83d6-f3db-4982-91d7-d8a9be3eebf3",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "HandleInteractInput": true,
-                  "HudAnchorHeight": 36,
-                  "InteractAction": "Use",
-                  "InteractKey": "E",
-                  "LogRaycastDebug": false,
-                  "LogResults": true,
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "TraceDistance": 180,
-                  "ViewCamera": {
-                    "_type": "component",
-                    "component_id": "f836c942-2c5d-46c3-884e-db1bfd15a15a",
-                    "go": "70570569-6083-4b74-ad16-261f9c5b8a7d",
-                    "component_type": "CameraComponent"
-                  }
                 }
               ],
               "Children": [
@@ -678,7 +653,7 @@
                   "Components": [
                     {
                       "__type": "Kodoku.Glue.WorldInventoryInteractionBridge",
-                      "__guid": "04652659-3118-4deb-a1bf-3547c5ac7b15",
+                      "__guid": "6154e4fd-4687-458e-b4b4-8d2ac8a475f2",
                       "__enabled": true,
                       "Flags": 0,
                       "HandleInteractInput": true,
@@ -950,6 +925,29 @@
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null
+            },
+            {
+              "__type": "Sandbox.ScreenPanel",
+              "__guid": "a869044a-26b1-4606-83a3-201cb0b00f5b",
+              "__enabled": true,
+              "Flags": 0,
+              "AutoScreenScale": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Opacity": 1,
+              "Scale": 1,
+              "ScaleStrategy": "ConsistentHeight",
+              "TargetCamera": {
+                "_type": "component",
+                "component_id": "f836c942-2c5d-46c3-884e-db1bfd15a15a",
+                "go": "70570569-6083-4b74-ad16-261f9c5b8a7d",
+                "component_type": "CameraComponent"
+              },
+              "ZIndex": 100
             }
           ],
           "Children": []
@@ -995,14 +993,14 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.Clutter.ClutterGridSystem": {
-        "Storage": {
-          "$blob": "a709f6f1-16a0-47d1-9c54-ebacea1aef49"
-        }
-      },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []
+        }
+      },
+      "Sandbox.Clutter.ClutterGridSystem": {
+        "Storage": {
+          "$blob": "a709f6f1-16a0-47d1-9c54-ebacea1aef49"
         }
       }
     }
