@@ -24,6 +24,8 @@ public sealed class DebugInventoryBootstrapper : InventoryBootstrapper, IInvento
 		new( "Cargo Pants",    KodokuItemAssetPaths.CargoPants ),
 		new( "Helmet",         KodokuItemAssetPaths.Helmet ),
 		new( "Pistol",         KodokuItemAssetPaths.Pistol ),
+		new( "Raider Backpack", KodokuItemAssetPaths.RaiderBackpack ),
+		new( "Shotgun",         KodokuItemAssetPaths.Shotgun ),
 		new( "Small Backpack", DefaultSmallBackpackDefinitionPath ),
 		new( "Tactical Rig",   KodokuItemAssetPaths.TacticalRig ),
 		new( "Water Bottle",   DefaultWaterDefinitionPath ),

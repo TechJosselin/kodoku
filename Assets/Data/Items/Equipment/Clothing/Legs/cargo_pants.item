@@ -1,7 +1,10 @@
 {
   "ItemId": "cargo_pants",
   "DisplayName": "Cargo Pants",
+  "Description": "",
   "IconPath": "",
+  "ModelPath": "",
+  "PrefabPath": "",
   "ItemKind": "Pants",
   "Width": 3,
   "Height": 3,

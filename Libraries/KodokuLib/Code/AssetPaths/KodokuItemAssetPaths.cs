@@ -7,6 +7,7 @@ public static class KodokuItemAssetPaths
 	public const string Water         = "data/items/consumables/drinks/water.item";
 
 	// Equipment — Backpacks
+	public const string RaiderBackpack = "data/items/equipment/backpacks/raider_backpack.item";
 	public const string SmallBackpack = "data/items/equipment/backpacks/small_backpack.item";
 
 	// Equipment — Armor
@@ -23,4 +24,5 @@ public static class KodokuItemAssetPaths
 	public const string AssaultRifle  = "data/items/equipment/weapons/ranged/assault_rifle.item";
 	public const string Machete       = "data/items/equipment/weapons/melee/machete.item";
 	public const string Pistol        = "data/items/equipment/weapons/sidearms/pistol.item";
+	public const string Shotgun       = "data/items/equipment/weapons/ranged/shotgun.item";
 }

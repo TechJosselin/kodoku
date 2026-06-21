@@ -1,14 +1,15 @@
 {
   "ItemId": "body_armor",
   "DisplayName": "Body Armor",
+  "Description": "",
   "IconPath": "",
+  "ModelPath": "",
+  "PrefabPath": "",
   "ItemKind": "BodyArmor",
   "Width": 3,
   "Height": 3,
   "CanRotate": false,
   "IsStackable": false,
   "MaxStack": 1,
-  "Weight": 5.0,
-  "StorageWidth": 0,
-  "StorageHeight": 0
+  "Weight": 5.0
 }

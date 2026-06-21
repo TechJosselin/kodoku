@@ -1,7 +1,10 @@
 {
   "ItemId": "tactical_rig",
   "DisplayName": "Tactical Rig",
+  "Description": "",
   "IconPath": "",
+  "ModelPath": "",
+  "PrefabPath": "",
   "ItemKind": "TacticalRig",
   "Width": 3,
   "Height": 2,

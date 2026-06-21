@@ -1,0 +1,84 @@
+{
+  "RootObject": {
+    "__guid": "ec8e02ab-d6b7-44fa-9f8e-c010bb5788b8",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "World Item - Raider Backpack",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Kodoku.Lib.Inventory.WorldItemComponent",
+        "__guid": "c497fc30-b986-4ba3-b3bf-3921f4b87a53",
+        "__enabled": true,
+        "Flags": 0,
+        "AutoFitColliderToModel": true,
+        "AutoNameGameObject": true,
+        "ColliderPadding": 2,
+        "CreateColliderIfMissing": true,
+        "CreateDebugVisual": false,
+        "Definition": "data/items/equipment/backpacks/raider_backpack.item",
+        "FallbackColliderSize": "16,16,16",
+        "OverrideExistingCollider": false,
+        "Quantity": 1
+      },
+      {
+        "__type": "Sandbox.ModelRenderer",
+        "__guid": "e3688edc-b00d-475d-95d0-c77bf37bcc37",
+        "__enabled": true,
+        "Flags": 0,
+        "BodyGroups": 18446744073709551615,
+        "CreateAttachments": false,
+        "LodOverride": null,
+        "MaterialGroup": null,
+        "MaterialOverride": null,
+        "Materials": null,
+        "Model": "models/items/equipment/backpacks/raider_backpack.vmdl",
+        "RenderOptions": {
+          "GameLayer": true,
+          "OverlayLayer": false,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
+        "RenderType": "On",
+        "Tint": "1,1,1,1"
+      }
+    ],
+    "Children": [],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": false,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": "",
+        "CustomBounds": false
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

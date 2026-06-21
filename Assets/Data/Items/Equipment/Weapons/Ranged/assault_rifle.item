@@ -1,14 +1,15 @@
 {
   "ItemId": "assault_rifle",
   "DisplayName": "Assault Rifle",
+  "Description": "",
   "IconPath": "",
+  "ModelPath": "",
+  "PrefabPath": "",
   "ItemKind": "Weapon",
   "Width": 5,
   "Height": 2,
   "CanRotate": true,
   "IsStackable": false,
   "MaxStack": 1,
-  "Weight": 3.8,
-  "StorageWidth": 0,
-  "StorageHeight": 0
+  "Weight": 3.8
 }

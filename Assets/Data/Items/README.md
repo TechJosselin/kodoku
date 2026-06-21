@@ -75,3 +75,110 @@ Ne jamais hardcoder ces chemins en dehors des fichiers `AssetPaths/`.
 | Small Backpack | `equipment/backpacks/small_backpack.item` | `ui/game/icons/items/equipment/backpacks/icon_small_backpack.png` |
 | Pistol | `equipment/weapons/sidearms/pistol.item` | _(utilise le fallback system/default)_ |
 | Machete | `equipment/weapons/melee/machete.item` | _(utilise le fallback system/default)_ |
+
+## Canonical .item format
+
+An `.item` file is a JSON-backed `ItemDefinition` resource. Paths are relative to
+`Assets/`, use forward slashes (`/`), and should use canonical lower-case asset
+paths even though s&box resolves them case-insensitively.
+
+### Common fields
+
+- `ItemId`: stable identifier; do not change it when moving an asset.
+- `DisplayName`: player-facing name.
+- `Description`: optional player-facing details; use an empty string when absent.
+- `IconPath`: inventory icon; an empty string uses
+  `ItemDefinition.DefaultIconPath`.
+- `ModelPath`: world model; use an empty string when no model exists.
+- `PrefabPath`: world-item prefab; use an empty string when no prefab exists.
+- `ItemKind`: one of the values in `InventoryItemKind`.
+- `Width`, `Height`, `CanRotate`: inventory-grid footprint.
+- `IsStackable`, `MaxStack`: stack rules. Non-stackable items use `MaxStack: 1`;
+  stackable items use a value greater than 1.
+- `Weight`: item weight. The code default is `0.1` when omitted.
+
+Every current item explicitly includes these common fields. Their code defaults
+remain safe so older resources with missing metadata still deserialize.
+
+### Storage fields
+
+- `StorageWidth`, `StorageHeight`: include both with positive values when the
+  item creates storage. In the current model this includes backpacks and also
+  equipment such as tactical rigs or cargo pants. Omit both for
+  items that do not create storage. `StorageWidth` is capped at 8.
+
+### Kind, slot, and folder
+
+- The folder describes what the object is, such as `Weapons/Ranged`.
+- `ItemKind` controls behavior and compatible loadout slots.
+- There is no serialized `EquipSlot`: `LoadoutSlotRegistry` maps an `ItemKind`
+  to accepted slots. For example, `Weapon` fits `OnSling` and `OnBack`.
+- There is no serialized `WeaponKind` yet. Ranged, melee, and sidearm are folder
+  categories only.
+- The current enum uses `Simple`, not `Misc`, and has no `Container` value.
+
+Safe code defaults are empty metadata paths and description,
+`DisplayName: "Item"`, `ItemKind: "Simple"`, a `1x1` footprint, no rotation,
+no stacking, `MaxStack: 1`, `Weight: 0.1`, and no storage.
+
+### Simple item example
+
+```json
+{
+  "ItemId": "bandage",
+  "DisplayName": "Bandage",
+  "Description": "",
+  "IconPath": "ui/game/icons/items/consumables/medical/icon_bandage.png",
+  "ModelPath": "",
+  "PrefabPath": "",
+  "ItemKind": "Simple",
+  "Width": 1,
+  "Height": 1,
+  "CanRotate": false,
+  "IsStackable": true,
+  "MaxStack": 4,
+  "Weight": 0.1
+}
+```
+
+### Backpack example
+
+```json
+{
+  "ItemId": "raider_backpack",
+  "DisplayName": "Raider Backpack",
+  "Description": "",
+  "IconPath": "ui/game/icons/items/equipment/backpacks/raider_backpack.png",
+  "ModelPath": "models/items/equipment/backpacks/raider_backpack.vmdl",
+  "PrefabPath": "prefabs/items/equipment/backpacks/raider_backpack.prefab",
+  "ItemKind": "Backpack",
+  "Width": 2,
+  "Height": 2,
+  "CanRotate": false,
+  "IsStackable": false,
+  "MaxStack": 1,
+  "Weight": 1.0,
+  "StorageWidth": 8,
+  "StorageHeight": 16
+}
+```
+
+### Weapon example
+
+```json
+{
+  "ItemId": "shotgun",
+  "DisplayName": "Shotgun",
+  "Description": "",
+  "IconPath": "ui/game/icons/items/equipment/weapons/ranged/shotgun.png",
+  "ModelPath": "models/items/equipment/weapons/ranged/shotgun.vmdl",
+  "PrefabPath": "",
+  "ItemKind": "Weapon",
+  "Width": 5,
+  "Height": 2,
+  "CanRotate": true,
+  "IsStackable": false,
+  "MaxStack": 1,
+  "Weight": 1.0
+}
+```

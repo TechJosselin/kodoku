@@ -7,13 +7,16 @@ namespace Kodoku.Lib.Items;
 public sealed class ItemDefinition : GameResource
 {
 	public const string DefaultIconPath = "ui/game/icons/system/default/icon_default.png";
-	public const int MaxStorageWidth = 6;
+	public const int MaxStorageWidth = 8;
 
 	int _storageWidth;
 
 	[Property] public string ItemId { get; set; } = "";
 	[Property] public string DisplayName { get; set; } = "Item";
+	[Property] public string Description { get; set; } = "";
 	[Property] public string IconPath { get; set; } = "";
+	[Property] public string ModelPath { get; set; } = "";
+	[Property] public string PrefabPath { get; set; } = "";
 	[Property] public InventoryItemKind ItemKind { get; set; } = InventoryItemKind.Simple;
 
 	[Property] public int Width { get; set; } = 1;

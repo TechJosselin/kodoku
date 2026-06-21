@@ -1,14 +1,15 @@
 {
   "ItemId": "bandage",
   "DisplayName": "Bandage",
+  "Description": "",
   "IconPath": "ui/game/icons/items/consumables/medical/icon_bandage.png",
+  "ModelPath": "",
+  "PrefabPath": "",
   "ItemKind": "Simple",
   "Width": 1,
   "Height": 1,
   "CanRotate": false,
   "IsStackable": true,
   "MaxStack": 4,
-  "Weight": 0.1,
-  "StorageWidth": 0,
-  "StorageHeight": 0
+  "Weight": 0.1
 }

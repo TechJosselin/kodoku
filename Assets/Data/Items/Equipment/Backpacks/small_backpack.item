@@ -1,7 +1,10 @@
 {
   "ItemId": "small_backpack",
   "DisplayName": "Small Backpack",
+  "Description": "",
   "IconPath": "ui/game/icons/items/equipment/backpacks/icon_small_backpack.png",
+  "ModelPath": "",
+  "PrefabPath": "",
   "ItemKind": "Backpack",
   "Width": 2,
   "Height": 2,

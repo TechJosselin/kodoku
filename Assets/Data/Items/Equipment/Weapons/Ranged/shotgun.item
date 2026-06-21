@@ -1,0 +1,15 @@
+{
+  "ItemId": "shotgun",
+  "DisplayName": "Shotgun",
+  "Description": "",
+  "IconPath": "ui/game/icons/items/equipment/weapons/ranged/shotgun.png",
+  "ModelPath": "models/items/equipment/weapons/ranged/shotgun.vmdl",
+  "PrefabPath": "",
+  "ItemKind": "Weapon",
+  "Width": 5,
+  "Height": 2,
+  "CanRotate": true,
+  "IsStackable": false,
+  "MaxStack": 1,
+  "Weight": 1.0
+}
