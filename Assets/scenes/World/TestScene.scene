@@ -18,7 +18,7 @@
       "OwnerTransfer": 1,
       "Components": [
         {
-          "__type": "WorldRootComponent",
+          "__type": "Kodoku.World.WorldRootComponent",
           "__guid": "a7ba6211-391c-493e-abec-76ece8360a4f",
           "__enabled": true,
           "Flags": 0,
@@ -515,14 +515,14 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.SelectionSetsSystem": {
-        "Data": {
-          "SelectionSets": []
-        }
-      },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
           "$blob": "9995167b-28d8-4b95-b9e2-e7d9af34cbb4"
+        }
+      },
+      "Sandbox.SelectionSetsSystem": {
+        "Data": {
+          "SelectionSets": []
         }
       }
     }

@@ -1,0 +1,117 @@
+GameMenuSidebar
+{
+	width: 24%;
+	min-width: 210px;
+	max-width: 280px;
+	height: 100%;
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: column;
+	padding: 20px 14px;
+	background-color: #11140f;
+	border-right: 1px solid rgba( 185, 143, 75, 0.22 );
+	pointer-events: all;
+
+	.game-menu-brand
+	{
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 0 6px 22px;
+		border-bottom: 1px solid rgba( 160, 151, 125, 0.16 );
+	}
+
+	.game-menu-brand-mark
+	{
+		width: 42px;
+		height: 42px;
+		align-items: center;
+		justify-content: center;
+		background-color: #1d2119;
+		border: 1px solid rgba( 185, 143, 75, 0.48 );
+		color: #d7b56f;
+		font-size: 23px;
+		font-weight: 800;
+	}
+
+	.game-menu-brand-text
+	{
+		flex-direction: column;
+		min-width: 0;
+	}
+
+	.game-menu-brand-title
+	{
+		color: #f0ead9;
+		font-size: 19px;
+		font-weight: 800;
+		text-transform: uppercase;
+	}
+
+	.game-menu-brand-subtitle
+	{
+		margin-top: 2px;
+		color: #8f9882;
+		font-size: 11px;
+		text-transform: uppercase;
+	}
+
+	.game-menu-nav
+	{
+		flex-direction: column;
+		gap: 8px;
+		margin-top: 18px;
+	}
+
+	.game-menu-tab
+	{
+		width: 100%;
+		min-height: 44px;
+		padding: 0 12px;
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		background-color: rgba( 30, 34, 26, 0.78 );
+		border: 1px solid rgba( 116, 125, 103, 0.26 );
+		color: #b8b19e;
+		font-family: Poppins;
+		font-size: 14px;
+		font-weight: 700;
+		text-transform: uppercase;
+		cursor: pointer;
+		pointer-events: all;
+
+		&:hover
+		{
+			background-color: #252b20;
+			color: #efe6d0;
+			border-color: rgba( 185, 143, 75, 0.52 );
+		}
+
+		&.active
+		{
+			background-color: #2b261a;
+			color: #f2e5c6;
+			border-color: #b98f4b;
+		}
+	}
+
+	.tab-index
+	{
+		width: 30px;
+		color: #8c846d;
+		font-size: 11px;
+		font-weight: 700;
+	}
+
+	.game-menu-tab.active .tab-index
+	{
+		color: #d7b56f;
+	}
+
+	.tab-label
+	{
+		flex-grow: 1;
+		min-width: 0;
+	}
+}

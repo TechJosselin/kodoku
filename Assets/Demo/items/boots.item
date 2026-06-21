@@ -1,0 +1,14 @@
+{
+  "ItemId": "boots",
+  "DisplayName": "Boots",
+  "IconPath": "Demo/Icon/Equipment/slot_footwear.png",
+  "ItemKind": "Footwear",
+  "Width": 2,
+  "Height": 2,
+  "CanRotate": false,
+  "IsStackable": false,
+  "MaxStack": 1,
+  "Weight": 0.9,
+  "StorageWidth": 0,
+  "StorageHeight": 0
+}

@@ -1,0 +1,172 @@
+@using Kodoku.Lib.GameMenu
+@using Kodoku.Lib.Inventory
+@using Kodoku.Lib.UI.Components
+@using Kodoku.Lib.UI.Pages
+@inherits PanelComponent
+@namespace Kodoku.Lib.UI
+
+<root class="@RootClass">
+	<GameMenuSidebar Tabs="@GameMenuState.DefaultTabs" ActiveTab="@MenuState.ActiveTab" OnTabSelected="@SetActiveTab" />
+
+	<main class="game-menu-main">
+		<GameMenuHeader ActiveTab="@MenuState.ActiveTab" />
+
+		<section class="@PageHostClass">
+			@switch ( MenuState.ActiveTab )
+			{
+				case GameMenuTab.Inventory:
+					<InventoryPage Inventory="@Inventory" Interactor="@InventoryInteractor" DebugProvider="@InventoryDebugActions" />
+					break;
+				case GameMenuTab.Stats:
+					<StatsPage />
+					break;
+				case GameMenuTab.Quests:
+					<QuestsPage />
+					break;
+				case GameMenuTab.Map:
+					<MapPage />
+					break;
+				case GameMenuTab.Options:
+					<OptionsPage />
+					break;
+			}
+		</section>
+	</main>
+</root>
+
+@code
+{
+	[Property] public bool OpenOnStart { get; set; }
+	[Property] public string ToggleKey { get; set; } = "TAB";
+
+	private GameMenuState MenuState { get; } = new();
+	private InventoryComponent Inventory { get; set; }
+	private InventoryPlayerInteractionComponent InventoryInteractor { get; set; }
+	private IInventoryDebugActions InventoryDebugActions { get; set; }
+	private string RootClass => MenuState.IsOpen ? "game-menu-open" : "game-menu-closed";
+	private string PageHostClass => $"game-menu-page-host game-menu-page-host--{MenuState.ActiveTab.ToString().ToLowerInvariant()}";
+	public bool IsOpen => MenuState.IsOpen;
+
+	protected override void OnStart()
+	{
+		ResolveInventoryReferences();
+
+		if ( OpenOnStart )
+		{
+			MenuState.Open( GameMenuTab.Inventory );
+		}
+		else
+		{
+			MenuState.Close();
+			MenuState.SetActiveTab( GameMenuTab.Inventory );
+		}
+	}
+
+	protected override void OnUpdate()
+	{
+		ResolveInventoryReferences();
+
+		if ( string.IsNullOrWhiteSpace( ToggleKey ) )
+		{
+			UpdateMouseVisibility();
+			return;
+		}
+
+		if ( Input.Keyboard.Pressed( ToggleKey ) )
+		{
+			MenuState.Toggle( GameMenuTab.Inventory );
+			StateHasChanged();
+		}
+
+		UpdateMouseVisibility();
+	}
+
+	protected override void OnDisabled()
+	{
+		Mouse.Visibility = MouseVisibility.Auto;
+		base.OnDisabled();
+	}
+
+	private void SetActiveTab( GameMenuTab tab )
+	{
+		MenuState.SetActiveTab( tab );
+		StateHasChanged();
+	}
+
+	public void OpenInventory()
+	{
+		MenuState.Open( GameMenuTab.Inventory );
+		UpdateMouseVisibility();
+		StateHasChanged();
+	}
+
+	private void UpdateMouseVisibility()
+	{
+		Mouse.Visibility = MenuState.IsOpen ? MouseVisibility.Visible : MouseVisibility.Auto;
+	}
+
+	private bool ResolveInventoryReferences()
+	{
+		if ( Inventory is null || !Inventory.IsValid() )
+			Inventory = FindPreferredInventory();
+
+		if ( Inventory is null || !Inventory.IsValid() )
+			return false;
+
+		Inventory.EnsureInitialized();
+
+		if ( InventoryInteractor is null || !InventoryInteractor.IsValid() )
+		{
+			InventoryInteractor = Scene.GetAllComponents<InventoryPlayerInteractionComponent>()
+				.FirstOrDefault( candidate => candidate.Inventory == Inventory && candidate.GameObject == Inventory.GameObject );
+
+			if ( InventoryInteractor is null || !InventoryInteractor.IsValid() )
+				InventoryInteractor = Scene.GetAllComponents<InventoryPlayerInteractionComponent>()
+					.FirstOrDefault( candidate => candidate.Inventory == Inventory );
+
+			if ( InventoryInteractor is null || !InventoryInteractor.IsValid() )
+				InventoryInteractor = Inventory.GameObject.Components.Get<InventoryPlayerInteractionComponent>();
+
+			if ( InventoryInteractor is null || !InventoryInteractor.IsValid() )
+				InventoryInteractor = Inventory.GameObject.Components.Create<InventoryPlayerInteractionComponent>();
+		}
+
+		if ( InventoryInteractor is null || !InventoryInteractor.IsValid() )
+			return false;
+
+		InventoryInteractor.Inventory = Inventory;
+
+		if ( InventoryDebugActions is null )
+		{
+			var bootstrapper = Scene.GetAllComponents<InventoryBootstrapper>()
+				.FirstOrDefault( b => b.Inventory == Inventory && b.GameObject == Inventory.GameObject );
+
+			if ( bootstrapper is null || !bootstrapper.IsValid() )
+				bootstrapper = Scene.GetAllComponents<InventoryBootstrapper>()
+					.FirstOrDefault( b => b.Inventory == Inventory );
+
+			if ( bootstrapper is null || !bootstrapper.IsValid() )
+				bootstrapper = Inventory.GameObject.Components.Get<InventoryBootstrapper>();
+
+			InventoryDebugActions = bootstrapper as IInventoryDebugActions;
+		}
+
+		return true;
+	}
+
+	private InventoryComponent FindPreferredInventory()
+	{
+		return Scene.GetAllComponents<InventoryComponent>()
+			.FirstOrDefault( candidate => candidate.GameObject?.Name == "Inventory" )
+			?? Scene.GetAllComponents<InventoryComponent>().FirstOrDefault();
+	}
+
+	protected override int BuildHash()
+	{
+		var hash = (int)MenuState.ActiveTab;
+		hash = (hash * 397) ^ MenuState.IsOpen.GetHashCode();
+		hash = (hash * 397) ^ OpenOnStart.GetHashCode();
+		hash = (hash * 397) ^ (ToggleKey?.GetHashCode() ?? 0);
+		return hash;
+	}
+}

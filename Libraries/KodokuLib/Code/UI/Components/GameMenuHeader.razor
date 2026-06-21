@@ -1,0 +1,19 @@
+@using Kodoku.Lib.GameMenu
+@namespace Kodoku.Lib.UI.Components
+
+<root>
+	<div class="game-menu-header-copy">
+		<span class="game-menu-kicker">Menu</span>
+		<h1>@GameMenuState.GetTabTitle( ActiveTab )</h1>
+	</div>
+
+	<div class="game-menu-header-status">
+		<span class="status-dot"></span>
+		<span>Local UI</span>
+	</div>
+</root>
+
+@code
+{
+	[Parameter] public GameMenuTab ActiveTab { get; set; }
+}

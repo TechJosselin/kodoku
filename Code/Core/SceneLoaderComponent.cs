@@ -1,5 +1,8 @@
 using Sandbox;
 using System.Linq;
+using Kodoku.World;
+
+namespace Kodoku.Core;
 
 public sealed class SceneLoaderComponent : Component
 {

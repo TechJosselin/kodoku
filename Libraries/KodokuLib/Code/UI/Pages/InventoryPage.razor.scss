@@ -1,0 +1,663 @@
+
+InventoryPage
+{
+	display: flex;
+	flex-grow: 1;
+	flex-shrink: 1;
+	align-self: stretch;
+	width: 100%;
+	height: 100%;
+	min-width: 0;
+	min-height: 0;
+	background-color: #080a08;
+	background-image: url( "/ui/inventory/ui_background_charcoal_noise.png" );
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	pointer-events: all;
+	position: relative;
+	overflow: hidden;
+}
+
+.inventory-background-shade
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba( 0, 0, 0, 0.56 );
+	pointer-events: none;
+	z-index: 0;
+}
+
+.inventory-page-layout
+{
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	flex-grow: 1;
+	flex-shrink: 1;
+	align-items: center;
+	width: 100%;
+	height: 100%;
+	min-width: 0;
+	min-height: 0;
+	gap: 14px;
+	z-index: 1;
+}
+
+.inventory-page-main
+{
+	display: flex;
+	flex-direction: row;
+	flex-grow: 1;
+	flex-shrink: 1;
+	width: 100%;
+	height: 0;
+	min-width: 0;
+	min-height: 0;
+	justify-content: center;
+	align-items: stretch;
+	gap: 14px;
+}
+
+.inventory-page-panel
+{
+	position: relative;
+	background-color: rgba( 12, 13, 14, 0.82 );
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	min-width: 0;
+	min-height: 0;
+	overflow: hidden;
+}
+
+.LeftPanel,
+.CenterPanel,
+.RightPanel
+{
+	flex-grow: 1;
+	flex-shrink: 1;
+	flex-basis: 0;
+	height: 100%;
+}
+
+.HotbarPanel
+{
+	flex-grow: 0;
+	flex-shrink: 0;
+	width: 100%;
+	height: 8vw;
+	min-height: 92px;
+	max-height: 150px;
+	background-size: 100% 100%;
+}
+
+.LeftPanel,
+.inventory-panel
+{
+	background-image: url( "/ui/inventory/inventory.png" );
+}
+
+.CenterPanel,
+.equipment-panel
+{
+	background-image: url( "/ui/inventory/equipement.png" );
+}
+
+.RightPanel,
+.container-panel
+{
+	background-image: url( "/ui/inventory/container.png" );
+}
+
+.HotbarPanel,
+.hotbar-panel
+{
+	background-image: url( "/ui/inventory/hotbar.png" );
+}
+
+.panel-work-area
+{
+	position: absolute;
+	left: 15%;
+	top: 8%;
+	right: 11%;
+	bottom: 10%;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	overflow: scroll;
+}
+
+.inventory-container-zone
+{
+	display: flex;
+	flex-direction: column;
+	flex-grow: 0;
+	flex-shrink: 0;
+	gap: 8px;
+}
+
+.zone-label
+{
+	color: rgba( 218, 210, 184, 0.82 );
+	font-family: Poppins;
+	font-size: 12px;
+	font-weight: 800;
+	text-transform: uppercase;
+}
+
+.inventory-grid-zone
+{
+	position: relative;
+	flex-grow: 0;
+	flex-shrink: 0;
+	align-self: flex-start;
+}
+
+.inventory-cell
+{
+	position: absolute;
+	min-width: 0;
+	min-height: 0;
+	padding: 0;
+	background-color: rgba( 7, 8, 7, 0.58 );
+	border: 1px solid rgba( 255, 255, 255, 0.08 );
+	border-radius: 0;
+	box-shadow: none;
+	transform: none;
+	cursor: pointer;
+}
+
+.inventory-cell.occupied
+{
+	background-color: rgba( 10, 11, 10, 0.28 );
+}
+
+.inventory-cell.covered
+{
+	opacity: 0.34;
+}
+
+.inventory-item
+{
+	position: absolute;
+	min-width: 0;
+	min-height: 0;
+	padding: 0;
+	background-color: rgba( 15, 16, 14, 0.7 );
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	transform: none;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.inventory-cell:hover,
+.inventory-cell:active,
+.inventory-item:hover,
+.inventory-item:active
+{
+	transform: none;
+	box-shadow: none;
+}
+
+.inventory-item-icon
+{
+	position: absolute;
+	left: 7px;
+	top: 7px;
+	right: 7px;
+	bottom: 7px;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.inventory-item.rotated .inventory-item-icon,
+.drag-ghost.rotated .inventory-item-icon
+{
+	transform: rotate( 90deg );
+}
+
+.inventory-item-quantity
+{
+	position: absolute;
+	right: 4px;
+	bottom: 4px;
+	padding: 2px 5px;
+	background-color: rgba( 0, 0, 0, 0.78 );
+	color: rgba( 236, 228, 204, 0.95 );
+	font-family: Poppins;
+	font-size: 11px;
+	font-weight: 800;
+}
+
+.equipment-zone
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 2;
+}
+
+.equipment-weather-panel
+{
+	position: absolute;
+	left: 25%;
+	bottom: 2.3%;
+	width: 50%;
+	height: 8%;
+	z-index: 1;
+	background-image: url( "/ui/inventory/broken_weather.png" );
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	pointer-events: none;
+}
+
+.equipment-weather-panel.repaired
+{
+	background-image: url( "/ui/inventory/repair_weather.png" );
+}
+
+.equipment-slot
+{
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+	min-height: 0;
+	padding: 5px;
+	background-color: rgba( 7, 8, 7, 0.16 );
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	transform: none;
+	overflow: hidden;
+	cursor: pointer;
+}
+
+.equipment-slot:hover,
+.equipment-slot:active
+{
+	box-shadow: none;
+}
+
+.equipment-slot.occupied
+{
+	background-color: rgba( 7, 8, 7, 0.42 );
+}
+
+.equipment-slot-label-zone
+{
+	position: absolute;
+	height: 18px;
+	padding: 0 5px;
+	color: rgba( 214, 204, 176, 0.72 );
+	font-family: Poppins;
+	font-size: 9px;
+	font-weight: 800;
+	text-transform: uppercase;
+	white-space: nowrap;
+	overflow: hidden;
+	pointer-events: none;
+}
+
+.equipment-slot-icon
+{
+	flex-grow: 1;
+	min-height: 0;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	opacity: 0.82;
+}
+
+.equipment-slot.empty .equipment-slot-icon
+{
+	opacity: 0.18;
+}
+
+.slot-headwear
+{
+	left: 50.5%;
+	top: 6%;
+	width: 20%;
+	height: 14%;
+	transform: translateX( -50% );
+}
+
+.slot-gasmask
+{
+	left: 81.2%;
+	top: 6%;
+	width: 20%;
+	height: 14%;
+	transform: translateX( -50% );
+}
+
+.slot-backpack
+{
+	left: 19.8%;
+	top: 22.5%;
+	width: 20%;
+	height: 20%;
+	transform: translateX( -50% );
+}
+
+.slot-bodyarmor
+{
+	left: 50.5%;
+	top: 26%;
+	width: 23%;
+	height: 16.5%;
+	transform: translateX( -50% );
+}
+
+.slot-tacticalrig
+{
+	left: 81.2%;
+	top: 26%;
+	width: 23.5%;
+	height: 16%;
+	transform: translateX( -50% );
+}
+
+.slot-pants
+{
+	left: 50.5%;
+	top: 47%;
+	width: 21%;
+	height: 22%;
+	transform: translateX( -50% );
+}
+
+.slot-footwear
+{
+	left: 50.5%;
+	top: 73.5%;
+	width: 21%;
+	height: 14.5%;
+	transform: translateX( -50% );
+}
+
+.slot-onsling
+{
+	left: 4.75%;
+	top: 59%;
+	width: 16%;
+	height: 38%;
+}
+
+.slot-onback
+{
+	left: 79%;
+	top: 59%;
+	width: 16%;
+	height: 38%;
+}
+
+.label-headwear
+{
+	left: 45%;
+	top: 4%;
+	width: 20%;
+}
+
+.label-gasmask
+{
+	left: 76.2%;
+	top: 4%;
+	width: 20%;
+}
+
+.label-backpack
+{
+	left: 14%;
+	top: 19.5%;
+	width: 20%;
+}
+
+.label-bodyarmor
+{
+	left: 44%;
+	top: 23.5%;
+	width: 20%;
+}
+
+.label-tacticalrig
+{
+	left: 75%;
+	top: 23.5%;
+	width: 20%;
+}
+
+.label-pants
+{
+	left: 46.5%;
+	top: 45%;
+	width: 20%;
+}
+
+.label-footwear
+{
+	left: 45%;
+	top: 71.5%;
+	width: 21%;
+}
+
+.label-onsling
+{
+	left: 8.5%;
+	top: 55.5%;
+	width: 20%;
+}
+
+.label-onback
+{
+	left: 83%;
+	top: 55.5%;
+	width: 20%;
+}
+
+.inventory-cell.preview.valid,
+.equipment-slot.slot--valid-drop
+{
+	background-color: rgba( 88, 130, 76, 0.24 );
+}
+
+.inventory-cell.preview.invalid,
+.equipment-slot.slot--invalid-drop
+{
+	background-color: rgba( 148, 62, 52, 0.26 );
+}
+
+.inventory-cell.selected,
+.inventory-item.selected,
+.equipment-slot.slot--source
+{
+	opacity: 0.45;
+}
+
+.item-context-menu
+{
+	position: absolute;
+	z-index: 40;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 150px;
+	padding: 9px;
+	background-color: rgba( 17, 15, 11, 0.94 );
+	color: rgba( 236, 228, 204, 0.95 );
+	font-family: Poppins;
+	pointer-events: all;
+}
+
+.debug-menu
+{
+	position: absolute;
+	right: 18px;
+	top: 18px;
+	z-index: 45;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	width: 260px;
+	max-height: 86%;
+	padding: 10px;
+	background-color: rgba( 17, 15, 11, 0.94 );
+	color: rgba( 236, 228, 204, 0.95 );
+	font-family: Poppins;
+	pointer-events: all;
+	overflow: scroll;
+}
+
+.debug-menu-title
+{
+	color: rgba( 214, 204, 176, 0.78 );
+	font-size: 11px;
+	font-weight: 800;
+	text-transform: uppercase;
+}
+
+.debug-menu-actions
+{
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.debug-menu-actions--items button
+{
+	flex-grow: 1;
+	min-width: 112px;
+}
+
+.debug-menu-toggle
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 7px;
+	width: 100%;
+}
+
+.debug-checkbox-mark
+{
+	width: 14px;
+	height: 14px;
+	flex-shrink: 0;
+	background-color: rgba( 0, 0, 0, 0.44 );
+	border: 1px solid rgba( 236, 228, 204, 0.45 );
+}
+
+.debug-menu-toggle.checked .debug-checkbox-mark
+{
+	background-color: rgba( 154, 189, 118, 0.72 );
+	border-color: rgba( 224, 238, 192, 0.86 );
+}
+
+.item-context-menu button,
+.debug-menu button
+{
+	min-height: 26px;
+	padding: 4px 8px;
+	background-color: rgba( 255, 255, 255, 0.06 );
+	color: rgba( 236, 228, 204, 0.92 );
+	font-family: Poppins;
+	font-size: 11px;
+	font-weight: 700;
+	text-align: left;
+	cursor: pointer;
+}
+
+.item-context-menu button:hover,
+.debug-menu button:hover
+{
+	background-color: rgba( 255, 255, 255, 0.12 );
+}
+
+.context-menu-title
+{
+	color: rgba( 214, 204, 176, 0.78 );
+	font-size: 11px;
+	font-weight: 800;
+	text-transform: uppercase;
+}
+
+.storage-popup
+{
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate( -50%, -50% );
+	z-index: 35;
+	display: flex;
+	flex-direction: column;
+	min-width: 340px;
+	max-width: 82%;
+	max-height: 82%;
+	padding: 12px;
+	background-color: rgba( 8, 9, 8, 0.96 );
+	overflow: hidden;
+}
+
+.storage-popup-header
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	flex-shrink: 0;
+	min-height: 34px;
+	margin-bottom: 10px;
+}
+
+.storage-popup-title
+{
+	color: rgba( 218, 210, 184, 0.86 );
+	font-family: Poppins;
+	font-size: 12px;
+	font-weight: 800;
+	text-transform: uppercase;
+}
+
+.storage-popup-close
+{
+	width: 28px;
+	height: 28px;
+	padding: 0;
+	background-color: rgba( 255, 255, 255, 0.06 );
+	color: rgba( 236, 228, 204, 0.95 );
+	font-family: Poppins;
+	font-size: 14px;
+	font-weight: 800;
+	cursor: pointer;
+}
+
+.storage-popup-content
+{
+	flex: 1;
+	min-height: 0;
+	overflow: scroll;
+}
+
+.drag-ghost
+{
+	position: absolute;
+	z-index: 60;
+	pointer-events: none;
+	background-color: transparent;
+	transform: none;
+	opacity: 0.92;
+	overflow: hidden;
+}

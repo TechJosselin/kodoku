@@ -1,0 +1,93 @@
+@using Kodoku.Lib.Interaction
+@inherits PanelComponent
+@namespace Kodoku.Lib.UI
+
+<root class="@RootClass">
+	@if ( IsVisible && Actions.Count > 0 )
+	{
+		<div class="world-interaction-hud" style="@PromptStyle">
+			<div class="world-interaction-hud__stem"></div>
+			<div class="world-interaction-hud__panel">
+				@if ( !string.IsNullOrWhiteSpace( TargetName ) )
+				{
+					<div class="world-interaction-hud__target">@TargetName</div>
+				}
+
+				<div class="world-interaction-hud__actions">
+					@for ( var i = 0; i < Actions.Count; i++ )
+					{
+						var action = Actions[i];
+						<div class="@GetActionClasses( i )">
+							<span class="world-interaction-hud__dot"></span>
+							<span class="world-interaction-hud__label">@action.Label</span>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+	}
+</root>
+
+@code
+{
+	public bool IsVisible { get; private set; }
+	public string TargetName { get; private set; } = "";
+	public IReadOnlyList<WorldInteractionPromptAction> Actions { get; private set; } = new List<WorldInteractionPromptAction>();
+	public int SelectedIndex { get; private set; }
+	public Vector2 ScreenPosition { get; private set; }
+	string RootClass => IsVisible ? "world-interaction-hud-root visible" : "world-interaction-hud-root hidden";
+
+	string PromptStyle
+	{
+		get
+		{
+			var scale = 1f / Panel.ScaleToScreen;
+			return $"left:{ScreenPosition.x * scale:0.###}px; top:{ScreenPosition.y * scale:0.###}px;";
+		}
+	}
+
+	public void ShowPrompt( string targetName, Vector2 screenPosition, IReadOnlyList<WorldInteractionPromptAction> actions, int selectedIndex )
+	{
+		TargetName = targetName ?? "";
+		ScreenPosition = screenPosition;
+		Actions = actions ?? new List<WorldInteractionPromptAction>();
+		SelectedIndex = Actions.Count > 0 ? selectedIndex.Clamp( 0, Actions.Count - 1 ) : 0;
+		IsVisible = Actions.Count > 0;
+		StateHasChanged();
+	}
+
+	public void HidePrompt()
+	{
+		if ( !IsVisible )
+			return;
+
+		IsVisible = false;
+		Actions = new List<WorldInteractionPromptAction>();
+		SelectedIndex = 0;
+		StateHasChanged();
+	}
+
+	string GetActionClasses( int index )
+	{
+		return index == SelectedIndex
+			? "world-interaction-hud__action selected"
+			: "world-interaction-hud__action";
+	}
+
+	protected override int BuildHash()
+	{
+		var hash = IsVisible.GetHashCode();
+		hash = (hash * 397) ^ (TargetName?.GetHashCode() ?? 0);
+		hash = (hash * 397) ^ SelectedIndex;
+		hash = (hash * 397) ^ ScreenPosition.GetHashCode();
+		hash = (hash * 397) ^ Actions.Count;
+
+		foreach ( var action in Actions )
+		{
+			hash = (hash * 397) ^ (int)action.Type;
+			hash = (hash * 397) ^ (action.Label?.GetHashCode() ?? 0);
+		}
+
+		return hash;
+	}
+}

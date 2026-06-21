@@ -1,0 +1,14 @@
+{
+  "ItemId": "pistol",
+  "DisplayName": "Pistol",
+  "IconPath": "Demo/Icon/Equipment/slot_weapon.png",
+  "ItemKind": "Weapon",
+  "Width": 3,
+  "Height": 1,
+  "CanRotate": true,
+  "IsStackable": false,
+  "MaxStack": 1,
+  "Weight": 0.9,
+  "StorageWidth": 0,
+  "StorageHeight": 0
+}

@@ -1,0 +1,14 @@
+{
+  "ItemId": "cargo_pants",
+  "DisplayName": "Cargo Pants",
+  "IconPath": "Demo/Icon/Equipment/slot_pants.png",
+  "ItemKind": "Pants",
+  "Width": 3,
+  "Height": 3,
+  "CanRotate": false,
+  "IsStackable": false,
+  "MaxStack": 1,
+  "Weight": 0.8,
+  "StorageWidth": 2,
+  "StorageHeight": 2
+}

@@ -1,0 +1,45 @@
+$kodoku-ui-texture-root: "/ui/inventory";
+
+$kodoku-tex-charcoal-noise: url( /ui/inventory/ui_background_charcoal_noise.png );
+$kodoku-tex-inventory:      url( /ui/inventory/inventory.png );
+$kodoku-tex-equipment:      url( /ui/inventory/equipement.png );
+$kodoku-tex-container:      url( /ui/inventory/container.png );
+$kodoku-tex-hotbar:         url( /ui/inventory/hotbar.png );
+$kodoku-tex-weather-broken: url( /ui/inventory/broken_weather.png );
+$kodoku-tex-weather-repair: url( /ui/inventory/repair_weather.png );
+
+$kodoku-ui-black: #050604;
+$kodoku-ui-charcoal: #0b0d0a;
+$kodoku-ui-panel: #12130f;
+$kodoku-ui-panel-deep: #090a08;
+$kodoku-ui-panel-soft: #191a14;
+$kodoku-ui-olive: #24271b;
+$kodoku-ui-olive-dark: #13160f;
+$kodoku-ui-frame: rgba( 111, 106, 87, 0.46 );
+$kodoku-ui-frame-soft: rgba( 189, 171, 126, 0.16 );
+$kodoku-ui-text: #d8d1bd;
+$kodoku-ui-text-muted: #918b78;
+$kodoku-ui-text-dim: #696454;
+$kodoku-ui-amber: #d69a35;
+$kodoku-ui-amber-soft: rgba( 214, 154, 53, 0.18 );
+$kodoku-ui-grid-line: rgba( 124, 118, 96, 0.22 );
+$kodoku-ui-slot-blue: rgba( 48, 75, 94, 0.55 );
+
+@mixin kodoku-textured-surface( $texture, $fallback-color )
+{
+	background-color: $fallback-color;
+	background-image: $texture;
+	background-size: cover;
+	background-repeat: repeat;
+	background-position: center;
+}
+
+@mixin kodoku-readable-label
+{
+	color: $kodoku-ui-text-muted;
+	font-family: Poppins;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	text-shadow: 0 1px 2px rgba( black, 0.75 );
+}

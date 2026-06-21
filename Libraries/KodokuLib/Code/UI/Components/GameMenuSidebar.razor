@@ -1,0 +1,54 @@
+@using System
+@using System.Collections.Generic
+@using Kodoku.Lib.GameMenu
+@namespace Kodoku.Lib.UI.Components
+
+<root>
+	<div class="game-menu-brand">
+		<div class="game-menu-brand-mark">K</div>
+		<div class="game-menu-brand-text">
+			<span class="game-menu-brand-title">Kodoku</span>
+			<span class="game-menu-brand-subtitle">Field Menu</span>
+		</div>
+	</div>
+
+	<nav class="game-menu-nav">
+		@foreach ( var tab in Tabs )
+		{
+			<div class="@GetTabClass( tab )" onmousedown="@(() => SelectTab( tab ))">
+				<span class="tab-index">@GetTabIndex( tab )</span>
+				<span class="tab-label">@GameMenuState.GetTabTitle( tab )</span>
+			</div>
+		}
+	</nav>
+</root>
+
+@code
+{
+	[Parameter] public IReadOnlyList<GameMenuTab> Tabs { get; set; } = GameMenuState.DefaultTabs;
+	[Parameter] public GameMenuTab ActiveTab { get; set; }
+	[Parameter] public Action<GameMenuTab> OnTabSelected { get; set; }
+
+	private void SelectTab( GameMenuTab tab )
+	{
+		OnTabSelected?.Invoke( tab );
+	}
+
+	private string GetTabClass( GameMenuTab tab )
+	{
+		return ActiveTab == tab ? "game-menu-tab active" : "game-menu-tab";
+	}
+
+	private string GetTabIndex( GameMenuTab tab )
+	{
+		for ( var i = 0; i < Tabs.Count; i++ )
+		{
+			if ( Tabs[i] == tab )
+			{
+				return (i + 1).ToString( "00" );
+			}
+		}
+
+		return "00";
+	}
+}

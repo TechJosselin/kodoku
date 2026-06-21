@@ -53,8 +53,8 @@
           "OwnerTransfer": 1,
           "Components": [
             {
-              "__type": "SceneLoaderComponent",
-              "__guid": "104e0489-33fd-4c1e-a6d2-5df07f6ae8bb",
+              "__type": "Kodoku.Core.SceneLoaderComponent",
+              "__guid": "ba99e886-fc43-454b-80ba-fb54ef69f91e",
               "__enabled": true,
               "Flags": 0,
               "DefaultScenePath": "scenes/world/TestScene.scene",
@@ -429,6 +429,31 @@
                   "RemoveUnownedItems": true,
                   "Source": "OwnerConnection",
                   "WorkshopItems": []
+                },
+                {
+                  "__type": "Kodoku.Glue.WorldInventoryInteractionBridge",
+                  "__guid": "1baf83d6-f3db-4982-91d7-d8a9be3eebf3",
+                  "__enabled": true,
+                  "Flags": 0,
+                  "HandleInteractInput": true,
+                  "HudAnchorHeight": 36,
+                  "InteractAction": "Use",
+                  "InteractKey": "E",
+                  "LogRaycastDebug": false,
+                  "LogResults": true,
+                  "OnComponentDestroy": null,
+                  "OnComponentDisabled": null,
+                  "OnComponentEnabled": null,
+                  "OnComponentFixedUpdate": null,
+                  "OnComponentStart": null,
+                  "OnComponentUpdate": null,
+                  "TraceDistance": 180,
+                  "ViewCamera": {
+                    "_type": "component",
+                    "component_id": "f836c942-2c5d-46c3-884e-db1bfd15a15a",
+                    "go": "70570569-6083-4b74-ad16-261f9c5b8a7d",
+                    "component_type": "CameraComponent"
+                  }
                 }
               ],
               "Children": [
@@ -668,7 +693,93 @@
                   "NetworkOrphaned": 0,
                   "NetworkTransmit": true,
                   "OwnerTransfer": 1,
-                  "Components": [],
+                  "Components": [
+                    {
+                      "__type": "Kodoku.Lib.Inventory.InventoryComponent",
+                      "__guid": "0187fde1-d3dd-4903-9e31-80c426c322d0",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "LogActionResults": true,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "WorldItemPickupRadius": 160
+                    },
+                    {
+                      "__type": "Kodoku.Lib.Loadout.LoadoutComponent",
+                      "__guid": "1abbcc7e-d93b-4fee-8287-13010340bb6c",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "BackpackIconPath": "",
+                      "BodyArmorIconPath": "",
+                      "FootwearIconPath": "",
+                      "GasMaskIconPath": "",
+                      "HeadwearIconPath": "",
+                      "LogResults": true,
+                      "OnBackIconPath": "",
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "OnSlingIconPath": "",
+                      "PantsIconPath": "",
+                      "TacticalRigIconPath": ""
+                    },
+                    {
+                      "__type": "Kodoku.Lib.Inventory.InventoryPlayerInteractionComponent",
+                      "__guid": "02f774d6-45f7-4363-a052-66d464a66b5c",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "DropDistance": 72,
+                      "DropUpOffset": 12,
+                      "HandleInventoryRotateInput": false,
+                      "HandleInventoryToggleInput": false,
+                      "Inventory": {
+                        "_type": "component",
+                        "component_id": "0187fde1-d3dd-4903-9e31-80c426c322d0",
+                        "go": "b77747a8-60de-4511-bc63-86f80540baf1",
+                        "component_type": "InventoryComponent"
+                      },
+                      "LogInputResults": true,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "RotateAction": "Reload",
+                      "RotateKey": "R",
+                      "ToggleInventoryAction": "Score",
+                      "ToggleInventoryKey": "TAB"
+                    },
+                    {
+                      "__type": "Kodoku.Glue.DebugInventoryBootstrapper",
+                      "__guid": "a89fbe10-aa9e-4729-9ade-85875ee34a29",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "DebugBackpackDefinition": null,
+                      "DebugBandageWorldDefinition": null,
+                      "DebugLongItemDefinition": null,
+                      "DebugSmallBackpackWorldDefinition": null,
+                      "DebugSmallItemDefinition": null,
+                      "DebugWaterWorldDefinition": null,
+                      "DebugWorldSpawnDistance": 96,
+                      "DebugWorldSpawnUpOffset": 24,
+                      "Inventory": null,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "SeedDebugItemsOnStart": false
+                    }
+                  ],
                   "Children": []
                 },
                 {
@@ -734,7 +845,7 @@
           "__guid": "3afe45f2-ccb4-4171-b53f-586fa8d1fc9d",
           "__version": 2,
           "Flags": 0,
-          "Name": "InventoryUI",
+          "Name": "GameMenuUI",
           "Position": "0,0,0",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
@@ -768,6 +879,20 @@
                 "component_type": "CameraComponent"
               },
               "ZIndex": 100
+            },
+            {
+              "__type": "Kodoku.Lib.UI.GameMenuUI",
+              "__guid": "802dbe31-a282-4c18-bf21-42d7c8c8bb54",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "OpenOnStart": false,
+              "ToggleKey": "TAB"
             }
           ],
           "Children": []
@@ -787,7 +912,20 @@
           "NetworkOrphaned": 0,
           "NetworkTransmit": true,
           "OwnerTransfer": 1,
-          "Components": [],
+          "Components": [
+            {
+              "__type": "Kodoku.Lib.UI.WorldInteractionHud",
+              "__guid": "1e8a8bba-5b5a-4fbc-9a43-0f6e4473c738",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            }
+          ],
           "Children": []
         },
         {

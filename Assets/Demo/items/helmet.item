@@ -1,0 +1,14 @@
+{
+  "ItemId": "helmet",
+  "DisplayName": "Helmet",
+  "IconPath": "Demo/Icon/Equipment/slot_headwear.png",
+  "ItemKind": "Headwear",
+  "Width": 2,
+  "Height": 2,
+  "CanRotate": false,
+  "IsStackable": false,
+  "MaxStack": 1,
+  "Weight": 1.2,
+  "StorageWidth": 0,
+  "StorageHeight": 0
+}

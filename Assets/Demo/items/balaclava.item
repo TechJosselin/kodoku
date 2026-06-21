@@ -1,0 +1,14 @@
+{
+  "ItemId": "balaclava",
+  "DisplayName": "Balaclava",
+  "IconPath": "Demo/Icon/Equipment/slot_gasmask.png",
+  "ItemKind": "GasMask",
+  "Width": 1,
+  "Height": 1,
+  "CanRotate": false,
+  "IsStackable": false,
+  "MaxStack": 1,
+  "Weight": 0.1,
+  "StorageWidth": 0,
+  "StorageHeight": 0
+}

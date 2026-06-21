@@ -1,0 +1,1340 @@
+@using System
+@using System.Collections.Generic
+@using Sandbox
+@using Sandbox.UI
+@using Kodoku.Lib.GameMenu
+@using Kodoku.Lib.Inventory
+@using Kodoku.Lib.Items
+@using Kodoku.Lib.Loadout
+@namespace Kodoku.Lib.UI.Pages
+
+<root class="@GetRootClasses()">
+	<div class="inventory-background-shade"></div>
+	<div class="inventory-page-layout" @ref="PagePanel">
+		<div class="inventory-page-main">
+			<div class="inventory-page-panel LeftPanel inventory-panel" @ref="LeftPanel">
+				<div class="panel-work-area inventory-zone">
+					@foreach ( var container in GetInventoryContainers() )
+					{
+						var placements = GetPlacementSnapshot( container );
+						<div class="inventory-container-zone">
+							<div class="zone-label">@container.DisplayName</div>
+							<div class="inventory-grid-zone" style="@GetGridStyle( container )">
+								@for ( var y = 0; y < container.Height; y++ )
+								{
+									var row = y;
+									@for ( var x = 0; x < container.Width; x++ )
+									{
+										var col = x;
+										var placement = GetPlacementAt( placements, col, row );
+										var isOrigin = placement is not null && placement.X == col && placement.Y == row;
+										<button class="@GetCellClasses( container, placement, isOrigin, col, row )"
+										        style="@GetCellStyle( col, row )"
+										        onmouseover=@( () => HoverCell( container.ContainerId, col, row ) )
+										        onclick=@( () => ClickCell( container.ContainerId, col, row ) )></button>
+									}
+								}
+
+								@foreach ( var placement in placements )
+								{
+									var itemPlacement = placement;
+									@if ( itemPlacement.Item.InstanceId != HeldItemId )
+									{
+										<button class="@GetPlacementClasses( itemPlacement )"
+										        style="@GetPlacementStyle( itemPlacement )"
+										        onmouseover=@( () => HoverCell( container.ContainerId, itemPlacement.X, itemPlacement.Y ) )
+										        onclick=@( () => ClickCell( container.ContainerId, itemPlacement.X, itemPlacement.Y ) )
+										        @onrightclick=@( () => OpenItemContext( itemPlacement.Item ) )>
+											<div class="inventory-item-icon" style="@GetItemIconStyle( itemPlacement.Item )"></div>
+											@if ( ShouldShowQuantity( itemPlacement.Item ) )
+											{
+												<div class="inventory-item-quantity">x@(itemPlacement.Item.Quantity)</div>
+											}
+										</button>
+									}
+								}
+							</div>
+						</div>
+					}
+				</div>
+			</div>
+
+			<div class="inventory-page-panel CenterPanel equipment-panel" @ref="CenterPanel">
+				<div class="@GetWeatherPanelClasses()"></div>
+				<div class="equipment-zone">
+					@foreach ( var slot in EquipmentSlots )
+					{
+						var item = Inventory?.Loadout?.GetEquipped( slot );
+						var config = LoadoutSlotRegistry.Get( slot );
+						<button class="@GetEquipmentSlotClass( slot, item )"
+						        onmouseover=@( () => HoverSlot( slot ) )
+						        onclick=@( () => ClickSlot( slot ) )
+						        @onrightclick=@( () => RightClickSlot( slot ) )>
+							<div class="equipment-slot-icon" style="@(item is not null ? GetItemIconStyle( item ) : GetEmptyIconStyle( slot ))"></div>
+						</button>
+						<div class="@GetEquipmentLabelClass( slot )">
+							@config?.DisplayName
+						</div>
+					}
+				</div>
+			</div>
+
+			<div class="inventory-page-panel RightPanel container-panel" @ref="RightPanel">
+				@if ( GetOpenedLootContainer() is { } lootContainer )
+				{
+					var lootPlacements = GetPlacementSnapshot( lootContainer );
+					<div class="panel-work-area container-zone">
+						<div class="inventory-container-zone">
+							<div class="zone-label">@lootContainer.DisplayName</div>
+							<div class="inventory-grid-zone" style="@GetGridStyle( lootContainer )">
+								@for ( var y = 0; y < lootContainer.Height; y++ )
+								{
+									var row = y;
+									@for ( var x = 0; x < lootContainer.Width; x++ )
+									{
+										var col = x;
+										var placement = GetPlacementAt( lootPlacements, col, row );
+										var isOrigin = placement is not null && placement.X == col && placement.Y == row;
+										<button class="@GetCellClasses( lootContainer, placement, isOrigin, col, row )"
+										        style="@GetCellStyle( col, row )"
+										        onmouseover=@( () => HoverCell( lootContainer.ContainerId, col, row ) )
+										        onclick=@( () => ClickCell( lootContainer.ContainerId, col, row ) )></button>
+									}
+								}
+
+								@foreach ( var placement in lootPlacements )
+								{
+									var itemPlacement = placement;
+									@if ( itemPlacement.Item.InstanceId != HeldItemId )
+									{
+										<button class="@GetPlacementClasses( itemPlacement )"
+										        style="@GetPlacementStyle( itemPlacement )"
+										        onmouseover=@( () => HoverCell( lootContainer.ContainerId, itemPlacement.X, itemPlacement.Y ) )
+										        onclick=@( () => ClickCell( lootContainer.ContainerId, itemPlacement.X, itemPlacement.Y ) )
+										        @onrightclick=@( () => OpenItemContext( itemPlacement.Item ) )>
+											<div class="inventory-item-icon" style="@GetItemIconStyle( itemPlacement.Item )"></div>
+											@if ( ShouldShowQuantity( itemPlacement.Item ) )
+											{
+												<div class="inventory-item-quantity">x@(itemPlacement.Item.Quantity)</div>
+											}
+										</button>
+									}
+								}
+							</div>
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+		<div class="inventory-page-panel HotbarPanel hotbar-panel" @ref="HotbarPanel"></div>
+
+		@if ( EnableDebugMenu && DebugMenuOpen )
+		{
+			<div class="debug-menu">
+				<div class="debug-menu-title">Give Items</div>
+				<div class="debug-menu-actions debug-menu-actions--items">
+					@foreach ( var debugItem in GetDebugGiveItems() )
+					{
+						var itemOption = debugItem;
+						<button onclick=@( () => AddDebugItem( itemOption ) )>Give @itemOption.DisplayName</button>
+					}
+				</div>
+				<div class="debug-menu-title">World</div>
+				<div class="debug-menu-actions">
+					<button onclick=@SpawnBandageWorldItem>Spawn Bandage</button>
+					<button onclick=@SpawnWaterWorldItem>Spawn Water</button>
+					<button onclick=@SpawnSmallBackpackWorldItem>Spawn Bag</button>
+					<button onclick=@PickupNearestWorldItem>Pickup Near</button>
+				</div>
+				<div class="debug-menu-title">Weather</div>
+				<div class="debug-menu-actions">
+					<button class="@GetWeatherDebugToggleClass()" onclick=@ToggleWeatherRepair>
+						<span class="debug-checkbox-mark"></span>
+						<span>Repair Weather</span>
+					</button>
+				</div>
+				@if ( Interactor?.OpenedLootContainer is not null )
+				{
+					<div class="debug-menu-title">Loot</div>
+					<div class="debug-menu-actions">
+						<button onclick=@CloseLootContainer>Close Loot</button>
+					</div>
+				}
+			</div>
+		}
+
+		@if ( ContextMenuOpen && GetContextItem() is { } contextItem )
+		{
+			<div class="item-context-menu" style="@GetContextMenuStyle()">
+				<div class="context-menu-title">@contextItem.DisplayName</div>
+				@if ( CanOpenStorageItem( contextItem ) )
+				{
+					<button onclick=@OpenContextStorage>Open</button>
+				}
+				@if ( CanEquipContextItem( contextItem ) )
+				{
+					<button onclick=@EquipContextItem>Equip</button>
+				}
+				@if ( CanSplitContextItem( contextItem ) )
+				{
+					<button onclick=@SplitContextItem>Split</button>
+				}
+				@if ( CanDropContextItem( contextItem ) )
+				{
+					<button onclick=@DropContextItem>Drop</button>
+				}
+				<button onclick=@CloseContextMenu>Close</button>
+			</div>
+		}
+
+		@if ( SlotContextOpen && ContextSlot.HasValue )
+		{
+			var ctxItem = Inventory?.Loadout?.GetEquipped( ContextSlot.Value );
+			<div class="item-context-menu slot-context-menu" style="@GetContextMenuStyle()">
+				@if ( ctxItem is not null )
+				{
+					<div class="context-menu-title">@ctxItem.DisplayName</div>
+					<button onclick=@UnequipContextItem>Unequip</button>
+					<button onclick=@DropContextItem>Drop</button>
+				}
+				<button onclick=@CloseSlotContext>Close</button>
+			</div>
+		}
+
+		@if ( GetOpenedStorageItem() is { } openedStorageItem && GetOpenedStorageContainer() is { } openedStorage )
+		{
+			var openedStoragePlacements = GetPlacementSnapshot( openedStorage );
+			<div class="storage-popup">
+				<div class="storage-popup-header">
+					<div class="storage-popup-title">@openedStorageItem.DisplayName</div>
+					<button class="storage-popup-close" onclick=@CloseStoragePopup>x</button>
+				</div>
+				<div class="storage-popup-content">
+					<div class="inventory-container-zone">
+						<div class="zone-label">@openedStorage.DisplayName</div>
+						<div class="inventory-grid-zone" style="@GetGridStyle( openedStorage )">
+							@for ( var y = 0; y < openedStorage.Height; y++ )
+							{
+								var row = y;
+								@for ( var x = 0; x < openedStorage.Width; x++ )
+								{
+									var col = x;
+									var placement = GetPlacementAt( openedStoragePlacements, col, row );
+									var isOrigin = placement is not null && placement.X == col && placement.Y == row;
+									<button class="@GetCellClasses( openedStorage, placement, isOrigin, col, row )"
+									        style="@GetCellStyle( col, row )"
+									        onmouseover=@( () => HoverCell( openedStorage.ContainerId, col, row ) )
+									        onclick=@( () => ClickCell( openedStorage.ContainerId, col, row ) )></button>
+								}
+							}
+
+							@foreach ( var placement in openedStoragePlacements )
+							{
+								var itemPlacement = placement;
+								@if ( itemPlacement.Item.InstanceId != HeldItemId )
+								{
+									<button class="@GetPlacementClasses( itemPlacement )"
+									        style="@GetPlacementStyle( itemPlacement )"
+									        onmouseover=@( () => HoverCell( openedStorage.ContainerId, itemPlacement.X, itemPlacement.Y ) )
+									        onclick=@( () => ClickCell( openedStorage.ContainerId, itemPlacement.X, itemPlacement.Y ) )
+									        @onrightclick=@( () => OpenItemContext( itemPlacement.Item ) )>
+										<div class="inventory-item-icon" style="@GetItemIconStyle( itemPlacement.Item )"></div>
+										@if ( ShouldShowQuantity( itemPlacement.Item ) )
+										{
+											<div class="inventory-item-quantity">x@(itemPlacement.Item.Quantity)</div>
+										}
+									</button>
+								}
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+
+		@if ( !string.IsNullOrWhiteSpace( HeldItemId ) && GetHeldItem() is { } ghostItem )
+		{
+			<div class="@GetGhostClasses()" style="@GetGhostStyle( ghostItem )">
+				<div class="inventory-item-icon" style="@GetItemIconStyle( ghostItem )"></div>
+				@if ( ShouldShowQuantity( ghostItem ) )
+				{
+					<div class="inventory-item-quantity">x@(ghostItem.Quantity)</div>
+				}
+			</div>
+		}
+	</div>
+</root>
+
+@code
+{
+	const int CellSize = 64;
+	const int CellGap = 0;
+
+	[Parameter] public InventoryComponent Inventory { get; set; }
+	[Parameter] public InventoryPlayerInteractionComponent Interactor { get; set; }
+	[Parameter] public IInventoryDebugActions DebugProvider { get; set; }
+	[Parameter] public bool EnableDebugMenu { get; set; } = true;
+	[Parameter] public string DebugMenuKey { get; set; } = ",";
+	[Parameter] public string RotateKey { get; set; } = "R";
+	[Parameter] public string SilhouetteIconPath { get; set; } = "";
+
+	bool UseScreenHost { get; set; }
+	public bool IsOpen { get; private set; }
+	public string WorldPromptText { get; private set; }
+	string LastResult { get; set; } = "Ready";
+
+	string HeldItemId { get; set; }
+	string ContextItemId { get; set; }
+	string HoveredContainerId { get; set; }
+	int HoveredX { get; set; } = -1;
+	int HoveredY { get; set; } = -1;
+	bool Rotated { get; set; }
+	bool DebugMenuOpen { get; set; }
+	bool WeatherPanelRepaired { get; set; }
+	bool ContextMenuOpen { get; set; }
+	float ContextMenuX { get; set; }
+	float ContextMenuY { get; set; }
+	ItemInstance SplitHeldItem { get; set; }
+	string SplitSourceItemId { get; set; }
+	InventoryEquipmentSlot? HeldSlot { get; set; }
+	InventoryEquipmentSlot? HoveredSlot { get; set; }
+	InventoryEquipmentSlot? ContextSlot { get; set; }
+	bool SlotContextOpen { get; set; }
+
+	Panel PagePanel = null;
+	Panel LeftPanel = null;
+	Panel CenterPanel = null;
+	Panel RightPanel = null;
+	Panel HotbarPanel = null;
+
+	static readonly InventoryContainer[] EmptyContainers = Array.Empty<InventoryContainer>();
+	static readonly InventoryEquipmentSlot[] EquipmentSlots = BuildEquipmentSlots();
+
+	string GetRootClasses()
+	{
+		return UseScreenHost
+			? "inventory-ui-root screen-host"
+			: "inventory-ui-root embedded-host";
+	}
+
+	protected override int BuildHash()
+	{
+		Inventory?.EnsureInitialized();
+		ValidateStoragePopup();
+		UpdateDebugMenuInput();
+		UpdateRotationInput();
+
+		var hash = Inventory?.GetHashCode() ?? 0;
+		hash = (hash * 397) ^ (Interactor?.GetHashCode() ?? 0);
+		hash = (hash * 397) ^ (DebugProvider?.GetHashCode() ?? 0);
+		hash = (hash * 397) ^ IsOpen.GetHashCode();
+		hash = (hash * 397) ^ (WorldPromptText?.GetHashCode() ?? 0);
+		hash = (hash * 397) ^ (LeftPanel is not null).GetHashCode();
+		hash = (hash * 397) ^ (CenterPanel is not null).GetHashCode();
+		hash = (hash * 397) ^ (RightPanel is not null).GetHashCode();
+		hash = (hash * 397) ^ (HotbarPanel is not null).GetHashCode();
+		hash = (hash * 397) ^ (HeldItemId?.GetHashCode() ?? 0);
+		hash = (hash * 397) ^ (HoveredContainerId?.GetHashCode() ?? 0);
+		hash = (hash * 397) ^ HoveredX;
+		hash = (hash * 397) ^ HoveredY;
+		hash = (hash * 397) ^ Rotated.GetHashCode();
+		hash = (hash * 397) ^ DebugMenuOpen.GetHashCode();
+		hash = (hash * 397) ^ WeatherPanelRepaired.GetHashCode();
+		hash = (hash * 397) ^ ContextMenuOpen.GetHashCode();
+		hash = (hash * 397) ^ SlotContextOpen.GetHashCode();
+		hash = (hash * 397) ^ (SplitHeldItem?.InstanceId?.GetHashCode() ?? 0);
+
+		foreach ( var container in GetInventoryContainers() )
+			hash = HashContainer( hash, container );
+
+		foreach ( var slot in EquipmentSlots )
+			hash = (hash * 397) ^ (Inventory?.Loadout?.GetEquipped( slot )?.InstanceId?.GetHashCode() ?? 0);
+
+		var lootContainer = GetOpenedLootContainer();
+		if ( lootContainer is not null )
+			hash = HashContainer( hash, lootContainer );
+
+		var openedStorage = GetOpenedStorageContainer();
+		if ( openedStorage is not null )
+			hash = HashContainer( hash, openedStorage );
+
+		if ( !string.IsNullOrWhiteSpace( HeldItemId ) )
+		{
+			hash = (hash * 397) ^ (int)(PagePanel?.MousePosition.x ?? 0f);
+			hash = (hash * 397) ^ (int)(PagePanel?.MousePosition.y ?? 0f);
+		}
+
+		return hash;
+	}
+
+	void UpdateDebugMenuInput()
+	{
+		if ( !EnableDebugMenu )
+		{
+			DebugMenuOpen = false;
+			return;
+		}
+
+		if ( IsDebugMenuKeyPressed() )
+			ToggleDebugMenu();
+	}
+
+	bool IsDebugMenuKeyPressed()
+	{
+		if ( !string.IsNullOrWhiteSpace( DebugMenuKey ) && Input.Keyboard.Pressed( DebugMenuKey ) )
+			return true;
+
+		return DebugMenuKey == "," && Input.Keyboard.Pressed( "comma" );
+	}
+
+	void ToggleDebugMenu()
+	{
+		DebugMenuOpen = !DebugMenuOpen;
+
+		if ( DebugMenuOpen )
+		{
+			CloseContextMenu();
+			CloseSlotContext();
+		}
+	}
+
+	void UpdateRotationInput()
+	{
+		if ( string.IsNullOrWhiteSpace( HeldItemId ) || !IsRotationKeyPressed() )
+			return;
+
+		ToggleRotationState();
+	}
+
+	bool IsRotationKeyPressed()
+	{
+		if ( !string.IsNullOrWhiteSpace( RotateKey ) && Input.Keyboard.Pressed( RotateKey ) )
+			return true;
+
+		return RotateKey == "R" && Input.Keyboard.Pressed( "r" );
+	}
+
+	IReadOnlyList<InventoryDebugItemOption> GetDebugGiveItems()
+	{
+		return DebugProvider?.GetDebugItems() ?? Array.Empty<InventoryDebugItemOption>();
+	}
+
+	void AddDebugItem( InventoryDebugItemOption option )
+	{
+		Run( DebugProvider?.AddItem( option ) ?? InventoryActionResult.Fail( "No debug provider." ) );
+	}
+
+	void AddSmall()
+	{
+		Run( DebugProvider?.AddSmall() ?? InventoryActionResult.Fail( "No debug provider." ) );
+	}
+
+	void AddLong()
+	{
+		Run( DebugProvider?.AddLong() ?? InventoryActionResult.Fail( "No debug provider." ) );
+	}
+
+	void AddBackpack()
+	{
+		Run( DebugProvider?.AddBackpack() ?? InventoryActionResult.Fail( "No debug provider." ) );
+	}
+
+	void SpawnBandageWorldItem()
+	{
+		Run( DebugProvider?.SpawnBandage() ?? InventoryActionResult.Fail( "No debug provider." ) );
+	}
+
+	void SpawnWaterWorldItem()
+	{
+		Run( DebugProvider?.SpawnWater() ?? InventoryActionResult.Fail( "No debug provider." ) );
+	}
+
+	void SpawnSmallBackpackWorldItem()
+	{
+		Run( DebugProvider?.SpawnSmallBackpack() ?? InventoryActionResult.Fail( "No debug provider." ) );
+	}
+
+	void PickupNearestWorldItem()
+	{
+		Run( Interactor?.RequestPickupNearestWorldItem()
+			?? Inventory?.TryPickupNearestWorldItem()
+			?? InventoryActionResult.Fail( "No inventory." ) );
+	}
+
+	void CloseLootContainer()
+	{
+		Run( Interactor?.RequestCloseLootContainer() ?? InventoryActionResult.Fail( "No interactor." ) );
+	}
+
+	void ToggleWeatherRepair()
+	{
+		WeatherPanelRepaired = !WeatherPanelRepaired;
+		StateHasChanged();
+	}
+
+	static int HashContainer( int hash, InventoryContainer container )
+	{
+		var placements = GetPlacementSnapshot( container );
+		hash = (hash * 397) ^ container.ContainerId.GetHashCode();
+		hash = (hash * 397) ^ container.Width;
+		hash = (hash * 397) ^ container.Height;
+		hash = (hash * 397) ^ placements.Length;
+		foreach ( var placement in placements )
+		{
+			hash = (hash * 397) ^ placement.Item.InstanceId.GetHashCode();
+			hash = (hash * 397) ^ placement.Item.Quantity;
+			hash = (hash * 397) ^ placement.X;
+			hash = (hash * 397) ^ placement.Y;
+			hash = (hash * 397) ^ placement.Rotated.GetHashCode();
+		}
+		return hash;
+	}
+
+	InventoryContainer[] GetInventoryContainers()
+	{
+		if ( Inventory is null || !Inventory.IsValid() )
+			return EmptyContainers;
+
+		if ( Inventory.Pockets is null || Inventory.ActiveContainers.Count == 0 )
+			Inventory.EnsureInitialized();
+
+		return Inventory.ActiveContainers.ToArray();
+	}
+
+	static InventoryItemPlacement[] GetPlacementSnapshot( InventoryContainer container )
+	{
+		return container?.Placements?.ToArray() ?? Array.Empty<InventoryItemPlacement>();
+	}
+
+	static InventoryItemPlacement GetPlacementAt( InventoryItemPlacement[] placements, int x, int y, string ignoredItemId = null )
+	{
+		foreach ( var placement in placements )
+		{
+			if ( placement.Item.InstanceId == ignoredItemId )
+				continue;
+
+			if ( placement.ContainsCell( x, y ) )
+				return placement;
+		}
+
+		return null;
+	}
+
+	static InventoryItemPlacement FindPlacementSnapshot( InventoryContainer container, string itemId )
+	{
+		if ( string.IsNullOrWhiteSpace( itemId ) )
+			return null;
+
+		foreach ( var placement in GetPlacementSnapshot( container ) )
+			if ( placement.Item.InstanceId == itemId )
+				return placement;
+
+		return null;
+	}
+
+	InventoryContainer GetOpenedLootContainer()
+	{
+		if ( Interactor?.OpenedLootContainer is null || !Interactor.OpenedLootContainer.IsValid() )
+			return null;
+
+		Interactor.OpenedLootContainer.EnsureInitialized();
+		return Interactor.OpenedLootContainer.Container;
+	}
+
+	ItemInstance GetOpenedStorageItem()
+	{
+		var item = Interactor?.OpenedItemStorageItem;
+		return item is not null && item.IsValid ? item : null;
+	}
+
+	InventoryContainer GetOpenedStorageContainer()
+	{
+		return GetOpenedStorageItem() is not null ? Interactor?.OpenedItemStorageContainer : null;
+	}
+
+	void ValidateStoragePopup()
+	{
+		if ( Interactor?.OpenedItemStorageItem is null && Interactor?.OpenedItemStorageContainer is null )
+			return;
+
+		if ( GetOpenedStorageItem() is null )
+			CloseStoragePopup();
+	}
+
+	void ClickCell( string containerId, int x, int y )
+	{
+		CloseContextMenu();
+		CloseSlotContext();
+
+		var container = FindVisibleContainer( containerId );
+		if ( container is null )
+			return;
+
+		HoverCell( containerId, x, y );
+
+		if ( SplitHeldItem is not null )
+		{
+			var splitResult = PlaceSplitItemInVisibleContainer( SplitHeldItem, containerId, HoveredX, HoveredY, Rotated );
+			Run( splitResult );
+
+			if ( splitResult.Success )
+			{
+				SplitHeldItem = null;
+				SplitSourceItemId = null;
+				ClearHeldItem();
+			}
+			return;
+		}
+
+		var placement = container.GetPlacementAt( x, y );
+
+		if ( string.IsNullOrWhiteSpace( HeldItemId ) && !HeldSlot.HasValue )
+		{
+			if ( placement is not null && Input.Keyboard.Down( "shift" ) )
+			{
+				Run( AutoMoveVisibleItem( placement.Item.InstanceId ) );
+				return;
+			}
+
+			BeginHoldItem( placement?.Item );
+			return;
+		}
+
+		if ( placement is not null
+			&& placement.Item.InstanceId == HeldItemId
+			&& placement.X == x
+			&& placement.Y == y
+			&& placement.Rotated == Rotated )
+		{
+			ClearHeldItem();
+			return;
+		}
+
+		var result = MoveItemToVisibleContainer( HeldItemId, containerId, HoveredX, HoveredY, Rotated );
+		Run( result );
+		ClearHeldItem();
+	}
+
+	void BeginHoldItem( ItemInstance item )
+	{
+		if ( item is null )
+			return;
+
+		CloseStoragePopupIfOwnerMoves( item.InstanceId );
+		HeldSlot = null;
+		HeldItemId = item.InstanceId;
+		ContextItemId = null;
+		ContextMenuOpen = false;
+		SlotContextOpen = false;
+		Rotated = FindPlacement( HeldItemId )?.Rotated ?? false;
+		LastResult = $"{item.DisplayName} selected.";
+	}
+
+	void ClickSlot( InventoryEquipmentSlot slot )
+	{
+		CloseContextMenu();
+		CloseSlotContext();
+
+		if ( SplitHeldItem is not null )
+		{
+			Run( InventoryActionResult.Fail( "Place the split item in a grid slot first." ) );
+			return;
+		}
+
+		var slotItem = Inventory?.Loadout?.GetEquipped( slot );
+
+		if ( string.IsNullOrWhiteSpace( HeldItemId ) && !HeldSlot.HasValue )
+		{
+			if ( slotItem is null )
+				return;
+
+			if ( Input.Keyboard.Down( "shift" ) )
+			{
+				Run( AutoMoveVisibleItem( slotItem.InstanceId ) );
+				return;
+			}
+
+			HeldSlot = slot;
+			HeldItemId = slotItem.InstanceId;
+			LastResult = $"{slotItem.DisplayName} selected.";
+			return;
+		}
+
+		if ( HeldSlot.HasValue )
+		{
+			if ( HeldSlot.Value == slot )
+			{
+				ClearHeldItem();
+				return;
+			}
+
+			var swapResult = Interactor?.RequestSwapEquipmentSlots( HeldSlot.Value, slot )
+				?? Inventory?.Loadout?.TrySwap( HeldSlot.Value, slot )
+				?? InventoryActionResult.Fail( "No loadout." );
+			Run( swapResult );
+			ClearHeldItem();
+			return;
+		}
+
+		var result = EquipVisibleItemToSlot( HeldItemId, slot );
+		Run( result );
+		ClearHeldItem();
+	}
+
+	void HoverCell( string containerId, int x, int y )
+	{
+		HoveredContainerId = containerId;
+
+		var container = FindVisibleContainer( containerId );
+		var item = GetHeldItem();
+
+		if ( container is not null && item is not null )
+		{
+			var width = item.Definition.GetWidth( Rotated );
+			var height = item.Definition.GetHeight( Rotated );
+			HoveredX = Math.Clamp( x, 0, Math.Max( 0, container.Width - width ) );
+			HoveredY = Math.Clamp( y, 0, Math.Max( 0, container.Height - height ) );
+		}
+		else
+		{
+			HoveredX = x;
+			HoveredY = y;
+		}
+	}
+
+	void HoverSlot( InventoryEquipmentSlot slot )
+	{
+		HoveredSlot = slot;
+	}
+
+	void RightClickSlot( InventoryEquipmentSlot slot )
+	{
+		if ( Inventory?.Loadout?.GetEquipped( slot ) is null )
+			return;
+
+		ClearHeldItem();
+		CloseContextMenu();
+		ContextSlot = slot;
+		SlotContextOpen = true;
+		SetContextMenuFromMouse();
+	}
+
+	void OpenItemContext( ItemInstance item )
+	{
+		if ( item is null )
+			return;
+
+		ClearHeldItem();
+		ContextItemId = item.InstanceId;
+		ContextSlot = null;
+		ContextMenuOpen = true;
+		SlotContextOpen = false;
+		SetContextMenuFromMouse();
+	}
+
+	void SetContextMenuFromMouse()
+	{
+		var scale = ScaleFromScreen;
+		ContextMenuX = (PagePanel?.MousePosition.x ?? 0f) * scale;
+		ContextMenuY = (PagePanel?.MousePosition.y ?? 0f) * scale;
+	}
+
+	void CloseContextMenu()
+	{
+		ContextMenuOpen = false;
+		ContextItemId = null;
+	}
+
+	void CloseSlotContext()
+	{
+		SlotContextOpen = false;
+		ContextSlot = null;
+	}
+
+	void ClearHeldItem()
+	{
+		if ( SplitHeldItem is not null && !string.IsNullOrWhiteSpace( SplitSourceItemId ) )
+		{
+			if ( Interactor is not null && Interactor.IsValid() )
+				Interactor.RequestCancelSplit( SplitSourceItemId, SplitHeldItem.Quantity );
+			else
+				Inventory?.ReturnSplitQuantity( SplitSourceItemId, SplitHeldItem.Quantity );
+
+			SplitHeldItem = null;
+			SplitSourceItemId = null;
+		}
+
+		HeldSlot = null;
+		HeldItemId = null;
+		HoveredContainerId = null;
+		HoveredX = -1;
+		HoveredY = -1;
+		Rotated = false;
+	}
+
+	void ToggleRotation()
+	{
+		ToggleRotationState();
+	}
+
+	void ToggleRotationState()
+	{
+		var item = GetHeldItem();
+		if ( item is null )
+		{
+			LastResult = InventoryActionResult.Fail( "No item in hand." ).ToString();
+			return;
+		}
+
+		if ( !item.Definition.CanRotate )
+		{
+			LastResult = InventoryActionResult.Fail( $"{item.DisplayName} cannot be rotated." ).ToString();
+			return;
+		}
+
+		Rotated = !Rotated;
+		LastResult = $"{item.DisplayName} rotation: {(Rotated ? "rotated" : "normal")}.";
+	}
+
+	void OpenContextStorage()
+	{
+		var item = GetContextItem();
+		if ( !CanOpenStorageItem( item ) )
+		{
+			Run( InventoryActionResult.Fail( "This item cannot be opened." ) );
+			return;
+		}
+
+		var result = Interactor?.RequestOpenItemStorage( item.InstanceId )
+			?? InventoryActionResult.Fail( "No interactor." );
+
+		Run( result );
+		if ( result.Success )
+			CloseContextMenu();
+	}
+
+	void CloseStoragePopup()
+	{
+		var openedStorageId = GetOpenedStorageContainer()?.ContainerId;
+		Interactor?.RequestCloseItemStorage();
+		if ( !string.IsNullOrWhiteSpace( openedStorageId ) && HoveredContainerId == openedStorageId )
+		{
+			HoveredContainerId = null;
+			HoveredX = -1;
+			HoveredY = -1;
+		}
+	}
+
+	void CloseStoragePopupIfOwnerMoves( string itemId )
+	{
+		Interactor?.RequestCloseItemStorageIfOwnerMoves( itemId );
+	}
+
+	void EquipContextItem()
+	{
+		var itemId = GetActionItemId();
+		var item = FindVisibleItem( itemId );
+		var slot = FindFirstCompatibleEmptySlot( item );
+		var result = slot.HasValue
+			? EquipVisibleItemToSlot( itemId, slot.Value )
+			: InventoryActionResult.Fail( $"{item?.DisplayName ?? "Item"} cannot be equipped." );
+
+		Run( result );
+		FinishActionIfSuccess( result, itemId );
+	}
+
+	void DropContextItem()
+	{
+		var itemId = GetActionItemId();
+		var result = Interactor?.RequestDropItem( itemId, out _ )
+			?? Inventory?.TryDropItemToWorld( itemId, out _ )
+			?? InventoryActionResult.Fail( "No inventory." );
+
+		Run( result );
+		FinishActionIfSuccess( result, itemId );
+	}
+
+	void SplitContextItem()
+	{
+		var item = GetContextItem();
+		if ( item is null )
+			return;
+
+		var splitQuantity = item.Quantity / 2;
+		var sourceId = item.InstanceId;
+
+		InventoryActionResult result;
+		ItemInstance splitItem;
+
+		if ( Interactor is not null && Interactor.IsValid() )
+			result = Interactor.RequestSplitItem( sourceId, splitQuantity, out splitItem );
+		else if ( Inventory is not null && Inventory.IsValid() )
+			result = Inventory.TrySplitItem( sourceId, splitQuantity, out splitItem );
+		else
+		{
+			Run( InventoryActionResult.Fail( "No inventory." ) );
+			return;
+		}
+
+		CloseContextMenu();
+		Run( result );
+
+		if ( result.Success && splitItem is not null )
+		{
+			SplitHeldItem = splitItem;
+			SplitSourceItemId = sourceId;
+			HeldItemId = splitItem.InstanceId;
+			Rotated = false;
+		}
+	}
+
+	void UnequipContextItem()
+	{
+		if ( !ContextSlot.HasValue )
+			return;
+
+		var result = Interactor?.RequestUnequipItem( ContextSlot.Value )
+			?? Inventory?.TryUnequipItem( ContextSlot.Value )
+			?? InventoryActionResult.Fail( "No inventory." );
+		Run( result );
+		CloseSlotContext();
+	}
+
+	void FinishActionIfSuccess( InventoryActionResult result, string itemId )
+	{
+		CloseContextMenu();
+		CloseSlotContext();
+
+		if ( result.Success && HeldItemId == itemId )
+			ClearHeldItem();
+
+		if ( result.Success && Interactor?.OpenedItemStorageItem?.InstanceId == itemId )
+			CloseStoragePopup();
+	}
+
+	void Run( InventoryActionResult result )
+	{
+		LastResult = result.ToString();
+		StateHasChanged();
+	}
+
+	InventoryActionResult PlaceSplitItemInVisibleContainer( ItemInstance splitItem, string targetContainerId, int x, int y, bool rotated )
+	{
+		return Interactor is not null && Interactor.IsValid()
+			? Interactor.RequestPlaceSplitItem( splitItem, targetContainerId, x, y, rotated )
+			: Inventory?.TryAddItemToContainer( targetContainerId, splitItem, x, y, rotated )
+			  ?? InventoryActionResult.Fail( "No inventory." );
+	}
+
+	InventoryActionResult MoveItemToVisibleContainer( string itemId, string targetContainerId, int x, int y, bool rotated )
+	{
+		CloseStoragePopupIfOwnerMoves( itemId );
+
+		return Interactor?.RequestMoveItem( itemId, targetContainerId, x, y, rotated )
+			?? Inventory?.TryMoveItem( itemId, targetContainerId, x, y, rotated )
+			?? InventoryActionResult.Fail( "No inventory." );
+	}
+
+	InventoryActionResult AutoMoveVisibleItem( string itemId )
+	{
+		CloseStoragePopupIfOwnerMoves( itemId );
+
+		return Interactor?.RequestAutoMoveItem( itemId )
+			?? Inventory?.TryAutoMoveItem( itemId )
+			?? InventoryActionResult.Fail( "No inventory." );
+	}
+
+	InventoryActionResult EquipVisibleItemToSlot( string itemId, InventoryEquipmentSlot slot )
+	{
+		return Interactor?.RequestEquipItem( itemId, slot )
+			?? Inventory?.TryEquipItem( itemId, slot )
+			?? InventoryActionResult.Fail( "No inventory." );
+	}
+
+	InventoryContainer FindVisibleContainer( string containerId )
+	{
+		if ( string.IsNullOrWhiteSpace( containerId ) )
+			return null;
+
+		foreach ( var container in GetVisibleContainers() )
+			if ( container.ContainerId == containerId )
+				return container;
+
+		return null;
+	}
+
+	List<InventoryContainer> GetVisibleContainers()
+	{
+		var containers = new List<InventoryContainer>();
+		containers.AddRange( GetInventoryContainers() );
+
+		var loot = GetOpenedLootContainer();
+		if ( loot is not null )
+			containers.Add( loot );
+
+		var openedStorage = GetOpenedStorageContainer();
+		if ( openedStorage is not null )
+			containers.Add( openedStorage );
+
+		return containers;
+	}
+
+	ItemInstance GetHeldItem()
+	{
+		return SplitHeldItem ?? FindVisibleItem( HeldItemId );
+	}
+
+	ItemInstance GetHeldSlotItem()
+	{
+		return HeldSlot.HasValue ? Inventory?.Loadout?.GetEquipped( HeldSlot.Value ) : null;
+	}
+
+	ItemInstance GetContextItem()
+	{
+		if ( ContextSlot.HasValue )
+			return Inventory?.Loadout?.GetEquipped( ContextSlot.Value );
+
+		return FindVisibleItem( ContextItemId );
+	}
+
+	ItemInstance FindVisibleItem( string itemId )
+	{
+		if ( string.IsNullOrWhiteSpace( itemId ) )
+			return null;
+
+		var equippedSlot = Inventory?.Loadout?.FindItemSlot( itemId );
+		if ( equippedSlot.HasValue )
+			return Inventory.Loadout.GetEquipped( equippedSlot.Value );
+
+		foreach ( var container in GetVisibleContainers() )
+		{
+			var placement = FindPlacementSnapshot( container, itemId );
+			if ( placement is not null )
+				return placement.Item;
+		}
+
+		return null;
+	}
+
+	InventoryItemPlacement FindPlacement( string itemId )
+	{
+		if ( string.IsNullOrWhiteSpace( itemId ) )
+			return null;
+
+		foreach ( var container in GetVisibleContainers() )
+		{
+			var placement = FindPlacementSnapshot( container, itemId );
+			if ( placement is not null )
+				return placement;
+		}
+
+		return null;
+	}
+
+	InventoryContainer FindSourceContainer( string itemId )
+	{
+		if ( string.IsNullOrWhiteSpace( itemId ) )
+			return null;
+
+		foreach ( var container in GetVisibleContainers() )
+			if ( FindPlacementSnapshot( container, itemId ) is not null )
+				return container;
+
+		return null;
+	}
+
+	bool CanSplitContextItem( ItemInstance item )
+	{
+		return item is not null && item.Definition.IsStackable && item.Quantity > 1;
+	}
+
+	bool CanOpenStorageItem( ItemInstance item )
+	{
+		return item?.CreatesContainer == true
+			&& Inventory?.Loadout?.FindItemSlot( item.InstanceId ) is null
+			&& !IsOpenedStorageContainer( FindSourceContainer( item.InstanceId ) );
+	}
+
+	bool CanDropContextItem( ItemInstance item )
+	{
+		return item is not null && !IsOpenedStorageContainer( FindSourceContainer( item.InstanceId ) );
+	}
+
+	bool CanEquipContextItem( ItemInstance item )
+	{
+		return FindFirstCompatibleEmptySlot( item ).HasValue;
+	}
+
+	InventoryEquipmentSlot? FindFirstCompatibleEmptySlot( ItemInstance item )
+	{
+		if ( item is null || !item.IsValid )
+			return null;
+
+		foreach ( var slot in EquipmentSlots )
+		{
+			if ( Inventory?.Loadout?.IsOccupied( slot ) == true )
+				continue;
+
+			if ( item.Definition.CanEquipTo( slot ) )
+				return slot;
+		}
+
+		return null;
+	}
+
+	bool IsOpenedStorageContainer( InventoryContainer container )
+	{
+		var openedStorage = GetOpenedStorageContainer();
+		return container is not null && openedStorage is not null && ReferenceEquals( container, openedStorage );
+	}
+
+	string GetActionItemId()
+	{
+		if ( ContextSlot.HasValue )
+			return Inventory?.Loadout?.GetEquipped( ContextSlot.Value )?.InstanceId;
+
+		return !string.IsNullOrWhiteSpace( ContextItemId ) ? ContextItemId : HeldItemId;
+	}
+
+	bool IsPreviewCell( InventoryContainer container, int x, int y )
+	{
+		var item = GetHeldItem();
+		if ( string.IsNullOrWhiteSpace( HeldItemId ) || item is null || HoveredContainerId != container.ContainerId || HoveredX < 0 || HoveredY < 0 )
+			return false;
+
+		var width = item.Definition.GetWidth( Rotated );
+		var height = item.Definition.GetHeight( Rotated );
+
+		return x >= HoveredX && x < HoveredX + width
+			&& y >= HoveredY && y < HoveredY + height;
+	}
+
+	bool IsPreviewValid( InventoryContainer container )
+	{
+		var item = GetHeldItem();
+		if ( item is null || HoveredContainerId != container.ContainerId || HoveredX < 0 || HoveredY < 0 )
+			return false;
+
+		var sourceContainer = FindSourceContainer( HeldItemId );
+		if ( sourceContainer == container )
+			return container.CanMoveItemTo( HeldItemId, HoveredX, HoveredY, Rotated ).Success;
+
+		return container.CanAddItemAt( item, HoveredX, HoveredY, Rotated ).Success;
+	}
+
+	string GetCellClasses( InventoryContainer container, InventoryItemPlacement placement, bool isOrigin, int x, int y )
+	{
+		var classes = "inventory-cell";
+		if ( placement is not null )
+			classes += isOrigin ? " occupied origin" : " occupied covered";
+		if ( placement?.Item.InstanceId == HeldItemId )
+			classes += " selected";
+		if ( IsPreviewCell( container, x, y ) )
+			classes += IsPreviewValid( container ) ? " preview valid" : " preview invalid";
+		return classes;
+	}
+
+	string GetPlacementClasses( InventoryItemPlacement placement )
+	{
+		var classes = "inventory-item";
+		if ( placement?.Item.InstanceId == HeldItemId )
+			classes += " selected";
+		if ( placement?.Rotated == true )
+			classes += " rotated";
+		return classes;
+	}
+
+	string GetGridStyle( InventoryContainer container )
+	{
+		var width = container.Width * CellSize + Math.Max( 0, container.Width - 1 ) * CellGap;
+		var height = container.Height * CellSize + Math.Max( 0, container.Height - 1 ) * CellGap;
+		return $"width:{width}px; height:{height}px;";
+	}
+
+	string GetCellStyle( int x, int y )
+	{
+		var left = x * (CellSize + CellGap);
+		var top = y * (CellSize + CellGap);
+		return $"left:{left}px; top:{top}px; width:{CellSize}px; height:{CellSize}px;";
+	}
+
+	string GetPlacementStyle( InventoryItemPlacement placement )
+	{
+		var left = placement.X * (CellSize + CellGap);
+		var top = placement.Y * (CellSize + CellGap);
+		var width = placement.Width * CellSize + Math.Max( 0, placement.Width - 1 ) * CellGap;
+		var height = placement.Height * CellSize + Math.Max( 0, placement.Height - 1 ) * CellGap;
+		return $"left:{left}px; top:{top}px; width:{width}px; height:{height}px;";
+	}
+
+	string GetContextMenuStyle()
+	{
+		return $"left:{ContextMenuX + 8}px; top:{ContextMenuY + 8}px;";
+	}
+
+	string GetGhostClasses()
+	{
+		var classes = "drag-ghost";
+		if ( Rotated )
+			classes += " rotated";
+		return classes;
+	}
+
+	string GetGhostStyle( ItemInstance item )
+	{
+		var width = item.Definition.GetWidth( Rotated ) * CellSize;
+		var height = item.Definition.GetHeight( Rotated ) * CellSize;
+		var scale = ScaleFromScreen;
+		var mouseX = (PagePanel?.MousePosition.x ?? 0f) * scale;
+		var mouseY = (PagePanel?.MousePosition.y ?? 0f) * scale;
+		return $"left:{mouseX - width / 2f}px; top:{mouseY - height / 2f}px; width:{width}px; height:{height}px;";
+	}
+
+	string GetEquipmentSlotClass( InventoryEquipmentSlot slot, ItemInstance item )
+	{
+		var classes = $"equipment-slot {GetSlotLayoutClass( slot )}";
+		classes += item is null ? " empty" : " occupied";
+
+		if ( HeldSlot.HasValue && HeldSlot.Value == slot )
+			classes += " slot--source";
+		else if ( HeldSlot.HasValue && HeldSlot.Value != slot )
+		{
+			var heldItem = GetHeldSlotItem();
+			if ( heldItem is not null )
+				classes += LoadoutSlotRegistry.CanAccept( slot, heldItem ) ? " slot--valid-drop" : " slot--invalid-drop";
+		}
+		else if ( !string.IsNullOrWhiteSpace( HeldItemId ) && GetHeldItem() is { } heldItem )
+		{
+			classes += LoadoutSlotRegistry.CanAccept( slot, heldItem ) && item is null ? " slot--valid-drop" : " slot--invalid-drop";
+		}
+
+		return classes;
+	}
+
+	string GetEquipmentLabelClass( InventoryEquipmentSlot slot )
+	{
+		return $"equipment-slot-label-zone {GetSlotLabelLayoutClass( slot )}";
+	}
+
+	string GetWeatherPanelClasses()
+	{
+		return WeatherPanelRepaired
+			? "equipment-weather-panel repaired"
+			: "equipment-weather-panel";
+	}
+
+	string GetWeatherDebugToggleClass()
+	{
+		return WeatherPanelRepaired
+			? "debug-menu-toggle checked"
+			: "debug-menu-toggle";
+	}
+
+	static string GetSlotLayoutClass( InventoryEquipmentSlot slot )
+	{
+		return slot switch
+		{
+			InventoryEquipmentSlot.Headwear => "slot-headwear",
+			InventoryEquipmentSlot.GasMask => "slot-gasmask",
+			InventoryEquipmentSlot.BodyArmor => "slot-bodyarmor",
+			InventoryEquipmentSlot.TacticalRig => "slot-tacticalrig",
+			InventoryEquipmentSlot.Backpack => "slot-backpack",
+			InventoryEquipmentSlot.Pants => "slot-pants",
+			InventoryEquipmentSlot.Footwear => "slot-footwear",
+			InventoryEquipmentSlot.OnSling => "slot-onsling",
+			InventoryEquipmentSlot.OnBack => "slot-onback",
+			_ => "slot-unknown",
+		};
+	}
+
+	static string GetSlotLabelLayoutClass( InventoryEquipmentSlot slot )
+	{
+		return slot switch
+		{
+			InventoryEquipmentSlot.Headwear => "label-headwear",
+			InventoryEquipmentSlot.GasMask => "label-gasmask",
+			InventoryEquipmentSlot.BodyArmor => "label-bodyarmor",
+			InventoryEquipmentSlot.TacticalRig => "label-tacticalrig",
+			InventoryEquipmentSlot.Backpack => "label-backpack",
+			InventoryEquipmentSlot.Pants => "label-pants",
+			InventoryEquipmentSlot.Footwear => "label-footwear",
+			InventoryEquipmentSlot.OnSling => "label-onsling",
+			InventoryEquipmentSlot.OnBack => "label-onback",
+			_ => "label-unknown",
+		};
+	}
+
+	string GetItemIconStyle( ItemInstance item )
+	{
+		return $"background-image: url( {ResolveIconPath( item?.Definition?.GetIconPath() ?? ItemDefinition.DefaultIconPath )} );";
+	}
+
+	string GetEmptyIconStyle( InventoryEquipmentSlot slot )
+	{
+		var path = Inventory?.Loadout?.GetSlotEmptyIcon( slot )
+			?? LoadoutSlotRegistry.Get( slot )?.DefaultEmptyIconPath
+			?? ItemDefinition.DefaultIconPath;
+
+		return $"background-image: url( {ResolveIconPath( path )} );";
+	}
+
+	static string ResolveIconPath( string path )
+	{
+		if ( string.IsNullOrWhiteSpace( path ) )
+			path = ItemDefinition.DefaultIconPath;
+
+		return path.StartsWith( "/" ) ? path : $"/{path}";
+	}
+
+	static bool ShouldShowQuantity( ItemInstance item )
+	{
+		return item is not null && item.Quantity > 1;
+	}
+
+	static InventoryEquipmentSlot[] BuildEquipmentSlots()
+	{
+		var slots = new List<InventoryEquipmentSlot>();
+		slots.AddRange( LoadoutSlotRegistry.HeadSlots );
+		slots.AddRange( LoadoutSlotRegistry.BodySlots );
+		slots.AddRange( LoadoutSlotRegistry.LowerBodySlots );
+		slots.AddRange( LoadoutSlotRegistry.WeaponSlots );
+		slots.AddRange( LoadoutSlotRegistry.LargeRightSlots );
+		return slots.ToArray();
+	}
+
+	public void ToggleOpen()
+	{
+		SetOpen( !IsOpen );
+	}
+
+	public void SetOpen( bool open )
+	{
+		IsOpen = open;
+
+		if ( !IsOpen )
+		{
+			ClearHeldItem();
+			CloseContextMenu();
+			CloseSlotContext();
+			CloseStoragePopup();
+			DebugMenuOpen = false;
+		}
+
+		StateHasChanged();
+	}
+
+	public void ToggleRotationFromInput()
+	{
+		ToggleRotation();
+		StateHasChanged();
+	}
+
+	public void SetWorldPrompt( string text )
+	{
+		if ( WorldPromptText == text )
+			return;
+
+		WorldPromptText = text;
+		StateHasChanged();
+	}
+}

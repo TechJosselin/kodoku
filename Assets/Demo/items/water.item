@@ -1,0 +1,14 @@
+{
+  "ItemId": "water",
+  "DisplayName": "Water Bottle",
+  "IconPath": "Demo/Icon/Drinks/Icon_water.png",
+  "ItemKind": "Simple",
+  "Width": 1,
+  "Height": 2,
+  "CanRotate": true,
+  "IsStackable": false,
+  "MaxStack": 1,
+  "Weight": 0.6,
+  "StorageWidth": 0,
+  "StorageHeight": 0
+}

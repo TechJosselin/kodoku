@@ -1,0 +1,14 @@
+{
+  "ItemId": "small_backpack",
+  "DisplayName": "Small Backpack",
+  "IconPath": "Demo/Icon/Equipment/Icon_small_backpack.png",
+  "ItemKind": "Backpack",
+  "Width": 2,
+  "Height": 2,
+  "CanRotate": false,
+  "IsStackable": false,
+  "MaxStack": 1,
+  "Weight": 1.0,
+  "StorageWidth": 8,
+  "StorageHeight": 16
+}

@@ -1,0 +1,14 @@
+{
+  "ItemId": "tactical_rig",
+  "DisplayName": "Tactical Rig",
+  "IconPath": "Demo/Icon/Equipment/slot_tacticalrig.png",
+  "ItemKind": "TacticalRig",
+  "Width": 3,
+  "Height": 2,
+  "CanRotate": false,
+  "IsStackable": false,
+  "MaxStack": 1,
+  "Weight": 1.5,
+  "StorageWidth": 4,
+  "StorageHeight": 2
+}
