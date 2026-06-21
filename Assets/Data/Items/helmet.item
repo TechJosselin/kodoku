@@ -1,7 +1,7 @@
 {
   "ItemId": "helmet",
   "DisplayName": "Helmet",
-  "IconPath": "Demo/Icon/Equipment/slot_headwear.png",
+  "IconPath": "ui/icons/default/icon_default.png",
   "ItemKind": "Headwear",
   "Width": 2,
   "Height": 2,

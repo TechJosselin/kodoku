@@ -6,7 +6,7 @@ namespace Kodoku.Lib.Items;
 [AssetType( Name = "Inventory Item", Extension = "item", Category = "Inventory" )]
 public sealed class ItemDefinition : GameResource
 {
-	public const string DefaultIconPath = "inventory/icon/default/icon_default.png";
+	public const string DefaultIconPath = "ui/icons/default/icon_default.png";
 	public const int MaxStorageWidth = 6;
 
 	int _storageWidth;

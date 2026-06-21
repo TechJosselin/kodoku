@@ -10,22 +10,22 @@ namespace Kodoku.Glue;
 [Icon( "bug_report" )]
 public sealed class DebugInventoryBootstrapper : InventoryBootstrapper, IInventoryDebugActions
 {
-	const string DefaultBandageDefinitionPath      = KodokuItemAssetPaths.DemoBandage;
-	const string DefaultWaterDefinitionPath        = KodokuItemAssetPaths.DemoWater;
-	const string DefaultSmallBackpackDefinitionPath = KodokuItemAssetPaths.DemoSmallBackpack;
+	const string DefaultBandageDefinitionPath       = KodokuItemAssetPaths.Bandage;
+	const string DefaultWaterDefinitionPath         = KodokuItemAssetPaths.Water;
+	const string DefaultSmallBackpackDefinitionPath = KodokuItemAssetPaths.SmallBackpack;
 
 	static readonly InventoryDebugItemOption[] DebugGiveItems =
 	{
-		new( "Assault Rifle",  KodokuItemAssetPaths.DemoAssaultRifle ),
-		new( "Balaclava",      KodokuItemAssetPaths.DemoBalaclava ),
+		new( "Assault Rifle",  KodokuItemAssetPaths.AssaultRifle ),
+		new( "Balaclava",      KodokuItemAssetPaths.Balaclava ),
 		new( "Bandage",        DefaultBandageDefinitionPath ),
-		new( "Body Armor",     KodokuItemAssetPaths.DemoBodyArmor ),
-		new( "Boots",          KodokuItemAssetPaths.DemoBoots ),
-		new( "Cargo Pants",    KodokuItemAssetPaths.DemoCargoPants ),
-		new( "Helmet",         KodokuItemAssetPaths.DemoHelmet ),
-		new( "Pistol",         KodokuItemAssetPaths.DemoPistol ),
+		new( "Body Armor",     KodokuItemAssetPaths.BodyArmor ),
+		new( "Boots",          KodokuItemAssetPaths.Boots ),
+		new( "Cargo Pants",    KodokuItemAssetPaths.CargoPants ),
+		new( "Helmet",         KodokuItemAssetPaths.Helmet ),
+		new( "Pistol",         KodokuItemAssetPaths.Pistol ),
 		new( "Small Backpack", DefaultSmallBackpackDefinitionPath ),
-		new( "Tactical Rig",   KodokuItemAssetPaths.DemoTacticalRig ),
+		new( "Tactical Rig",   KodokuItemAssetPaths.TacticalRig ),
 		new( "Water Bottle",   DefaultWaterDefinitionPath ),
 	};
 

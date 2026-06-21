@@ -1,7 +1,7 @@
 {
   "ItemId": "tactical_rig",
   "DisplayName": "Tactical Rig",
-  "IconPath": "Demo/Icon/Equipment/slot_tacticalrig.png",
+  "IconPath": "ui/icons/default/icon_default.png",
   "ItemKind": "TacticalRig",
   "Width": 3,
   "Height": 2,

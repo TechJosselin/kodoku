@@ -605,7 +605,7 @@
                       "Flags": 0,
                       "AutoNameGameObject": true,
                       "CreateDebugVisual": true,
-                      "Definition": "demo/items/bandage.item",
+                      "Definition": "data/items/bandage.item",
                       "OnComponentDestroy": null,
                       "OnComponentDisabled": null,
                       "OnComponentEnabled": null,

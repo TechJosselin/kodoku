@@ -1,7 +1,7 @@
 {
   "ItemId": "water",
   "DisplayName": "Water Bottle",
-  "IconPath": "Demo/Icon/Drinks/Icon_water.png",
+  "IconPath": "ui/icons/drinks/icon_water.png",
   "ItemKind": "Simple",
   "Width": 1,
   "Height": 2,

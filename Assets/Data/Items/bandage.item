@@ -1,7 +1,7 @@
 {
   "ItemId": "bandage",
   "DisplayName": "Bandage",
-  "IconPath": "Demo/Icon/Medical/Icon_bandage.png",
+  "IconPath": "ui/icons/medical/icon_bandage.png",
   "ItemKind": "Simple",
   "Width": 1,
   "Height": 1,

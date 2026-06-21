@@ -1,7 +1,7 @@
 {
   "ItemId": "body_armor",
   "DisplayName": "Body Armor",
-  "IconPath": "Demo/Icon/Equipment/slot_bodyarmor.png",
+  "IconPath": "ui/icons/default/icon_default.png",
   "ItemKind": "BodyArmor",
   "Width": 3,
   "Height": 3,

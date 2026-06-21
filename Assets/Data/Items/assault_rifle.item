@@ -1,7 +1,7 @@
 {
   "ItemId": "assault_rifle",
   "DisplayName": "Assault Rifle",
-  "IconPath": "Demo/Icon/Equipment/slot_weapon.png",
+  "IconPath": "ui/icons/default/icon_default.png",
   "ItemKind": "Weapon",
   "Width": 5,
   "Height": 2,
