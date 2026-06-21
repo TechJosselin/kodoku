@@ -14,7 +14,14 @@ Kodoku is a grid-based inventory system game built on **s.box** (Facepunch's Sou
 
 Building and running happens through the **s.box editor** (Steam). The `.slnx` solution can be opened in Visual Studio or Rider for IDE support, but compilation and hot-reload are driven by the engine.
 
-To run unit tests, open the solution in Visual Studio and run the `kodokulib.unittest` project. Tests are MSTest (`[TestClass]`, `[TestMethod]`, `Assert.*`). There is no CLI test runner command — the output path is routed directly into the s.box `.vs/output/` directory.
+Unit tests can be run from the CLI:
+
+```
+dotnet build kodoku.slnx
+dotnet test Libraries/KodokuLib/UnitTests/
+```
+
+Tests are MSTest (`[TestClass]`, `[TestMethod]`, `Assert.*`). The output path is routed into the s.box `.vs/output/` directory. Visual Studio is also supported.
 
 The `Docs/EditorComponentPlacement.md` file is the authoritative guide for wiring up components in the s.box scene editor (it is in French).
 
@@ -36,6 +43,7 @@ Key types:
 - `InventoryContainer` — grid storage with stacking and split support.
 - `InventoryComponent` — s.box Component that owns one `pockets` container and delegates to `LoadoutComponent` for equipped items.
 - `LoadoutComponent` / `LoadoutSlotRegistry` — manages equipment slots (headwear, armor, backpack, sling weapon, back weapon, etc.).
+- `WorldItemComponent` — represents a pickable item in the world. Automatically creates and fits a `BoxCollider` to the model bounds (retry loop up to 10 frames). Do not add a collider manually unless `OverrideExistingCollider` is set.
 
 ### Action Result Pattern
 
@@ -50,6 +58,25 @@ All inventory mutations return `InventoryActionResult` (immutable, `Success` + `
 UI is Razor Components (`.razor` files). `GameMenuComponent` manages open/close state and the active `GameMenuTab` (Inventory, Stats, Quests, Map, Options). `GameMenuUI.razor` renders the active page. Tab-key toggles the menu. The menu auto-resolves `InventoryComponent` from the scene using `Scene.GetAllComponents<InventoryComponent>()`.
 
 `WorldInteractionHud.razor` renders the context-sensitive interaction prompt (action list + selected index) based on `WorldInteractionComponent` state.
+
+## Asset Conventions
+
+Asset paths in s&box are **case-insensitive** and relative to `Assets/`. Canonical folder layout:
+
+| Folder | Content |
+|---|---|
+| `Assets/Data/Items/` | `ItemDefinition` assets (`.item` files) |
+| `Assets/UI/Icons/` | Per-item icons, organised by sub-category (`Default/`, `Medical/`, `Drinks/`, `Equipment/`) |
+| `Assets/UI/equipment/` | Loadout slot placeholder images (`slot_headwear.png`, etc.) |
+| `Assets/UI/Inventory/` | General inventory UI images |
+| `Assets/scenes/` | Scene files (`.scene`). Do not move — `.scene_c`/`.scene_d` files are compiled by s&box |
+
+Centralised path constants live in `KodokuLib`:
+- `KodokuItemAssetPaths` — one constant per item definition (e.g. `KodokuItemAssetPaths.Bandage`)
+- `KodokuUiAssetPaths` — one constant per loadout slot icon (e.g. `KodokuUiAssetPaths.SlotHeadwear`)
+- `ItemDefinition.DefaultIconPath` — fallback icon path used when an item has no specific icon
+
+Always update these constants when moving asset files; do not hardcode paths outside `AssetPaths/`.
 
 ## s.box Component Conventions
 

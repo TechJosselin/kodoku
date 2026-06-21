@@ -10,7 +10,7 @@ InventoryPage
 	min-width: 0;
 	min-height: 0;
 	background-color: #080a08;
-	background-image: url( "/ui/inventory/ui_background_charcoal_noise.png" );
+	background-image: url( "/ui/gamemenu/inventorypage/background/ui_background_charcoal_noise.png" );
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -98,25 +98,25 @@ InventoryPage
 .LeftPanel,
 .inventory-panel
 {
-	background-image: url( "/ui/inventory/inventory.png" );
+	background-image: url( "/ui/gamemenu/inventorypage/background/inventory.png" );
 }
 
 .CenterPanel,
 .equipment-panel
 {
-	background-image: url( "/ui/inventory/equipement.png" );
+	background-image: url( "/ui/gamemenu/inventorypage/background/equipement.png" );
 }
 
 .RightPanel,
 .container-panel
 {
-	background-image: url( "/ui/inventory/container.png" );
+	background-image: url( "/ui/gamemenu/inventorypage/background/container.png" );
 }
 
 .HotbarPanel,
 .hotbar-panel
 {
-	background-image: url( "/ui/inventory/hotbar.png" );
+	background-image: url( "/ui/gamemenu/inventorypage/background/hotbar.png" );
 }
 
 .panel-work-area
@@ -255,7 +255,7 @@ InventoryPage
 	width: 50%;
 	height: 8%;
 	z-index: 1;
-	background-image: url( "/ui/inventory/broken_weather.png" );
+	background-image: url( "/ui/gamemenu/inventorypage/background/broken_weather.png" );
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -264,7 +264,7 @@ InventoryPage
 
 .equipment-weather-panel.repaired
 {
-	background-image: url( "/ui/inventory/repair_weather.png" );
+	background-image: url( "/ui/gamemenu/inventorypage/background/repair_weather.png" );
 }
 
 .equipment-slot

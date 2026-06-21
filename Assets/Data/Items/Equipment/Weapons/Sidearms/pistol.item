@@ -1,7 +1,7 @@
 {
   "ItemId": "pistol",
   "DisplayName": "Pistol",
-  "IconPath": "ui/icons/default/icon_default.png",
+  "IconPath": "",
   "ItemKind": "Weapon",
   "Width": 3,
   "Height": 1,

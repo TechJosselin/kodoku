@@ -1,7 +1,7 @@
 {
   "ItemId": "balaclava",
   "DisplayName": "Balaclava",
-  "IconPath": "ui/icons/default/icon_default.png",
+  "IconPath": "",
   "ItemKind": "GasMask",
   "Width": 1,
   "Height": 1,

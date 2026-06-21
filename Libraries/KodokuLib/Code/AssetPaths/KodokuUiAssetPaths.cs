@@ -2,12 +2,14 @@ namespace Kodoku.Lib.AssetPaths;
 
 public static class KodokuUiAssetPaths
 {
-	public const string SlotHeadwear    = "ui/equipment/slot_headwear.png";
-	public const string SlotFaceCover   = "ui/equipment/slot_gasmask.png";
-	public const string SlotBodyArmor   = "ui/equipment/slot_bodyarmor.png";
-	public const string SlotTacticalRig = "ui/equipment/slot_tacticalrig.png";
-	public const string SlotBackpack    = "ui/equipment/slot_backpack.png";
-	public const string SlotPants       = "ui/equipment/slot_pants.png";
-	public const string SlotFootwear    = "ui/equipment/slot_footwear.png";
-	public const string SlotWeapon      = "ui/equipment/slot_weapon.png";
+	const string IconsBase = "ui/gamemenu/inventorypage/icons";
+
+	public const string SlotHeadwear    = $"{IconsBase}/slot_headwear.png";
+	public const string SlotFaceCover   = $"{IconsBase}/slot_gasmask.png";
+	public const string SlotBodyArmor   = $"{IconsBase}/slot_bodyarmor.png";
+	public const string SlotTacticalRig = $"{IconsBase}/slot_tacticalrig.png";
+	public const string SlotBackpack    = $"{IconsBase}/slot_backpack.png";
+	public const string SlotPants       = $"{IconsBase}/slot_pants.png";
+	public const string SlotFootwear    = $"{IconsBase}/slot_footwear.png";
+	public const string SlotWeapon      = $"{IconsBase}/slot_weapon.png";
 }

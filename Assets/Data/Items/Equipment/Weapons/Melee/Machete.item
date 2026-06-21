@@ -1,0 +1,14 @@
+{
+  "ItemId": "Machete",
+  "DisplayName": "Machete",
+  "IconPath": "",
+  "ItemKind": "Weapon",
+  "Width": 5,
+  "Height": 2,
+  "CanRotate": true,
+  "IsStackable": false,
+  "MaxStack": 1,
+  "Weight": 3.8,
+  "StorageWidth": 0,
+  "StorageHeight": 0
+}

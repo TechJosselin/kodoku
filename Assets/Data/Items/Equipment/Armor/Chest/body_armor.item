@@ -1,7 +1,7 @@
 {
   "ItemId": "body_armor",
   "DisplayName": "Body Armor",
-  "IconPath": "ui/icons/default/icon_default.png",
+  "IconPath": "",
   "ItemKind": "BodyArmor",
   "Width": 3,
   "Height": 3,

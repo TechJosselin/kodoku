@@ -1,7 +1,7 @@
 {
   "ItemId": "cargo_pants",
   "DisplayName": "Cargo Pants",
-  "IconPath": "ui/icons/default/icon_default.png",
+  "IconPath": "",
   "ItemKind": "Pants",
   "Width": 3,
   "Height": 3,

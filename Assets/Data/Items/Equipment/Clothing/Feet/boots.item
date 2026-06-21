@@ -1,7 +1,7 @@
 {
   "ItemId": "boots",
   "DisplayName": "Boots",
-  "IconPath": "ui/icons/default/icon_default.png",
+  "IconPath": "",
   "ItemKind": "Footwear",
   "Width": 2,
   "Height": 2,

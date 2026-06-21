@@ -57,7 +57,7 @@
               "__guid": "ba99e886-fc43-454b-80ba-fb54ef69f91e",
               "__enabled": true,
               "Flags": 0,
-              "DefaultScenePath": "scenes/world/TestScene.scene",
+              "DefaultScenePath": "Scenes\\Tests\\TestScene.scene",
               "DefaultWorldId": "Test",
               "LoadedWorld": {
                 "_type": "gameobject",
