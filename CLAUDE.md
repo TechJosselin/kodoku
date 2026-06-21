@@ -65,18 +65,29 @@ Asset paths in s&box are **case-insensitive** and relative to `Assets/`. Canonic
 
 | Folder | Content |
 |---|---|
-| `Assets/Data/Items/` | `ItemDefinition` assets (`.item` files) |
-| `Assets/UI/Icons/` | Per-item icons, organised by sub-category (`Default/`, `Medical/`, `Drinks/`, `Equipment/`) |
-| `Assets/UI/equipment/` | Loadout slot placeholder images (`slot_headwear.png`, etc.) |
-| `Assets/UI/Inventory/` | General inventory UI images |
-| `Assets/scenes/` | Scene files (`.scene`). Do not move — `.scene_c`/`.scene_d` files are compiled by s&box |
+| `Assets/Data/Items/` | `ItemDefinition` assets (`.item` files), organised by category |
+| `Assets/Models/Items/` | 3D models for items (`.vmdl`) — mirrors Data/Items structure |
+| `Assets/Prefabs/Items/` | s&box prefabs for items — mirrors Data/Items structure |
+| `Assets/UI/Game/Icons/Items/` | Per-item icons — mirrors Data/Items structure |
+| `Assets/UI/Game/Icons/System/` | System icons: `Default/Icon_default.png` (fallback), `Placeholders/` |
+| `Assets/UI/GameMenu/InventoryPage/Background/` | Inventory UI background textures |
+| `Assets/UI/GameMenu/InventoryPage/Icons/` | Loadout slot placeholder images (`slot_headwear.png`, etc.) |
+| `Assets/Scenes/` | Scene files (`.scene`). Do not move — `.scene_c`/`.scene_d` are compiled by s&box |
+
+**Item category structure** (identical across Data, Models, Prefabs, UI/Game/Icons/Items):
+`Equipment/{Armor,Backpacks,Clothing,Weapons}` · `Consumables/{Drinks,Food,Medical}` · `Tools` · `Keys` · `Quest` · `Resources` · `Debug`
+
+The folder describes **what the object is**, not its equipment slot:
+- Body armor → `Equipment/Armor/Chest/` · Backpack → `Equipment/Backpacks/` · Pistol → `Equipment/Weapons/Sidearms/`
+- A crowbar goes in `Tools/` even if it can deal damage
 
 Centralised path constants live in `KodokuLib`:
 - `KodokuItemAssetPaths` — one constant per item definition (e.g. `KodokuItemAssetPaths.Bandage`)
 - `KodokuUiAssetPaths` — one constant per loadout slot icon (e.g. `KodokuUiAssetPaths.SlotHeadwear`)
-- `ItemDefinition.DefaultIconPath` — fallback icon path used when an item has no specific icon
+- `ItemDefinition.DefaultIconPath` — fallback icon (`ui/game/icons/system/default/icon_default.png`)
 
 Always update these constants when moving asset files; do not hardcode paths outside `AssetPaths/`.
+See `Assets/Data/Items/README.md` for the full category reference and path examples.
 
 ## s.box Component Conventions
 
