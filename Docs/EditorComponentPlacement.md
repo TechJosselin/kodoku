@@ -60,11 +60,12 @@ La scène Kodoku est organisée pour séparer les responsabilités par GameObjec
 
 ---
 
-### UI / InteractionPrompt
+### UI / InteractionUI
 
 | Component | Obligatoire ? | Rôle | Notes |
 |-----------|:---:|-------|-------|
-| *(aucun dans le test minimal)* | — | GameObject réservé pour un prompt d'interaction manuel si besoin. | **World Interaction Prompt UI** est créé **automatiquement** par le bridge. Ne pas le placer manuellement pour éviter deux prompts superposés. |
+| **Screen Panel** | Oui (si HUD présent) | Contexte de rendu pour tout `PanelComponent` sur ce GO. | Sans `ScreenPanel`, le HUD reste invisible même si le composant est présent. Utiliser la même `PlayerCamera` que `GameMenuUI`. |
+| **World Interaction Prompt UI** | Non | HUD d'interaction affiché au-dessus de l'objet visé. | Le bridge cherche d'abord un `WorldInteractionHud` existant dans la scène (`Scene.GetAllComponents`). S'il trouve le composant ici, il l'adopte. Sinon il en crée un automatiquement sur le GO de `GameMenuUI` (qui a déjà un `ScreenPanel`). Placer les deux crée un doublon — choisir l'un ou l'autre. |
 
 ---
 
@@ -121,7 +122,7 @@ La scène Kodoku est organisée pour séparer les responsabilités par GameObjec
 | **Generic World Interaction Scanner** | Détecteur raycast générique bas niveau, réutilisable hors inventaire. | Le composant principal pour connecter l'inventaire joueur — utiliser le bridge à la place. |
 | **Player Inventory Interaction Bridge** | Le composant central à placer sur **Player Controller**. Connecte tout. | Un composant à placer sur Inventory ou sur les objets du monde. |
 | **Player Inventory Interactor** | Gère les actions runtime (ramassage, drop, équipement). À placer sur **Player Controller/Inventory**. | Un composant à placer directement sur Player Controller. |
-| **World Interaction Prompt UI** | Prompt UI de l'interaction monde. Créé **automatiquement** par le bridge. | Un composant à placer manuellement dans le test minimal. |
+| **World Interaction Prompt UI** | HUD d'interaction monde. Le bridge l'adopte s'il existe dans la scène, sinon le crée sur le GO de `GameMenuUI`. | Un composant qui peut exister en double — vérifier qu'il n'y en a qu'un seul dans la scène. Son GO **doit** avoir un `ScreenPanel`. |
 | **Inventory Bootstrapper Base** | Classe de base technique pour les bootstrappers. | Un composant à utiliser directement en test — utiliser **Debug Inventory Bootstrapper** à la place. |
 
 ---
@@ -154,7 +155,8 @@ La scène Kodoku est organisée pour séparer les responsabilités par GameObjec
 | Page Inventory vide | `InventoryComponent` non trouvé par `GameMenuUI` | Vérifier que `Player Controller/Inventory` contient **Player Inventory Component** et que le GameObject s'appelle exactement `Inventory`. |
 | Items debug absents | `Debug Inventory Bootstrapper` absent ou propriété `Inventory` non assignée | Vérifier `Debug Inventory Bootstrapper.Inventory` → doit pointer vers **Player Inventory Component**. |
 | Aucun prompt sur un item | Collider absent, `ViewCamera` non assigné ou `TraceDistance` trop court | Activer `LogRaycastDebug` et `LogResults` sur **Player Inventory Interaction Bridge**. |
-| Deux prompts superposés | `World Interaction Prompt UI` placé manuellement alors que le bridge en crée un automatiquement | Supprimer le prompt manuel de la scène pour le test minimal. |
+| HUD invisible (aucun prompt) | `ScreenPanel` absent sur le GO qui porte `WorldInteractionHud` | Ajouter `ScreenPanel` sur `UI/InteractionUI` (ou laisser le bridge créer le HUD sur `GameMenuUI` qui en a déjà un). |
+| Deux prompts superposés | `WorldInteractionHud` placé manuellement ET bridge en crée un second | Vérifier qu'il n'y a qu'un seul `WorldInteractionHud` dans la scène. Le bridge l'adopte s'il existe déjà. |
 | Item disparaît mais n'arrive pas dans l'inventaire | `Player Inventory Interactor` mal câblé ou `Inventory` non assigné | Vérifier le composant **Player Inventory Interactor** sur `Player Controller/Inventory`. |
 
 ---

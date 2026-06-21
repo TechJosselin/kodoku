@@ -13,16 +13,30 @@ public sealed class WorldItemComponent : Component, Component.ExecuteInEditor
 	[Property, Range( 1, 999 )] public int Quantity { get; set; } = 1;
 	[Property] public bool AutoNameGameObject { get; set; } = true;
 	[Property] public bool CreateDebugVisual { get; set; } = true;
+	[Property] public bool AutoFitColliderToModel { get; set; } = true;
+	[Property] public bool CreateColliderIfMissing { get; set; } = true;
+	[Property] public bool OverrideExistingCollider { get; set; } = false;
+	[Property] public float ColliderPadding { get; set; } = 2f;
+	[Property] public Vector3 FallbackColliderSize { get; set; } = new Vector3( 16f, 16f, 16f );
 
 	public ItemInstance Item { get; private set; }
+
+	const int MaxFitAttempts = 10;
+
+	bool _colliderFitted;
+	int _fitAttempts;
+	BoxCollider _ourCollider;
 
 	protected override void OnStart()
 	{
 		EnsureWorldItemSetup();
+		TryFitCollider();
 	}
 
 	protected override void OnUpdate()
 	{
+		TryFitColliderIfNeeded();
+
 		if ( Game.IsPlaying )
 			return;
 
@@ -42,6 +56,7 @@ public sealed class WorldItemComponent : Component, Component.ExecuteInEditor
 		Quantity = item?.Quantity ?? 1;
 		ApplyGameObjectName();
 		EnsureDebugVisual();
+		ResetColliderFit();
 	}
 
 	public void ConsumeWorldItem()
@@ -55,9 +70,6 @@ public sealed class WorldItemComponent : Component, Component.ExecuteInEditor
 	{
 		var gameObject = new GameObject( true, item?.DisplayName ?? "World Item" );
 		gameObject.WorldTransform = transform;
-
-		var collider = gameObject.Components.Create<SphereCollider>();
-		collider.Radius = 8f;
 
 		var worldItem = gameObject.Components.Create<WorldItemComponent>();
 		worldItem.SetExistingItem( item );
@@ -87,14 +99,22 @@ public sealed class WorldItemComponent : Component, Component.ExecuteInEditor
 
 		if ( Definition is null )
 		{
-			Item = null;
+			if ( Item is not null )
+			{
+				Item = null;
+				ResetColliderFit();
+			}
 			return;
 		}
 
 		if ( Item is not null && ReferenceEquals( Item.Definition, Definition ) && Item.Quantity == Quantity )
 			return;
 
+		var prevDef = Item?.Definition;
 		Item = new ItemInstance( Definition, Quantity );
+
+		if ( !ReferenceEquals( prevDef, Definition ) )
+			ResetColliderFit();
 	}
 
 	void ApplyGameObjectName()
@@ -125,6 +145,144 @@ public sealed class WorldItemComponent : Component, Component.ExecuteInEditor
 		}
 
 		renderer.Tint = GetDebugTint();
+	}
+
+	void TryFitColliderIfNeeded()
+	{
+		if ( _colliderFitted || _fitAttempts >= MaxFitAttempts )
+			return;
+
+		TryFitCollider();
+	}
+
+	void TryFitCollider()
+	{
+		_fitAttempts++;
+
+		// On the first attempt, resolve which collider we are working with.
+		// Subsequent retries skip this phase and reuse _ourCollider directly.
+		if ( _fitAttempts == 1 )
+		{
+			var existing = Components.Get<BoxCollider>();
+
+			// Respect a pre-existing collider we did not create when override is disabled.
+			if ( existing is not null && _ourCollider is null && !OverrideExistingCollider )
+			{
+				_colliderFitted = true;
+				return;
+			}
+
+			if ( existing is not null )
+			{
+				_ourCollider = existing;
+			}
+			else if ( CreateColliderIfMissing )
+			{
+				_ourCollider = Components.Create<BoxCollider>();
+				_ourCollider.Scale = FallbackColliderSize; // immediate fallback so raycast can hit the item
+			}
+			else
+			{
+				_colliderFitted = true;
+				return;
+			}
+
+			if ( !AutoFitColliderToModel )
+			{
+				_ourCollider.Scale = FallbackColliderSize;
+				_ourCollider.Center = Vector3.Zero;
+				_colliderFitted = true;
+				return;
+			}
+		}
+
+		if ( _ourCollider is null || !_ourCollider.IsValid() )
+		{
+			_colliderFitted = true;
+			return;
+		}
+
+		if ( TryComputeModelBounds( out var worldBounds ) )
+		{
+			ApplyBoundsToCollider( _ourCollider, worldBounds );
+			_colliderFitted = true;
+			return;
+		}
+
+		// Bounds not ready yet — retry next frame up to MaxFitAttempts.
+		// Fallback size is already applied; the item remains detectable during retries.
+		if ( _fitAttempts >= MaxFitAttempts )
+			_colliderFitted = true;
+	}
+
+	bool TryComputeModelBounds( out BBox worldBounds )
+	{
+		worldBounds = default;
+		var found = false;
+
+		foreach ( var renderer in Components.GetAll<ModelRenderer>( FindMode.EnabledInSelfAndDescendants ) )
+		{
+			if ( !renderer.IsValid() )
+				continue;
+
+			var b = renderer.Bounds;
+			if ( b.Size.LengthSquared < 0.001f )
+				continue;
+
+			worldBounds = found ? EncapsulateBBox( worldBounds, b ) : b;
+			found = true;
+		}
+
+		foreach ( var renderer in Components.GetAll<SkinnedModelRenderer>( FindMode.EnabledInSelfAndDescendants ) )
+		{
+			if ( !renderer.IsValid() )
+				continue;
+
+			var b = renderer.Bounds;
+			if ( b.Size.LengthSquared < 0.001f )
+				continue;
+
+			worldBounds = found ? EncapsulateBBox( worldBounds, b ) : b;
+			found = true;
+		}
+
+		return found;
+	}
+
+	void ApplyBoundsToCollider( BoxCollider collider, BBox worldBounds )
+	{
+		var worldScale = GameObject.WorldScale;
+		var safeScale = new Vector3(
+			Math.Abs( worldScale.x ) > 0.0001f ? worldScale.x : 1f,
+			Math.Abs( worldScale.y ) > 0.0001f ? worldScale.y : 1f,
+			Math.Abs( worldScale.z ) > 0.0001f ? worldScale.z : 1f
+		);
+
+		collider.Scale = (worldBounds.Size + Vector3.One * ColliderPadding) / safeScale;
+		collider.Center = WorldTransform.PointToLocal( worldBounds.Center );
+	}
+
+	void ResetColliderFit()
+	{
+		_colliderFitted = false;
+		_fitAttempts = 0;
+		// _ourCollider is kept: if we already own a collider it will be reused on next fit.
+	}
+
+	static BBox EncapsulateBBox( BBox a, BBox b )
+	{
+		return new BBox(
+			new Vector3(
+				Math.Min( a.Mins.x, b.Mins.x ),
+				Math.Min( a.Mins.y, b.Mins.y ),
+				Math.Min( a.Mins.z, b.Mins.z )
+			),
+			new Vector3(
+				Math.Max( a.Maxs.x, b.Maxs.x ),
+				Math.Max( a.Maxs.y, b.Maxs.y ),
+				Math.Max( a.Maxs.z, b.Maxs.z )
+			)
+		);
 	}
 
 	int GetClampedQuantity()
