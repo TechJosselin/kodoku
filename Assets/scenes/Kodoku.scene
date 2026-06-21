@@ -675,7 +675,33 @@
                   "NetworkOrphaned": 0,
                   "NetworkTransmit": true,
                   "OwnerTransfer": 1,
-                  "Components": [],
+                  "Components": [
+                    {
+                      "__type": "Kodoku.Glue.WorldInventoryInteractionBridge",
+                      "__guid": "04652659-3118-4deb-a1bf-3547c5ac7b15",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "HandleInteractInput": true,
+                      "HudAnchorHeight": 36,
+                      "InteractAction": "Use",
+                      "InteractKey": "E",
+                      "LogRaycastDebug": false,
+                      "LogResults": true,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "TraceDistance": 180,
+                      "ViewCamera": {
+                        "_type": "component",
+                        "component_id": "f836c942-2c5d-46c3-884e-db1bfd15a15a",
+                        "go": "70570569-6083-4b74-ad16-261f9c5b8a7d",
+                        "component_type": "CameraComponent"
+                      }
+                    }
+                  ],
                   "Children": []
                 },
                 {
@@ -810,7 +836,7 @@
       "__guid": "4b23a5a7-7717-4053-8d28-ec5337a37cc1",
       "__version": 2,
       "Flags": 0,
-      "Name": "UI",
+      "Name": "_UI",
       "Position": "0,0,100",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
@@ -901,7 +927,7 @@
           "__guid": "84053c38-a42c-4ebc-8aa4-dcda5a27a25c",
           "__version": 2,
           "Flags": 0,
-          "Name": "InteractionPrompt",
+          "Name": "InteractionUI",
           "Position": "0,0,0",
           "Rotation": "0,0,0,1",
           "Scale": "1,1,1",
@@ -926,24 +952,6 @@
               "OnComponentUpdate": null
             }
           ],
-          "Children": []
-        },
-        {
-          "__guid": "217a8aaf-4bf2-4480-bfa7-7e0b34219e52",
-          "__version": 2,
-          "Flags": 0,
-          "Name": "MenuUI",
-          "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkFlags": 0,
-          "NetworkOrphaned": 0,
-          "NetworkTransmit": true,
-          "OwnerTransfer": 1,
-          "Components": [],
           "Children": []
         }
       ]
@@ -987,14 +995,14 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.SelectionSetsSystem": {
-        "Data": {
-          "SelectionSets": []
-        }
-      },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
           "$blob": "a709f6f1-16a0-47d1-9c54-ebacea1aef49"
+        }
+      },
+      "Sandbox.SelectionSetsSystem": {
+        "Data": {
+          "SelectionSets": []
         }
       }
     }

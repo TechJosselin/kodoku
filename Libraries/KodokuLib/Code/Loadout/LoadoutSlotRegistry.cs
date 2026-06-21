@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Kodoku.Lib.AssetPaths;
 using Kodoku.Lib.Items;
 
 namespace Kodoku.Lib.Loadout;
@@ -14,7 +15,7 @@ public static class LoadoutSlotRegistry
 			Slot                 = InventoryEquipmentSlot.Headwear,
 			DisplayName          = "Headwear",
 			AcceptedKinds        = new[] { InventoryItemKind.Headwear },
-			DefaultEmptyIconPath = "ui/equipment/slot_headwear.png",
+			DefaultEmptyIconPath = KodokuUiAssetPaths.SlotHeadwear,
 			IconVariant          = "md",
 		},
 		[InventoryEquipmentSlot.GasMask] = new()
@@ -22,7 +23,7 @@ public static class LoadoutSlotRegistry
 			Slot                 = InventoryEquipmentSlot.GasMask,
 			DisplayName          = "Gas Mask",
 			AcceptedKinds        = new[] { InventoryItemKind.GasMask },
-			DefaultEmptyIconPath = "ui/equipment/slot_gasmask.png",
+			DefaultEmptyIconPath = KodokuUiAssetPaths.SlotFaceCover,
 			IconVariant          = "md",
 		},
 		[InventoryEquipmentSlot.BodyArmor] = new()
@@ -30,7 +31,7 @@ public static class LoadoutSlotRegistry
 			Slot                 = InventoryEquipmentSlot.BodyArmor,
 			DisplayName          = "Body Armor",
 			AcceptedKinds        = new[] { InventoryItemKind.BodyArmor },
-			DefaultEmptyIconPath = "ui/equipment/slot_bodyarmor.png",
+			DefaultEmptyIconPath = KodokuUiAssetPaths.SlotBodyArmor,
 			IconVariant          = "lg",
 		},
 		[InventoryEquipmentSlot.TacticalRig] = new()
@@ -38,7 +39,7 @@ public static class LoadoutSlotRegistry
 			Slot                 = InventoryEquipmentSlot.TacticalRig,
 			DisplayName          = "Tactical Rig",
 			AcceptedKinds        = new[] { InventoryItemKind.TacticalRig },
-			DefaultEmptyIconPath = "ui/equipment/slot_tacticalrig.png",
+			DefaultEmptyIconPath = KodokuUiAssetPaths.SlotTacticalRig,
 			IconVariant          = "lg",
 		},
 		[InventoryEquipmentSlot.Backpack] = new()
@@ -46,7 +47,7 @@ public static class LoadoutSlotRegistry
 			Slot                 = InventoryEquipmentSlot.Backpack,
 			DisplayName          = "Backpack",
 			AcceptedKinds        = new[] { InventoryItemKind.Backpack },
-			DefaultEmptyIconPath = "ui/equipment/slot_backpack.png",
+			DefaultEmptyIconPath = KodokuUiAssetPaths.SlotBackpack,
 			IconVariant          = "lg",
 		},
 		[InventoryEquipmentSlot.Pants] = new()
@@ -54,7 +55,7 @@ public static class LoadoutSlotRegistry
 			Slot                 = InventoryEquipmentSlot.Pants,
 			DisplayName          = "Pants",
 			AcceptedKinds        = new[] { InventoryItemKind.Pants },
-			DefaultEmptyIconPath = "ui/equipment/slot_pants.png",
+			DefaultEmptyIconPath = KodokuUiAssetPaths.SlotPants,
 			IconVariant          = "md",
 		},
 		[InventoryEquipmentSlot.Footwear] = new()
@@ -62,7 +63,7 @@ public static class LoadoutSlotRegistry
 			Slot                 = InventoryEquipmentSlot.Footwear,
 			DisplayName          = "Footwear",
 			AcceptedKinds        = new[] { InventoryItemKind.Footwear },
-			DefaultEmptyIconPath = "ui/equipment/slot_footwear.png",
+			DefaultEmptyIconPath = KodokuUiAssetPaths.SlotFootwear,
 			IconVariant          = "md",
 		},
 		[InventoryEquipmentSlot.OnSling] = new()
@@ -70,7 +71,7 @@ public static class LoadoutSlotRegistry
 			Slot                 = InventoryEquipmentSlot.OnSling,
 			DisplayName          = "On Sling",
 			AcceptedKinds        = new[] { InventoryItemKind.Weapon },
-			DefaultEmptyIconPath = "ui/equipment/slot_weapon.png",
+			DefaultEmptyIconPath = KodokuUiAssetPaths.SlotWeapon,
 			IconVariant          = "wide",
 		},
 		[InventoryEquipmentSlot.OnBack] = new()
@@ -78,7 +79,7 @@ public static class LoadoutSlotRegistry
 			Slot                 = InventoryEquipmentSlot.OnBack,
 			DisplayName          = "On Back",
 			AcceptedKinds        = new[] { InventoryItemKind.Weapon },
-			DefaultEmptyIconPath = "ui/equipment/slot_weapon.png",
+			DefaultEmptyIconPath = KodokuUiAssetPaths.SlotWeapon,
 			IconVariant          = "wide",
 		},
 	};

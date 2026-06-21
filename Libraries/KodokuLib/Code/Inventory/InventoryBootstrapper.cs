@@ -2,8 +2,8 @@ using Sandbox;
 
 namespace Kodoku.Lib.Inventory;
 
-[Title( "Inventory Bootstrapper" )]
-[Category( "Inventory" )]
+[Title( "Inventory Bootstrapper Base" )]
+[Category( "Kodoku/Inventory" )]
 [Icon( "inventory_2" )]
 public class InventoryBootstrapper : Component
 {

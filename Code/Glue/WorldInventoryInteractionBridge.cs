@@ -5,8 +5,8 @@ using Sandbox;
 
 namespace Kodoku.Glue;
 
-[Title( "World Inventory Interaction Bridge" )]
-[Category( "Interaction" )]
+[Title( "Player Inventory Interaction Bridge" )]
+[Category( "Kodoku/Interaction" )]
 [Icon( "touch_app" )]
 public sealed class WorldInventoryInteractionBridge : Component
 {
@@ -106,8 +106,13 @@ public sealed class WorldInventoryInteractionBridge : Component
 		if ( InteractionHud is null || !InteractionHud.IsValid() )
 			InteractionHud = Scene.GetAllComponents<WorldInteractionHud>().FirstOrDefault();
 
-		if ( (InteractionHud is null || !InteractionHud.IsValid()) && MenuUi is not null && MenuUi.IsValid() )
-			InteractionHud = MenuUi.GameObject.Components.Create<WorldInteractionHud>();
+		if ( InteractionHud is null || !InteractionHud.IsValid() )
+		{
+			var hudParent = MenuUi is not null && MenuUi.IsValid()
+				? MenuUi.GameObject
+				: GameObject;
+			InteractionHud = hudParent.Components.Create<WorldInteractionHud>();
+		}
 
 		return true;
 	}

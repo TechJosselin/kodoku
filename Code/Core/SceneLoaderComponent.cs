@@ -4,6 +4,9 @@ using Kodoku.World;
 
 namespace Kodoku.Core;
 
+[Title( "Scene Loader" )]
+[Category( "Kodoku/Core" )]
+[Icon( "map" )]
 public sealed class SceneLoaderComponent : Component
 {
 	[Property] public GameObject LoadedWorld { get; set; }

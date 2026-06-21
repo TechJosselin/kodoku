@@ -2,8 +2,8 @@ using Sandbox;
 
 namespace Kodoku.Lib.Interaction;
 
-[Title( "World Interaction" )]
-[Category( "Interaction" )]
+[Title( "Generic World Interaction Scanner" )]
+[Category( "Kodoku/Interaction" )]
 [Icon( "touch_app" )]
 public sealed class WorldInteractionComponent : Component
 {

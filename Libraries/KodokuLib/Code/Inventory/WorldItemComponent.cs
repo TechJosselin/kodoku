@@ -5,7 +5,7 @@ using Kodoku.Lib.Items;
 namespace Kodoku.Lib.Inventory;
 
 [Title( "World Item" )]
-[Category( "Inventory" )]
+[Category( "Kodoku/Inventory" )]
 [Icon( "deployed_code" )]
 public sealed class WorldItemComponent : Component, Component.ExecuteInEditor
 {
@@ -55,6 +55,9 @@ public sealed class WorldItemComponent : Component, Component.ExecuteInEditor
 	{
 		var gameObject = new GameObject( true, item?.DisplayName ?? "World Item" );
 		gameObject.WorldTransform = transform;
+
+		var collider = gameObject.Components.Create<SphereCollider>();
+		collider.Radius = 8f;
 
 		var worldItem = gameObject.Components.Create<WorldItemComponent>();
 		worldItem.SetExistingItem( item );

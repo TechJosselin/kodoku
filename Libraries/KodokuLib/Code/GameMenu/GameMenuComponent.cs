@@ -2,8 +2,8 @@ using Sandbox;
 
 namespace Kodoku.Lib.GameMenu;
 
-[Title( "Game Menu" )]
-[Category( "Kodoku" )]
+[Title( "Game Menu State Component" )]
+[Category( "Kodoku/UI" )]
 [Icon( "view_sidebar" )]
 public sealed class GameMenuComponent : Component
 {

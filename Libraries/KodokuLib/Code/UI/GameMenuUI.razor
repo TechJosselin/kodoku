@@ -4,6 +4,9 @@
 @using Kodoku.Lib.UI.Pages
 @inherits PanelComponent
 @namespace Kodoku.Lib.UI
+@attribute [Title( "Game Menu UI" )]
+@attribute [Category( "Kodoku/UI" )]
+@attribute [Icon( "menu_open" )]
 
 <root class="@RootClass">
 	<GameMenuSidebar Tabs="@GameMenuState.DefaultTabs" ActiveTab="@MenuState.ActiveTab" OnTabSelected="@SetActiveTab" />

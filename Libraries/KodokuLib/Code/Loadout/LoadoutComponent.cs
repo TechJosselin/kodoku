@@ -5,8 +5,8 @@ using Kodoku.Lib.Inventory;
 
 namespace Kodoku.Lib.Loadout;
 
-[Title( "Loadout Component" )]
-[Category( "Inventory" )]
+[Title( "Player Loadout Component" )]
+[Category( "Kodoku/Inventory" )]
 [Icon( "checkroom" )]
 public sealed class LoadoutComponent : Component
 {

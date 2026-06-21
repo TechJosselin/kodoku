@@ -1,30 +1,31 @@
 using Sandbox;
+using Kodoku.Lib.AssetPaths;
 using Kodoku.Lib.Inventory;
 using Kodoku.Lib.Items;
 
 namespace Kodoku.Glue;
 
 [Title( "Debug Inventory Bootstrapper" )]
-[Category( "Inventory/Debug" )]
+[Category( "Kodoku/Debug" )]
 [Icon( "bug_report" )]
 public sealed class DebugInventoryBootstrapper : InventoryBootstrapper, IInventoryDebugActions
 {
-	const string DefaultBandageDefinitionPath = "demo/items/bandage.item";
-	const string DefaultWaterDefinitionPath = "demo/items/water.item";
-	const string DefaultSmallBackpackDefinitionPath = "demo/items/small_backpack.item";
+	const string DefaultBandageDefinitionPath      = KodokuItemAssetPaths.DemoBandage;
+	const string DefaultWaterDefinitionPath        = KodokuItemAssetPaths.DemoWater;
+	const string DefaultSmallBackpackDefinitionPath = KodokuItemAssetPaths.DemoSmallBackpack;
 
 	static readonly InventoryDebugItemOption[] DebugGiveItems =
 	{
-		new( "Assault Rifle",  "demo/items/assault_rifle.item" ),
-		new( "Balaclava",      "demo/items/balaclava.item" ),
+		new( "Assault Rifle",  KodokuItemAssetPaths.DemoAssaultRifle ),
+		new( "Balaclava",      KodokuItemAssetPaths.DemoBalaclava ),
 		new( "Bandage",        DefaultBandageDefinitionPath ),
-		new( "Body Armor",     "demo/items/body_armor.item" ),
-		new( "Boots",          "demo/items/boots.item" ),
-		new( "Cargo Pants",    "demo/items/cargo_pants.item" ),
-		new( "Helmet",         "demo/items/helmet.item" ),
-		new( "Pistol",         "demo/items/pistol.item" ),
+		new( "Body Armor",     KodokuItemAssetPaths.DemoBodyArmor ),
+		new( "Boots",          KodokuItemAssetPaths.DemoBoots ),
+		new( "Cargo Pants",    KodokuItemAssetPaths.DemoCargoPants ),
+		new( "Helmet",         KodokuItemAssetPaths.DemoHelmet ),
+		new( "Pistol",         KodokuItemAssetPaths.DemoPistol ),
 		new( "Small Backpack", DefaultSmallBackpackDefinitionPath ),
-		new( "Tactical Rig",   "demo/items/tactical_rig.item" ),
+		new( "Tactical Rig",   KodokuItemAssetPaths.DemoTacticalRig ),
 		new( "Water Bottle",   DefaultWaterDefinitionPath ),
 	};
 

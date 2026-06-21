@@ -1,6 +1,9 @@
 @using Kodoku.Lib.Interaction
 @inherits PanelComponent
 @namespace Kodoku.Lib.UI
+@attribute [Title( "World Interaction Prompt UI" )]
+@attribute [Category( "Kodoku/UI" )]
+@attribute [Icon( "visibility" )]
 
 <root class="@RootClass">
 	@if ( IsVisible && Actions.Count > 0 )

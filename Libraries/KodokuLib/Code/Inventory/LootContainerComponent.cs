@@ -12,7 +12,7 @@ public sealed class LootContainerInitialItem
 }
 
 [Title( "Loot Container" )]
-[Category( "Inventory" )]
+[Category( "Kodoku/Inventory" )]
 [Icon( "inventory" )]
 public sealed class LootContainerComponent : Component, Component.ExecuteInEditor
 {

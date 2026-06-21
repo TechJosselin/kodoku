@@ -3,8 +3,8 @@ using Kodoku.Lib.Items;
 
 namespace Kodoku.Lib.Inventory;
 
-[Title( "Inventory Interactor" )]
-[Category( "Inventory" )]
+[Title( "Player Inventory Interactor" )]
+[Category( "Kodoku/Inventory" )]
 [Icon( "touch_app" )]
 public sealed class InventoryPlayerInteractionComponent : Component
 {
