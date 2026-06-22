@@ -16,19 +16,19 @@ public sealed class DebugInventoryBootstrapper : InventoryBootstrapper, IInvento
 
 	static readonly InventoryDebugItemOption[] DebugGiveItems =
 	{
-		new( "Assault Rifle",  KodokuItemAssetPaths.AssaultRifle ),
-		new( "Balaclava",      KodokuItemAssetPaths.Balaclava ),
-		new( "Bandage",        DefaultBandageDefinitionPath ),
-		new( "Body Armor",     KodokuItemAssetPaths.BodyArmor ),
-		new( "Boots",          KodokuItemAssetPaths.Boots ),
-		new( "Cargo Pants",    KodokuItemAssetPaths.CargoPants ),
-		new( "Helmet",         KodokuItemAssetPaths.Helmet ),
-		new( "Pistol",         KodokuItemAssetPaths.Pistol ),
-		new( "Raider Backpack", KodokuItemAssetPaths.RaiderBackpack ),
-		new( "Shotgun",         KodokuItemAssetPaths.Shotgun ),
-		new( "Small Backpack", DefaultSmallBackpackDefinitionPath ),
-		new( "Tactical Rig",   KodokuItemAssetPaths.TacticalRig ),
-		new( "Water Bottle",   DefaultWaterDefinitionPath ),
+		new( "Assault Rifle",   KodokuItemAssetPaths.AssaultRifle,        "Weapons" ),
+		new( "Pistol",          KodokuItemAssetPaths.Pistol,              "Weapons" ),
+		new( "Shotgun",         KodokuItemAssetPaths.Shotgun,             "Weapons" ),
+		new( "Body Armor",      KodokuItemAssetPaths.BodyArmor,           "Armor" ),
+		new( "Helmet",          KodokuItemAssetPaths.Helmet,              "Armor" ),
+		new( "Raider Backpack", KodokuItemAssetPaths.RaiderBackpack,      "Backpacks" ),
+		new( "Small Backpack",  DefaultSmallBackpackDefinitionPath,        "Backpacks" ),
+		new( "Balaclava",       KodokuItemAssetPaths.Balaclava,           "Clothing" ),
+		new( "Boots",           KodokuItemAssetPaths.Boots,               "Clothing" ),
+		new( "Cargo Pants",     KodokuItemAssetPaths.CargoPants,          "Clothing" ),
+		new( "Tactical Rig",    KodokuItemAssetPaths.TacticalRig,         "Clothing" ),
+		new( "Bandage",         DefaultBandageDefinitionPath,             "Medical" ),
+		new( "Water Bottle",    DefaultWaterDefinitionPath,               "Consumables" ),
 	};
 
 	public static IReadOnlyList<InventoryDebugItemOption> DefaultDebugGiveItemOptions => DebugGiveItems;

@@ -60,7 +60,7 @@
 			</div>
 
 			<div class="inventory-page-panel CenterPanel equipment-panel" @ref="CenterPanel">
-				<div class="@GetWeatherPanelClasses()"></div>
+				<div class="equipment-weather-panel"></div>
 				<div class="equipment-zone">
 					@foreach ( var slot in EquipmentSlots )
 					{
@@ -128,42 +128,7 @@
 		</div>
 		<div class="inventory-page-panel HotbarPanel hotbar-panel" @ref="HotbarPanel"></div>
 
-		@if ( EnableDebugMenu && DebugMenuOpen )
-		{
-			<div class="debug-menu">
-				<div class="debug-menu-title">Give Items</div>
-				<div class="debug-menu-actions debug-menu-actions--items">
-					@foreach ( var debugItem in GetDebugGiveItems() )
-					{
-						var itemOption = debugItem;
-						<button onclick=@( () => AddDebugItem( itemOption ) )>Give @itemOption.DisplayName</button>
-					}
-				</div>
-				<div class="debug-menu-title">World</div>
-				<div class="debug-menu-actions">
-					<button onclick=@SpawnBandageWorldItem>Spawn Bandage</button>
-					<button onclick=@SpawnWaterWorldItem>Spawn Water</button>
-					<button onclick=@SpawnSmallBackpackWorldItem>Spawn Bag</button>
-					<button onclick=@PickupNearestWorldItem>Pickup Near</button>
-				</div>
-				<div class="debug-menu-title">Weather</div>
-				<div class="debug-menu-actions">
-					<button class="@GetWeatherDebugToggleClass()" onclick=@ToggleWeatherRepair>
-						<span class="debug-checkbox-mark"></span>
-						<span>Repair Weather</span>
-					</button>
-				</div>
-				@if ( Interactor?.OpenedLootContainer is not null )
-				{
-					<div class="debug-menu-title">Loot</div>
-					<div class="debug-menu-actions">
-						<button onclick=@CloseLootContainer>Close Loot</button>
-					</div>
-				}
-			</div>
-		}
-
-		@if ( ContextMenuOpen && GetContextItem() is { } contextItem )
+@if ( ContextMenuOpen && GetContextItem() is { } contextItem )
 		{
 			<div class="item-context-menu" style="@GetContextMenuStyle()">
 				<div class="context-menu-title">@contextItem.DisplayName</div>
@@ -272,9 +237,6 @@
 
 	[Parameter] public InventoryComponent Inventory { get; set; }
 	[Parameter] public InventoryPlayerInteractionComponent Interactor { get; set; }
-	[Parameter] public IInventoryDebugActions DebugProvider { get; set; }
-	[Parameter] public bool EnableDebugMenu { get; set; } = true;
-	[Parameter] public string DebugMenuKey { get; set; } = ",";
 	[Parameter] public string RotateKey { get; set; } = "R";
 	[Parameter] public string SilhouetteIconPath { get; set; } = "";
 
@@ -289,8 +251,6 @@
 	int HoveredX { get; set; } = -1;
 	int HoveredY { get; set; } = -1;
 	bool Rotated { get; set; }
-	bool DebugMenuOpen { get; set; }
-	bool WeatherPanelRepaired { get; set; }
 	bool ContextMenuOpen { get; set; }
 	float ContextMenuX { get; set; }
 	float ContextMenuY { get; set; }
@@ -321,12 +281,10 @@
 	{
 		Inventory?.EnsureInitialized();
 		ValidateStoragePopup();
-		UpdateDebugMenuInput();
 		UpdateRotationInput();
 
 		var hash = Inventory?.GetHashCode() ?? 0;
 		hash = (hash * 397) ^ (Interactor?.GetHashCode() ?? 0);
-		hash = (hash * 397) ^ (DebugProvider?.GetHashCode() ?? 0);
 		hash = (hash * 397) ^ IsOpen.GetHashCode();
 		hash = (hash * 397) ^ (WorldPromptText?.GetHashCode() ?? 0);
 		hash = (hash * 397) ^ (LeftPanel is not null).GetHashCode();
@@ -338,8 +296,6 @@
 		hash = (hash * 397) ^ HoveredX;
 		hash = (hash * 397) ^ HoveredY;
 		hash = (hash * 397) ^ Rotated.GetHashCode();
-		hash = (hash * 397) ^ DebugMenuOpen.GetHashCode();
-		hash = (hash * 397) ^ WeatherPanelRepaired.GetHashCode();
 		hash = (hash * 397) ^ ContextMenuOpen.GetHashCode();
 		hash = (hash * 397) ^ SlotContextOpen.GetHashCode();
 		hash = (hash * 397) ^ (SplitHeldItem?.InstanceId?.GetHashCode() ?? 0);
@@ -367,37 +323,6 @@
 		return hash;
 	}
 
-	void UpdateDebugMenuInput()
-	{
-		if ( !EnableDebugMenu )
-		{
-			DebugMenuOpen = false;
-			return;
-		}
-
-		if ( IsDebugMenuKeyPressed() )
-			ToggleDebugMenu();
-	}
-
-	bool IsDebugMenuKeyPressed()
-	{
-		if ( !string.IsNullOrWhiteSpace( DebugMenuKey ) && Input.Keyboard.Pressed( DebugMenuKey ) )
-			return true;
-
-		return DebugMenuKey == "," && Input.Keyboard.Pressed( "comma" );
-	}
-
-	void ToggleDebugMenu()
-	{
-		DebugMenuOpen = !DebugMenuOpen;
-
-		if ( DebugMenuOpen )
-		{
-			CloseContextMenu();
-			CloseSlotContext();
-		}
-	}
-
 	void UpdateRotationInput()
 	{
 		if ( string.IsNullOrWhiteSpace( HeldItemId ) || !IsRotationKeyPressed() )
@@ -412,64 +337,6 @@
 			return true;
 
 		return RotateKey == "R" && Input.Keyboard.Pressed( "r" );
-	}
-
-	IReadOnlyList<InventoryDebugItemOption> GetDebugGiveItems()
-	{
-		return DebugProvider?.GetDebugItems() ?? Array.Empty<InventoryDebugItemOption>();
-	}
-
-	void AddDebugItem( InventoryDebugItemOption option )
-	{
-		Run( DebugProvider?.AddItem( option ) ?? InventoryActionResult.Fail( "No debug provider." ) );
-	}
-
-	void AddSmall()
-	{
-		Run( DebugProvider?.AddSmall() ?? InventoryActionResult.Fail( "No debug provider." ) );
-	}
-
-	void AddLong()
-	{
-		Run( DebugProvider?.AddLong() ?? InventoryActionResult.Fail( "No debug provider." ) );
-	}
-
-	void AddBackpack()
-	{
-		Run( DebugProvider?.AddBackpack() ?? InventoryActionResult.Fail( "No debug provider." ) );
-	}
-
-	void SpawnBandageWorldItem()
-	{
-		Run( DebugProvider?.SpawnBandage() ?? InventoryActionResult.Fail( "No debug provider." ) );
-	}
-
-	void SpawnWaterWorldItem()
-	{
-		Run( DebugProvider?.SpawnWater() ?? InventoryActionResult.Fail( "No debug provider." ) );
-	}
-
-	void SpawnSmallBackpackWorldItem()
-	{
-		Run( DebugProvider?.SpawnSmallBackpack() ?? InventoryActionResult.Fail( "No debug provider." ) );
-	}
-
-	void PickupNearestWorldItem()
-	{
-		Run( Interactor?.RequestPickupNearestWorldItem()
-			?? Inventory?.TryPickupNearestWorldItem()
-			?? InventoryActionResult.Fail( "No inventory." ) );
-	}
-
-	void CloseLootContainer()
-	{
-		Run( Interactor?.RequestCloseLootContainer() ?? InventoryActionResult.Fail( "No interactor." ) );
-	}
-
-	void ToggleWeatherRepair()
-	{
-		WeatherPanelRepaired = !WeatherPanelRepaired;
-		StateHasChanged();
 	}
 
 	static int HashContainer( int hash, InventoryContainer container )
@@ -497,6 +364,13 @@
 
 		if ( Inventory.Pockets is null || Inventory.ActiveContainers.Count == 0 )
 			Inventory.EnsureInitialized();
+
+		if ( HeldSlot.HasValue )
+		{
+			var draggedStorage = Inventory.GetStorageContainer( HeldSlot.Value );
+			if ( draggedStorage is not null )
+				return Inventory.ActiveContainers.Where( c => !ReferenceEquals( c, draggedStorage ) ).ToArray();
+		}
 
 		return Inventory.ActiveContainers.ToArray();
 	}
@@ -1216,20 +1090,6 @@
 		return $"equipment-slot-label-zone {GetSlotLabelLayoutClass( slot )}";
 	}
 
-	string GetWeatherPanelClasses()
-	{
-		return WeatherPanelRepaired
-			? "equipment-weather-panel repaired"
-			: "equipment-weather-panel";
-	}
-
-	string GetWeatherDebugToggleClass()
-	{
-		return WeatherPanelRepaired
-			? "debug-menu-toggle checked"
-			: "debug-menu-toggle";
-	}
-
 	static string GetSlotLayoutClass( InventoryEquipmentSlot slot )
 	{
 		return slot switch
@@ -1317,7 +1177,6 @@
 			CloseContextMenu();
 			CloseSlotContext();
 			CloseStoragePopup();
-			DebugMenuOpen = false;
 		}
 
 		StateHasChanged();

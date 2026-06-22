@@ -4,7 +4,7 @@
   "Description": "",
   "IconPath": "ui/game/icons/items/equipment/backpacks/raider_backpack.png",
   "ModelPath": "models/items/equipment/backpacks/raider_backpack.vmdl",
-  "PrefabPath": "prefabs/items/equipment/backpacks/raider_backpack.prefab",
+  "PrefabPath": "",
   "ItemKind": "Backpack",
   "Width": 2,
   "Height": 2,
@@ -12,6 +12,6 @@
   "IsStackable": false,
   "MaxStack": 1,
   "Weight": 1.0,
-  "StorageWidth": 8,
+  "StorageWidth": 6,
   "StorageHeight": 16
 }

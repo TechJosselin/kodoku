@@ -1,0 +1,257 @@
+
+.debug-menu-ui
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 200;
+	pointer-events: none;
+}
+
+.debug-menu-ui.open
+{
+	pointer-events: all;
+}
+
+.debug-overlay-bg
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba( 0, 0, 0, 0.42 );
+	pointer-events: all;
+}
+
+.debug-panel
+{
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width: 400px;
+	display: flex;
+	flex-direction: column;
+	background-color: rgba( 10, 12, 10, 0.97 );
+	border-left: 1px solid rgba( 255, 255, 255, 0.07 );
+	pointer-events: all;
+	z-index: 1;
+}
+
+.debug-panel-header
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	flex-shrink: 0;
+	padding: 12px 16px;
+	border-bottom: 1px solid rgba( 255, 255, 255, 0.07 );
+}
+
+.debug-panel-title
+{
+	color: rgba( 214, 204, 176, 0.9 );
+	font-family: Poppins;
+	font-size: 11px;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+}
+
+.debug-panel-close
+{
+	width: 26px;
+	height: 26px;
+	padding: 0;
+	background-color: rgba( 255, 255, 255, 0.06 );
+	color: rgba( 236, 228, 204, 0.8 );
+	font-family: Poppins;
+	font-size: 14px;
+	font-weight: 700;
+	cursor: pointer;
+}
+
+.debug-panel-close:hover
+{
+	background-color: rgba( 255, 255, 255, 0.13 );
+}
+
+.debug-search-row
+{
+	flex-shrink: 0;
+	padding: 10px 16px;
+	border-bottom: 1px solid rgba( 255, 255, 255, 0.06 );
+}
+
+.debug-search-input
+{
+	width: 100%;
+	min-height: 36px;
+	padding: 6px 12px;
+	background-color: rgba( 0, 0, 0, 0.38 );
+	border: 1px solid rgba( 255, 255, 255, 0.11 );
+	color: rgba( 236, 228, 204, 0.92 );
+	font-family: Poppins;
+	font-size: 12px;
+	caret-color: rgba( 236, 228, 204, 0.8 );
+}
+
+.debug-search-input:focus
+{
+	border-color: rgba( 255, 255, 255, 0.22 );
+}
+
+.debug-category-row
+{
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 5px;
+	padding: 8px 16px;
+	border-bottom: 1px solid rgba( 255, 255, 255, 0.06 );
+}
+
+.debug-category-btn
+{
+	padding: 3px 10px;
+	min-height: 24px;
+	background-color: rgba( 255, 255, 255, 0.05 );
+	border: 1px solid rgba( 255, 255, 255, 0.09 );
+	color: rgba( 200, 192, 168, 0.7 );
+	font-family: Poppins;
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+.debug-category-btn:hover
+{
+	background-color: rgba( 255, 255, 255, 0.1 );
+	color: rgba( 236, 228, 204, 0.9 );
+}
+
+.debug-category-btn.active
+{
+	background-color: rgba( 154, 189, 118, 0.18 );
+	border-color: rgba( 154, 189, 118, 0.48 );
+	color: rgba( 200, 235, 160, 0.92 );
+}
+
+.debug-items-scroll
+{
+	flex-grow: 1;
+	flex-shrink: 1;
+	min-height: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	padding: 6px 8px;
+	overflow: scroll;
+}
+
+.debug-item-row
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 36px;
+	padding: 6px 12px;
+	background-color: rgba( 255, 255, 255, 0.03 );
+	color: rgba( 236, 228, 204, 0.88 );
+	font-family: Poppins;
+	font-size: 12px;
+	font-weight: 500;
+	text-align: left;
+	cursor: pointer;
+	gap: 10px;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	transform: none;
+}
+
+.debug-item-row:hover
+{
+	background-color: rgba( 255, 255, 255, 0.09 );
+	transform: none;
+	box-shadow: none;
+}
+
+.debug-item-name
+{
+	flex-grow: 1;
+	min-width: 0;
+}
+
+.debug-item-tag
+{
+	flex-shrink: 0;
+	padding: 2px 7px;
+	background-color: rgba( 255, 255, 255, 0.07 );
+	color: rgba( 200, 192, 168, 0.58 );
+	font-size: 9px;
+	font-weight: 800;
+	text-transform: uppercase;
+}
+
+.debug-empty
+{
+	padding: 20px;
+	color: rgba( 200, 192, 168, 0.38 );
+	font-family: Poppins;
+	font-size: 11px;
+	text-align: center;
+}
+
+.debug-section-label
+{
+	flex-shrink: 0;
+	padding: 8px 16px 4px;
+	color: rgba( 214, 204, 176, 0.45 );
+	font-family: Poppins;
+	font-size: 9px;
+	font-weight: 800;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	border-top: 1px solid rgba( 255, 255, 255, 0.06 );
+}
+
+.debug-world-actions
+{
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 5px;
+	padding: 6px 16px 16px;
+}
+
+.debug-world-actions button
+{
+	padding: 5px 12px;
+	min-height: 28px;
+	background-color: rgba( 255, 255, 255, 0.06 );
+	color: rgba( 236, 228, 204, 0.82 );
+	font-family: Poppins;
+	font-size: 11px;
+	font-weight: 600;
+	cursor: pointer;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	transform: none;
+}
+
+.debug-world-actions button:hover
+{
+	background-color: rgba( 255, 255, 255, 0.13 );
+	transform: none;
+	box-shadow: none;
+}

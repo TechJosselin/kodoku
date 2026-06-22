@@ -136,8 +136,15 @@ public sealed class WorldItemComponent : Component, Component.ExecuteInEditor
 		if ( !renderer.IsValid() )
 		{
 			renderer = Components.Create<ModelRenderer>();
-			renderer.Model = Model.Sphere;
 
+			var model = TryLoadItemModel();
+			if ( model is not null )
+			{
+				renderer.Model = model;
+				return;
+			}
+
+			renderer.Model = Model.Sphere;
 			var itemWidth = Definition?.GetWidth( false ) ?? 1;
 			var itemHeight = Definition?.GetHeight( false ) ?? 1;
 			var size = Definition?.ItemKind == InventoryItemKind.Backpack ? 0.55f : 0.28f;
@@ -145,6 +152,12 @@ public sealed class WorldItemComponent : Component, Component.ExecuteInEditor
 		}
 
 		renderer.Tint = GetDebugTint();
+	}
+
+	Model TryLoadItemModel()
+	{
+		var path = Definition?.ModelPath;
+		return string.IsNullOrWhiteSpace( path ) ? null : Model.Load( path );
 	}
 
 	void TryFitColliderIfNeeded()

@@ -18,7 +18,7 @@
 			@switch ( MenuState.ActiveTab )
 			{
 				case GameMenuTab.Inventory:
-					<InventoryPage Inventory="@Inventory" Interactor="@InventoryInteractor" DebugProvider="@InventoryDebugActions" />
+					<InventoryPage Inventory="@Inventory" Interactor="@InventoryInteractor" />
 					break;
 				case GameMenuTab.Stats:
 					<StatsPage />
@@ -45,7 +45,6 @@
 	private GameMenuState MenuState { get; } = new();
 	private InventoryComponent Inventory { get; set; }
 	private InventoryPlayerInteractionComponent InventoryInteractor { get; set; }
-	private IInventoryDebugActions InventoryDebugActions { get; set; }
 	private string RootClass => MenuState.IsOpen ? "game-menu-open" : "game-menu-closed";
 	private string PageHostClass => $"game-menu-page-host game-menu-page-host--{MenuState.ActiveTab.ToString().ToLowerInvariant()}";
 	public bool IsOpen => MenuState.IsOpen;
@@ -138,21 +137,6 @@
 			return false;
 
 		InventoryInteractor.Inventory = Inventory;
-
-		if ( InventoryDebugActions is null )
-		{
-			var bootstrapper = Scene.GetAllComponents<InventoryBootstrapper>()
-				.FirstOrDefault( b => b.Inventory == Inventory && b.GameObject == Inventory.GameObject );
-
-			if ( bootstrapper is null || !bootstrapper.IsValid() )
-				bootstrapper = Scene.GetAllComponents<InventoryBootstrapper>()
-					.FirstOrDefault( b => b.Inventory == Inventory );
-
-			if ( bootstrapper is null || !bootstrapper.IsValid() )
-				bootstrapper = Inventory.GameObject.Components.Get<InventoryBootstrapper>();
-
-			InventoryDebugActions = bootstrapper as IInventoryDebugActions;
-		}
 
 		return true;
 	}

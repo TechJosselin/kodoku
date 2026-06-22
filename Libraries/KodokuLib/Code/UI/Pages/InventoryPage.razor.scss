@@ -394,6 +394,7 @@ InventoryPage
 	top: 59%;
 	width: 16%;
 	height: 38%;
+	padding: 0;
 }
 
 .slot-onback
@@ -402,6 +403,16 @@ InventoryPage
 	top: 59%;
 	width: 16%;
 	height: 38%;
+	padding: 0;
+}
+
+.slot-onsling .equipment-slot-icon,
+.slot-onback .equipment-slot-icon
+{
+	width: 100%;
+	height: 100%;
+	flex-grow: 0;
+	transform: rotate( 270deg ) scale( 2.5 );
 }
 
 .label-headwear
@@ -501,73 +512,7 @@ InventoryPage
 	pointer-events: all;
 }
 
-.debug-menu
-{
-	position: absolute;
-	right: 18px;
-	top: 18px;
-	z-index: 45;
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-	width: 260px;
-	max-height: 86%;
-	padding: 10px;
-	background-color: rgba( 17, 15, 11, 0.94 );
-	color: rgba( 236, 228, 204, 0.95 );
-	font-family: Poppins;
-	pointer-events: all;
-	overflow: scroll;
-}
-
-.debug-menu-title
-{
-	color: rgba( 214, 204, 176, 0.78 );
-	font-size: 11px;
-	font-weight: 800;
-	text-transform: uppercase;
-}
-
-.debug-menu-actions
-{
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	gap: 6px;
-}
-
-.debug-menu-actions--items button
-{
-	flex-grow: 1;
-	min-width: 112px;
-}
-
-.debug-menu-toggle
-{
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: 7px;
-	width: 100%;
-}
-
-.debug-checkbox-mark
-{
-	width: 14px;
-	height: 14px;
-	flex-shrink: 0;
-	background-color: rgba( 0, 0, 0, 0.44 );
-	border: 1px solid rgba( 236, 228, 204, 0.45 );
-}
-
-.debug-menu-toggle.checked .debug-checkbox-mark
-{
-	background-color: rgba( 154, 189, 118, 0.72 );
-	border-color: rgba( 224, 238, 192, 0.86 );
-}
-
-.item-context-menu button,
-.debug-menu button
+.item-context-menu button
 {
 	min-height: 26px;
 	padding: 4px 8px;
@@ -580,8 +525,7 @@ InventoryPage
 	cursor: pointer;
 }
 
-.item-context-menu button:hover,
-.debug-menu button:hover
+.item-context-menu button:hover
 {
 	background-color: rgba( 255, 255, 255, 0.12 );
 }

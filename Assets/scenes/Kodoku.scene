@@ -57,12 +57,14 @@
               "__guid": "ba99e886-fc43-454b-80ba-fb54ef69f91e",
               "__enabled": true,
               "Flags": 0,
-              "DefaultScenePath": "Scenes\\Tests\\TestScene.scene",
+              "DefaultScene": "scenes/tests/testscene.scene",
               "DefaultWorldId": "Test",
               "LoadedWorld": {
                 "_type": "gameobject",
                 "go": "f5c13e26-7545-480c-856e-751cd7bd0ce6"
               },
+              "LoadRetryDelay": 0.5,
+              "MaxLoadAttempts": 5,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
@@ -951,6 +953,60 @@
             }
           ],
           "Children": []
+        },
+        {
+          "__guid": "a069fe73-50e1-4deb-9a6d-f6bd8bed071b",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "DebugMenuUI",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Kodoku.Lib.UI.DebugMenuUI",
+              "__guid": "33ecfb40-db1e-4ffe-a2f5-3eadadbedad6",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
+              "__type": "Sandbox.ScreenPanel",
+              "__guid": "ce28a20f-b603-4ff0-acdd-4ed81669ebb6",
+              "__enabled": true,
+              "Flags": 0,
+              "AutoScreenScale": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Opacity": 1,
+              "Scale": 1,
+              "ScaleStrategy": "ConsistentHeight",
+              "TargetCamera": {
+                "_type": "component",
+                "component_id": "f836c942-2c5d-46c3-884e-db1bfd15a15a",
+                "go": "70570569-6083-4b74-ad16-261f9c5b8a7d",
+                "component_type": "CameraComponent"
+              },
+              "ZIndex": 100
+            }
+          ],
+          "Children": []
         }
       ]
     },
@@ -993,14 +1049,14 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.SelectionSetsSystem": {
-        "Data": {
-          "SelectionSets": []
-        }
-      },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
           "$blob": "a709f6f1-16a0-47d1-9c54-ebacea1aef49"
+        }
+      },
+      "Sandbox.SelectionSetsSystem": {
+        "Data": {
+          "SelectionSets": []
         }
       }
     }

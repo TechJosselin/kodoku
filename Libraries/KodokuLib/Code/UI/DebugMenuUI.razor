@@ -1,0 +1,165 @@
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using Sandbox
+@using Sandbox.UI
+@using Kodoku.Lib.Inventory
+@inherits PanelComponent
+@namespace Kodoku.Lib.UI
+@attribute [Title( "Debug Menu UI" )]
+@attribute [Category( "Kodoku/UI" )]
+@attribute [Icon( "bug_report" )]
+
+<root class="@GetRootClass()">
+	@if ( IsOpen )
+	{
+		<div class="debug-overlay-bg" onclick=@Close></div>
+		<div class="debug-panel">
+
+			<div class="debug-panel-header">
+				<span class="debug-panel-title">Debug</span>
+				<button class="debug-panel-close" onclick=@Close>×</button>
+			</div>
+
+			<div class="debug-search-row">
+				<textentry @ref="SearchEntry" class="debug-search-input" placeholder="Search items..."></textentry>
+			</div>
+
+			<div class="debug-category-row">
+				<button class="@CategoryClass( null )" onclick=@( () => SelectCategory( null ) )>All</button>
+				@foreach ( var cat in GetAllCategories() )
+				{
+					var c = cat;
+					<button class="@CategoryClass( c )" onclick=@( () => SelectCategory( c ) )>@c</button>
+				}
+			</div>
+
+			<div class="debug-items-scroll">
+				@foreach ( var opt in GetFilteredItems() )
+				{
+					var item = opt;
+					<button class="debug-item-row" onclick=@( () => GiveItem( item ) )>
+						<span class="debug-item-name">@item.DisplayName</span>
+						@if ( !string.IsNullOrWhiteSpace( item.Category ) )
+						{
+							<span class="debug-item-tag">@item.Category</span>
+						}
+					</button>
+				}
+				@if ( !GetFilteredItems().Any() )
+				{
+					<div class="debug-empty">No items match.</div>
+				}
+			</div>
+
+			<div class="debug-section-label">World</div>
+			<div class="debug-world-actions">
+				<button onclick=@SpawnBandage>Spawn Bandage</button>
+				<button onclick=@SpawnWater>Spawn Water</button>
+				<button onclick=@SpawnBag>Spawn Bag</button>
+				<button onclick=@PickupNearest>Pickup Nearest</button>
+				@if ( Interactor?.OpenedLootContainer is not null )
+				{
+					<button onclick=@CloseLoot>Close Loot</button>
+				}
+			</div>
+
+		</div>
+	}
+</root>
+
+@code
+{
+	bool IsOpen { get; set; }
+	string SelectedCategory { get; set; }
+
+	TextEntry SearchEntry;
+	IInventoryDebugActions DebugProvider { get; set; }
+	InventoryPlayerInteractionComponent Interactor { get; set; }
+
+	string SearchText => SearchEntry?.Text ?? "";
+
+	protected override void OnStart()
+	{
+		ResolveReferences();
+	}
+
+	protected override void OnUpdate()
+	{
+		ResolveReferences();
+
+		if ( Input.Keyboard.Pressed( "," ) || Input.Keyboard.Pressed( "comma" ) )
+		{
+			IsOpen = !IsOpen;
+			StateHasChanged();
+		}
+	}
+
+	protected override int BuildHash()
+	{
+		var hash = IsOpen.GetHashCode();
+		hash = (hash * 397) ^ (SelectedCategory?.GetHashCode() ?? 0);
+		hash = (hash * 397) ^ SearchText.GetHashCode();
+		hash = (hash * 397) ^ (Interactor?.OpenedLootContainer is not null).GetHashCode();
+		return hash;
+	}
+
+	void ResolveReferences()
+	{
+		if ( DebugProvider is null )
+			DebugProvider = Scene.GetAllComponents<InventoryBootstrapper>()
+				.OfType<IInventoryDebugActions>()
+				.FirstOrDefault();
+
+		if ( Interactor is null || !Interactor.IsValid() )
+			Interactor = Scene.GetAllComponents<InventoryPlayerInteractionComponent>().FirstOrDefault();
+	}
+
+	void Close()
+	{
+		IsOpen = false;
+		StateHasChanged();
+	}
+
+	void SelectCategory( string category )
+	{
+		SelectedCategory = category;
+		StateHasChanged();
+	}
+
+	string CategoryClass( string category ) =>
+		category == SelectedCategory ? "debug-category-btn active" : "debug-category-btn";
+
+	string GetRootClass() => IsOpen ? "debug-menu-ui open" : "debug-menu-ui";
+
+	IEnumerable<string> GetAllCategories()
+	{
+		return (DebugProvider?.GetDebugItems() ?? Array.Empty<InventoryDebugItemOption>())
+			.Select( i => i.Category )
+			.Where( c => !string.IsNullOrWhiteSpace( c ) )
+			.Distinct()
+			.OrderBy( c => c );
+	}
+
+	IEnumerable<InventoryDebugItemOption> GetFilteredItems()
+	{
+		var items = (IEnumerable<InventoryDebugItemOption>)(DebugProvider?.GetDebugItems()
+			?? Array.Empty<InventoryDebugItemOption>());
+
+		if ( !string.IsNullOrWhiteSpace( SelectedCategory ) )
+			items = items.Where( i => i.Category == SelectedCategory );
+
+		var search = SearchText.Trim();
+		if ( !string.IsNullOrWhiteSpace( search ) )
+			items = items.Where( i => i.DisplayName.Contains( search, StringComparison.OrdinalIgnoreCase ) );
+
+		return items.OrderBy( i => i.DisplayName );
+	}
+
+	void GiveItem( InventoryDebugItemOption option ) => DebugProvider?.AddItem( option );
+	void SpawnBandage() => DebugProvider?.SpawnBandage();
+	void SpawnWater() => DebugProvider?.SpawnWater();
+	void SpawnBag() => DebugProvider?.SpawnSmallBackpack();
+	void PickupNearest() => Interactor?.RequestPickupNearestWorldItem();
+	void CloseLoot() => Interactor?.RequestCloseLootContainer();
+}

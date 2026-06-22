@@ -674,6 +674,192 @@
                     }
                   ],
                   "Children": []
+                },
+                {
+                  "__guid": "14ad7527-a723-4025-b23f-5ce1d8f0b059",
+                  "__version": 2,
+                  "Flags": 0,
+                  "Name": "World Item - Raider Backpack",
+                  "Position": "0,-125.691895,44.9511299",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "0.280000001,0.280000001,0.280000001",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [
+                    {
+                      "__type": "Kodoku.Lib.Inventory.WorldItemComponent",
+                      "__guid": "ad8d7fc6-160b-4100-85ee-e0af759c497d",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "AutoFitColliderToModel": true,
+                      "AutoNameGameObject": true,
+                      "ColliderPadding": 2,
+                      "CreateColliderIfMissing": true,
+                      "CreateDebugVisual": true,
+                      "Definition": "data/items/equipment/backpacks/raider_backpack.item",
+                      "FallbackColliderSize": "16,16,16",
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "OverrideExistingCollider": false,
+                      "Quantity": 1
+                    },
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "__guid": "e10c2262-cba8-4791-bd86-a323cf4a1c62",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "BodyGroups": 18446744073709551615,
+                      "CreateAttachments": false,
+                      "LodOverride": null,
+                      "MaterialGroup": null,
+                      "MaterialOverride": null,
+                      "Materials": null,
+                      "Model": "models/items/equipment/backpacks/raider_backpack.vmdl",
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "RenderOptions": {
+                        "GameLayer": true,
+                        "OverlayLayer": false,
+                        "BloomLayer": false,
+                        "AfterUILayer": false
+                      },
+                      "RenderType": "On",
+                      "Tint": "0.25,0.55,0.95,1"
+                    },
+                    {
+                      "__type": "Sandbox.BoxCollider",
+                      "__guid": "da4ec9e5-539c-46c6-b13c-f6b36b1a409f",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "Center": "0,0,0",
+                      "ColliderFlags": 0,
+                      "Elasticity": null,
+                      "Friction": null,
+                      "IsTrigger": false,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "OnObjectTriggerEnter": null,
+                      "OnObjectTriggerExit": null,
+                      "OnTriggerEnter": null,
+                      "OnTriggerExit": null,
+                      "RollingResistance": null,
+                      "Scale": "66.1865311,89.7590103,107.14286",
+                      "Static": false,
+                      "Surface": null,
+                      "SurfaceVelocity": "0,0,0"
+                    }
+                  ],
+                  "Children": []
+                },
+                {
+                  "__guid": "03a0a1f2-904d-4ed7-84e7-6421d69df4ee",
+                  "__version": 2,
+                  "Flags": 0,
+                  "Name": "World Item - Shotgun",
+                  "Position": "0,-188.142639,44.9511299",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1.74571991,1.36079383,1.18543541",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [
+                    {
+                      "__type": "Kodoku.Lib.Inventory.WorldItemComponent",
+                      "__guid": "76140b5e-0ba1-4c46-9d56-0f4807f6ccb1",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "AutoFitColliderToModel": true,
+                      "AutoNameGameObject": true,
+                      "ColliderPadding": 2,
+                      "CreateColliderIfMissing": true,
+                      "CreateDebugVisual": true,
+                      "Definition": "data/items/equipment/weapons/ranged/shotgun.item",
+                      "FallbackColliderSize": "16,16,16",
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "OverrideExistingCollider": true,
+                      "Quantity": 1
+                    },
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "__guid": "f5697309-8b86-46db-b5fe-a94ecc8fd0c1",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "BodyGroups": 18446744073709551615,
+                      "CreateAttachments": false,
+                      "LodOverride": null,
+                      "MaterialGroup": null,
+                      "MaterialOverride": null,
+                      "Materials": null,
+                      "Model": "models/items/equipment/weapons/ranged/shotgun.vmdl",
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "RenderOptions": {
+                        "GameLayer": true,
+                        "OverlayLayer": false,
+                        "BloomLayer": false,
+                        "AfterUILayer": false
+                      },
+                      "RenderType": "On",
+                      "Tint": "0.95,0.75,0.35,1"
+                    },
+                    {
+                      "__type": "Sandbox.BoxCollider",
+                      "__guid": "a739870c-7e92-4725-a841-5e853d74139e",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "Center": "0,0,0",
+                      "ColliderFlags": 0,
+                      "Elasticity": null,
+                      "Friction": null,
+                      "IsTrigger": false,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "OnObjectTriggerEnter": null,
+                      "OnObjectTriggerExit": null,
+                      "OnTriggerEnter": null,
+                      "OnTriggerExit": null,
+                      "RollingResistance": null,
+                      "Scale": "10,45,10",
+                      "Static": false,
+                      "Surface": null,
+                      "SurfaceVelocity": "0,0,0"
+                    }
+                  ],
+                  "Children": []
                 }
               ]
             }
@@ -720,14 +906,14 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.SelectionSetsSystem": {
-        "Data": {
-          "SelectionSets": []
-        }
-      },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
           "$blob": "9995167b-28d8-4b95-b9e2-e7d9af34cbb4"
+        }
+      },
+      "Sandbox.SelectionSetsSystem": {
+        "Data": {
+          "SelectionSets": []
         }
       }
     }
