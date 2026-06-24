@@ -45,7 +45,19 @@
 	private GameMenuState MenuState { get; } = new();
 	private InventoryComponent Inventory { get; set; }
 	private InventoryPlayerInteractionComponent InventoryInteractor { get; set; }
-	private string RootClass => MenuState.IsOpen ? "game-menu-open" : "game-menu-closed";
+	private DebugMenuUI DebugMenu { get; set; }
+
+	private string RootClass
+	{
+		get
+		{
+			var cls = MenuState.IsOpen ? "game-menu-open" : "game-menu-closed";
+			if ( DebugMenu is not null && DebugMenu.IsValid() && DebugMenu.IsOpen )
+				cls += " debug-overlay-active";
+			return cls;
+		}
+	}
+
 	private string PageHostClass => $"game-menu-page-host game-menu-page-host--{MenuState.ActiveTab.ToString().ToLowerInvariant()}";
 	public bool IsOpen => MenuState.IsOpen;
 
@@ -67,6 +79,9 @@
 	protected override void OnUpdate()
 	{
 		ResolveInventoryReferences();
+
+		if ( DebugMenu is null || !DebugMenu.IsValid() )
+			DebugMenu = Scene.GetAllComponents<DebugMenuUI>().FirstOrDefault();
 
 		if ( string.IsNullOrWhiteSpace( ToggleKey ) )
 		{
@@ -154,6 +169,7 @@
 		hash = (hash * 397) ^ MenuState.IsOpen.GetHashCode();
 		hash = (hash * 397) ^ OpenOnStart.GetHashCode();
 		hash = (hash * 397) ^ (ToggleKey?.GetHashCode() ?? 0);
+		hash = (hash * 397) ^ (DebugMenu?.IsOpen == true).GetHashCode();
 		return hash;
 	}
 }

@@ -76,14 +76,14 @@
 
 @code
 {
-	bool IsOpen { get; set; }
+	// Public so GameMenuUI can read it to disable its own pointer events.
+	public bool IsOpen { get; private set; }
 	string SelectedCategory { get; set; }
 	int DebugQuantity { get; set; } = 1;
 
 	TextEntry SearchEntry = null!;
 	IInventoryDebugActions DebugProvider { get; set; }
 	InventoryPlayerInteractionComponent Interactor { get; set; }
-	GameMenuUI GameMenu { get; set; }
 
 	string SearchText => SearchEntry?.Text ?? "";
 
@@ -96,20 +96,11 @@
 	{
 		ResolveReferences();
 
-		// Block GameMenuUI pointer events while debug panel is open so the
-		// debug panel buttons are not shadowed by the inventory UI in hit testing.
-		GameMenu?.Panel?.SetClass( "debug-overlay-active", IsOpen );
-
 		if ( Input.Keyboard.Pressed( "," ) || Input.Keyboard.Pressed( "comma" ) )
 		{
 			IsOpen = !IsOpen;
 			StateHasChanged();
 		}
-	}
-
-	protected override void OnDisabled()
-	{
-		GameMenu?.Panel?.SetClass( "debug-overlay-active", false );
 	}
 
 	protected override int BuildHash()
@@ -131,9 +122,6 @@
 
 		if ( Interactor is null || !Interactor.IsValid() )
 			Interactor = Scene.GetAllComponents<InventoryPlayerInteractionComponent>().FirstOrDefault();
-
-		if ( GameMenu is null || !GameMenu.IsValid() )
-			GameMenu = Scene.GetAllComponents<GameMenuUI>().FirstOrDefault();
 	}
 
 	void Close()
