@@ -14,6 +14,7 @@ GameMenuUI
 	@include kodoku-textured-surface( $kodoku-tex-charcoal-noise, $kodoku-ui-black );
 	color: $kodoku-ui-text;
 	font-family: Poppins;
+	z-index: 50;
 	pointer-events: all;
 	overflow: hidden;
 
