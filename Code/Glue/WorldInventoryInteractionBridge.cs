@@ -92,7 +92,10 @@ public sealed class WorldInventoryInteractionBridge : Component
 				InventoryInteractor = Inventory.GameObject.Components.Get<InventoryPlayerInteractionComponent>();
 
 			if ( InventoryInteractor is null || !InventoryInteractor.IsValid() )
+			{
+				Log.Warning( "[WorldInventoryInteractionBridge] InventoryPlayerInteractionComponent not found in scene — creating one automatically. Add it to the Inventory GameObject for explicit configuration." );
 				InventoryInteractor = Inventory.GameObject.Components.Create<InventoryPlayerInteractionComponent>();
+			}
 		}
 
 		if ( InventoryInteractor is null || !InventoryInteractor.IsValid() )

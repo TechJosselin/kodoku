@@ -73,7 +73,7 @@
 	bool IsOpen { get; set; }
 	string SelectedCategory { get; set; }
 
-	TextEntry SearchEntry;
+	TextEntry SearchEntry = null!;
 	IInventoryDebugActions DebugProvider { get; set; }
 	InventoryPlayerInteractionComponent Interactor { get; set; }
 

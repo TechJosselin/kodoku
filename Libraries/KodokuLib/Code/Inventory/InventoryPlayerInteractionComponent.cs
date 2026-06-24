@@ -192,7 +192,7 @@ public sealed class InventoryPlayerInteractionComponent : Component
 		if ( !TryGetInventory( out var inventory, out var failed ) )
 			return failed;
 
-		var nearest = FindNearestWorldItem();
+		var nearest = inventory.FindNearestWorldItem( GetRangeCheckOrigin(), GetPickupRange() );
 		if ( nearest is null )
 			return InventoryActionResult.Fail( $"No WorldItem within {GetPickupRange():0} units." );
 
@@ -474,34 +474,6 @@ public sealed class InventoryPlayerInteractionComponent : Component
 
 		if ( LookedAtLootContainer is not null && IsLootContainerInUseRange( LookedAtLootContainer ) )
 			return;
-	}
-
-	WorldItemComponent FindNearestWorldItem()
-	{
-		WorldItemComponent nearest = null;
-		var nearestDistanceSquared = float.MaxValue;
-
-		foreach ( var worldItem in Scene.GetAllComponents<WorldItemComponent>() )
-		{
-			if ( worldItem is null || !worldItem.IsValid() )
-				continue;
-
-			var item = worldItem.PeekItem();
-			if ( item is null || !item.IsValid )
-				continue;
-
-			if ( !IsWorldItemInPickupRange( worldItem ) )
-				continue;
-
-			var distanceSquared = (worldItem.WorldPosition - WorldPosition).LengthSquared;
-			if ( distanceSquared >= nearestDistanceSquared )
-				continue;
-
-			nearest = worldItem;
-			nearestDistanceSquared = distanceSquared;
-		}
-
-		return nearest;
 	}
 
 	bool TryGetInventory( out InventoryComponent inventory, out InventoryActionResult failed )

@@ -271,6 +271,9 @@ public sealed class InventoryComponent : Component
 		if ( !result.Success )
 			return result;
 
+		// InventoryComponent intentionally references WorldItemComponent: both live in Kodoku.Lib.Inventory
+		// for tightly coupled gameplay. SpawnDropped is the single world-item spawn entry-point;
+		// collider fitting is handled by WorldItemComponent itself — do not add a hardcoded collider here.
 		worldItem = WorldItemComponent.SpawnDropped( Scene, transform, droppedItem );
 		return InventoryActionResult.Ok( $"{droppedItem.DisplayName} dropped to world." );
 	}
@@ -451,7 +454,9 @@ public sealed class InventoryComponent : Component
 		return failed;
 	}
 
-	WorldItemComponent FindNearestWorldItem( float maxDistance )
+	// Single scan entry-point used by both InventoryComponent and InventoryPlayerInteractionComponent.
+	// The origin parameter lets callers use a different reference point (e.g. camera position).
+	public WorldItemComponent FindNearestWorldItem( Vector3 origin, float maxDistance )
 	{
 		var maxDistanceSquared = maxDistance * maxDistance;
 		WorldItemComponent nearest = null;
@@ -466,7 +471,7 @@ public sealed class InventoryComponent : Component
 			if ( item is null || !item.IsValid )
 				continue;
 
-			var distanceSquared = (worldItem.WorldPosition - WorldPosition).LengthSquared;
+			var distanceSquared = (worldItem.WorldPosition - origin).LengthSquared;
 			if ( distanceSquared > maxDistanceSquared || distanceSquared >= nearestDistanceSquared )
 				continue;
 
@@ -476,6 +481,9 @@ public sealed class InventoryComponent : Component
 
 		return nearest;
 	}
+
+	WorldItemComponent FindNearestWorldItem( float maxDistance )
+		=> FindNearestWorldItem( WorldPosition, maxDistance );
 
 	Transform GetDefaultDropTransform()
 	{
