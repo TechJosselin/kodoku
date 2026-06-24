@@ -124,6 +124,30 @@ public sealed class DebugInventoryBootstrapper : InventoryBootstrapper, IInvento
 		return DebugSpawnWorldItem( new ItemInstance( definition, 1 ), out worldItem );
 	}
 
+	InventoryActionResult DebugAddItem( InventoryDebugItemOption option, int quantity )
+	{
+		if ( option is null )
+			return InventoryActionResult.Fail( "No debug item selected." );
+
+		var n = quantity < 1 ? 1 : quantity;
+		var last = InventoryActionResult.Fail( "Nothing added." );
+		for ( var i = 0; i < n; i++ )
+			last = DebugAddItem( option );
+		return last;
+	}
+
+	InventoryActionResult DebugSpawnWorldItem( InventoryDebugItemOption option, int quantity )
+	{
+		if ( option is null )
+			return InventoryActionResult.Fail( "No debug item selected." );
+
+		var n = quantity < 1 ? 1 : quantity;
+		var last = InventoryActionResult.Fail( "Nothing spawned." );
+		for ( var i = 0; i < n; i++ )
+			last = DebugSpawnNamedWorldItem( null, option.ResourcePath, out _ );
+		return last;
+	}
+
 	InventoryActionResult DebugSpawnWorldItem( ItemInstance item, out WorldItemComponent worldItem )
 	{
 		worldItem = null;
@@ -194,7 +218,8 @@ public sealed class DebugInventoryBootstrapper : InventoryBootstrapper, IInvento
 
 	// IInventoryDebugActions — wrappers for the library UI
 	IReadOnlyList<InventoryDebugItemOption> IInventoryDebugActions.GetDebugItems() => DebugGiveItems;
-	InventoryActionResult IInventoryDebugActions.AddItem( InventoryDebugItemOption option ) => DebugAddItem( option );
+	InventoryActionResult IInventoryDebugActions.AddItem( InventoryDebugItemOption option, int quantity ) => DebugAddItem( option, quantity );
+	InventoryActionResult IInventoryDebugActions.SpawnItem( InventoryDebugItemOption option, int quantity ) => DebugSpawnWorldItem( option, quantity );
 	InventoryActionResult IInventoryDebugActions.AddSmall() => DebugAddSmallItem();
 	InventoryActionResult IInventoryDebugActions.AddLong() => DebugAddLongItem();
 	InventoryActionResult IInventoryDebugActions.AddBackpack() => DebugAddBackpack();

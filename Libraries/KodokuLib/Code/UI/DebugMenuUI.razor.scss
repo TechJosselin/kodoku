@@ -155,6 +155,62 @@
 	overflow: scroll;
 }
 
+.debug-qty-row
+{
+	flex-shrink: 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 8px;
+	padding: 7px 16px;
+	border-bottom: 1px solid rgba( 255, 255, 255, 0.06 );
+}
+
+.debug-qty-label
+{
+	color: rgba( 200, 192, 168, 0.5 );
+	font-family: Poppins;
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	margin-right: 4px;
+}
+
+.debug-qty-btn
+{
+	width: 26px;
+	height: 26px;
+	padding: 0;
+	background-color: rgba( 255, 255, 255, 0.07 );
+	border: 1px solid rgba( 255, 255, 255, 0.1 );
+	color: rgba( 236, 228, 204, 0.85 );
+	font-family: Poppins;
+	font-size: 14px;
+	font-weight: 700;
+	cursor: pointer;
+	border-radius: 0;
+	box-shadow: none;
+	transform: none;
+}
+
+.debug-qty-btn:hover
+{
+	background-color: rgba( 255, 255, 255, 0.15 );
+	transform: none;
+	box-shadow: none;
+}
+
+.debug-qty-value
+{
+	min-width: 28px;
+	color: rgba( 236, 228, 204, 0.95 );
+	font-family: Poppins;
+	font-size: 13px;
+	font-weight: 700;
+	text-align: center;
+}
+
 .debug-item-row
 {
 	display: flex;
@@ -162,24 +218,68 @@
 	align-items: center;
 	justify-content: space-between;
 	min-height: 36px;
-	padding: 6px 12px;
+	padding: 4px 8px 4px 12px;
 	background-color: rgba( 255, 255, 255, 0.03 );
 	color: rgba( 236, 228, 204, 0.88 );
 	font-family: Poppins;
 	font-size: 12px;
 	font-weight: 500;
-	text-align: left;
+	gap: 8px;
+}
+
+.debug-item-row:hover
+{
+	background-color: rgba( 255, 255, 255, 0.06 );
+}
+
+.debug-item-give
+{
+	flex-shrink: 0;
+	padding: 3px 10px;
+	min-height: 24px;
+	background-color: rgba( 154, 189, 118, 0.13 );
+	border: 1px solid rgba( 154, 189, 118, 0.3 );
+	color: rgba( 200, 235, 160, 0.85 );
+	font-family: Poppins;
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
 	cursor: pointer;
-	gap: 10px;
-	border: 0;
 	border-radius: 0;
 	box-shadow: none;
 	transform: none;
 }
 
-.debug-item-row:hover
+.debug-item-give:hover
 {
-	background-color: rgba( 255, 255, 255, 0.09 );
+	background-color: rgba( 154, 189, 118, 0.25 );
+	border-color: rgba( 154, 189, 118, 0.55 );
+	transform: none;
+	box-shadow: none;
+}
+
+.debug-item-spawn
+{
+	flex-shrink: 0;
+	padding: 3px 10px;
+	min-height: 24px;
+	background-color: rgba( 118, 164, 189, 0.13 );
+	border: 1px solid rgba( 118, 164, 189, 0.3 );
+	color: rgba( 160, 210, 235, 0.85 );
+	font-family: Poppins;
+	font-size: 10px;
+	font-weight: 700;
+	text-transform: uppercase;
+	cursor: pointer;
+	border-radius: 0;
+	box-shadow: none;
+	transform: none;
+}
+
+.debug-item-spawn:hover
+{
+	background-color: rgba( 118, 164, 189, 0.25 );
+	border-color: rgba( 118, 164, 189, 0.55 );
 	transform: none;
 	box-shadow: none;
 }

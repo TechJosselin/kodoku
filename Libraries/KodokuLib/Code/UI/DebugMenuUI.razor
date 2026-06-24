@@ -34,17 +34,26 @@
 				}
 			</div>
 
+			<div class="debug-qty-row">
+				<span class="debug-qty-label">Qty</span>
+				<button class="debug-qty-btn" onclick=@DecrementQuantity>−</button>
+				<span class="debug-qty-value">@DebugQuantity</span>
+				<button class="debug-qty-btn" onclick=@IncrementQuantity>+</button>
+			</div>
+
 			<div class="debug-items-scroll">
 				@foreach ( var opt in GetFilteredItems() )
 				{
 					var item = opt;
-					<button class="debug-item-row" onclick=@( () => GiveItem( item ) )>
+					<div class="debug-item-row">
 						<span class="debug-item-name">@item.DisplayName</span>
 						@if ( !string.IsNullOrWhiteSpace( item.Category ) )
 						{
 							<span class="debug-item-tag">@item.Category</span>
 						}
-					</button>
+						<button class="debug-item-give" onclick=@( () => GiveItem( item ) )>Give</button>
+						<button class="debug-item-spawn" onclick=@( () => SpawnItem( item ) )>Spawn</button>
+					</div>
 				}
 				@if ( !GetFilteredItems().Any() )
 				{
@@ -52,11 +61,8 @@
 				}
 			</div>
 
-			<div class="debug-section-label">World</div>
+			<div class="debug-section-label">Actions</div>
 			<div class="debug-world-actions">
-				<button onclick=@SpawnBandage>Spawn Bandage</button>
-				<button onclick=@SpawnWater>Spawn Water</button>
-				<button onclick=@SpawnBag>Spawn Bag</button>
 				<button onclick=@PickupNearest>Pickup Nearest</button>
 				@if ( Interactor?.OpenedLootContainer is not null )
 				{
@@ -72,6 +78,7 @@
 {
 	bool IsOpen { get; set; }
 	string SelectedCategory { get; set; }
+	int DebugQuantity { get; set; } = 1;
 
 	TextEntry SearchEntry = null!;
 	IInventoryDebugActions DebugProvider { get; set; }
@@ -100,6 +107,7 @@
 		var hash = IsOpen.GetHashCode();
 		hash = (hash * 397) ^ (SelectedCategory?.GetHashCode() ?? 0);
 		hash = (hash * 397) ^ SearchText.GetHashCode();
+		hash = (hash * 397) ^ DebugQuantity.GetHashCode();
 		hash = (hash * 397) ^ (Interactor?.OpenedLootContainer is not null).GetHashCode();
 		return hash;
 	}
@@ -124,6 +132,18 @@
 	void SelectCategory( string category )
 	{
 		SelectedCategory = category;
+		StateHasChanged();
+	}
+
+	void IncrementQuantity()
+	{
+		DebugQuantity = Math.Min( 99, DebugQuantity + 1 );
+		StateHasChanged();
+	}
+
+	void DecrementQuantity()
+	{
+		DebugQuantity = Math.Max( 1, DebugQuantity - 1 );
 		StateHasChanged();
 	}
 
@@ -156,10 +176,8 @@
 		return items.OrderBy( i => i.DisplayName );
 	}
 
-	void GiveItem( InventoryDebugItemOption option ) => DebugProvider?.AddItem( option );
-	void SpawnBandage() => DebugProvider?.SpawnBandage();
-	void SpawnWater() => DebugProvider?.SpawnWater();
-	void SpawnBag() => DebugProvider?.SpawnSmallBackpack();
+	void GiveItem( InventoryDebugItemOption option ) => DebugProvider?.AddItem( option, DebugQuantity );
+	void SpawnItem( InventoryDebugItemOption option ) => DebugProvider?.SpawnItem( option, DebugQuantity );
 	void PickupNearest() => Interactor?.RequestPickupNearestWorldItem();
 	void CloseLoot() => Interactor?.RequestCloseLootContainer();
 }
