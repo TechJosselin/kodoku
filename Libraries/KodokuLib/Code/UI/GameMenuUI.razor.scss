@@ -24,9 +24,10 @@ GameMenuUI
 		pointer-events: none;
 	}
 
-	&.debug-overlay-active
+	&.debug-overlay-active,
+	&.debug-overlay-active *
 	{
-		pointer-events: none;
+		pointer-events: none !important;
 	}
 
 	.game-menu-main
