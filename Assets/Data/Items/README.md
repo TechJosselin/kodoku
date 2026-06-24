@@ -182,3 +182,19 @@ no stacking, `MaxStack: 1`, `Weight: 0.1`, and no storage.
   "Weight": 1.0
 }
 ```
+
+### New item checklist
+
+- [ ] Create `Assets/Data/Items/<category>/<item_id>.item` with all common fields
+- [ ] Set `ItemId` to a stable snake_case identifier — never change it after release
+- [ ] Set `ItemKind` to the correct enum value (`Simple`, `Backpack`, `Headwear`, `GasMask`, `BodyArmor`, `TacticalRig`, `Weapon`, `Special`, `Pants`, `Footwear`)
+- [ ] If the item has an icon, place it at `Assets/UI/Game/Icons/Items/<category>/<name>.png` and set `IconPath`; otherwise leave `IconPath: ""`
+- [ ] If the item has a 3D model, place it at `Assets/Models/Items/<category>/<name>.vmdl` and set `ModelPath`; otherwise leave `ModelPath: ""`
+- [ ] If the item has a world prefab, place it at `Assets/Prefabs/Items/<category>/<name>.prefab` and set `PrefabPath`; otherwise leave `PrefabPath: ""`
+- [ ] All paths use `/` (never `\`) and are relative to `Assets/`
+- [ ] If `IsStackable: true`, set `MaxStack` to a value > 1
+- [ ] If `IsStackable: false`, set `MaxStack: 1`
+- [ ] For backpacks and containers, set both `StorageWidth` and `StorageHeight` to positive values (`StorageWidth` ≤ 8)
+- [ ] For non-container items, omit `StorageWidth`/`StorageHeight` or leave them at 0
+- [ ] Register the path constant in `KodokuItemAssetPaths.cs`
+- [ ] If the item should appear in the debug menu, register it in `DebugInventoryBootstrapper`

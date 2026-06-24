@@ -25,4 +25,70 @@ public sealed class ItemDefinitionTests
 
 		Assert.AreEqual( ItemDefinition.MaxStorageWidth, definition.StorageWidth );
 	}
+
+	[TestMethod]
+	public void GetMaxStack_ReturnsOne_WhenNotStackable()
+	{
+		var definition = new ItemDefinition { IsStackable = false, MaxStack = 99 };
+
+		Assert.AreEqual( 1, definition.GetMaxStack() );
+	}
+
+	[TestMethod]
+	public void GetMaxStack_ReturnsMaxStack_WhenStackable()
+	{
+		var definition = new ItemDefinition { IsStackable = true, MaxStack = 4 };
+
+		Assert.AreEqual( 4, definition.GetMaxStack() );
+	}
+
+	[TestMethod]
+	public void CreatesContainer_TrueWhenBothDimensionsPositive()
+	{
+		var definition = new ItemDefinition { StorageWidth = 4, StorageHeight = 8 };
+
+		Assert.IsTrue( definition.CreatesContainer );
+	}
+
+	[TestMethod]
+	public void CreatesContainer_FalseWhenEitherDimensionIsZero()
+	{
+		Assert.IsFalse( new ItemDefinition { StorageWidth = 4, StorageHeight = 0 }.CreatesContainer );
+		Assert.IsFalse( new ItemDefinition { StorageWidth = 0, StorageHeight = 8 }.CreatesContainer );
+	}
+
+	[TestMethod]
+	public void GetWidth_ReturnsHeight_WhenRotatedAndCanRotate()
+	{
+		var definition = new ItemDefinition { Width = 5, Height = 2, CanRotate = true };
+
+		Assert.AreEqual( 2, definition.GetWidth( rotated: true ) );
+		Assert.AreEqual( 5, definition.GetHeight( rotated: true ) );
+	}
+
+	[TestMethod]
+	public void GetWidth_IgnoresRotation_WhenCanRotateFalse()
+	{
+		var definition = new ItemDefinition { Width = 5, Height = 2, CanRotate = false };
+
+		Assert.AreEqual( 5, definition.GetWidth( rotated: true ) );
+		Assert.AreEqual( 2, definition.GetHeight( rotated: true ) );
+	}
+
+	[TestMethod]
+	public void GetIconPath_ReturnsDefaultIconPath_WhenEmpty()
+	{
+		var definition = new ItemDefinition { IconPath = "" };
+
+		Assert.AreEqual( ItemDefinition.DefaultIconPath, definition.GetIconPath() );
+	}
+
+	[TestMethod]
+	public void GetIconPath_ReturnsSetPath_WhenNotEmpty()
+	{
+		const string path = "ui/game/icons/items/consumables/medical/icon_bandage.png";
+		var definition = new ItemDefinition { IconPath = path };
+
+		Assert.AreEqual( path, definition.GetIconPath() );
+	}
 }
