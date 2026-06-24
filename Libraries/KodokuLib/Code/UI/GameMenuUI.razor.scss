@@ -24,6 +24,11 @@ GameMenuUI
 		pointer-events: none;
 	}
 
+	&.debug-overlay-active
+	{
+		pointer-events: none;
+	}
+
 	.game-menu-main
 	{
 		flex-grow: 1;
