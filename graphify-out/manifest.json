@@ -1,0 +1,417 @@
+{
+  ".claude/settings.json": {
+    "mtime": 1782278978.128858,
+    "ast_hash": "7bf81dca0376bde3a32244b82bc7cbc0",
+    "semantic_hash": "7bf81dca0376bde3a32244b82bc7cbc0"
+  },
+  ".claude/settings.local.json": {
+    "mtime": 1782072646.2393131,
+    "ast_hash": "24350aab714b618d47b1ae29e1129832",
+    "semantic_hash": "24350aab714b618d47b1ae29e1129832"
+  },
+  "Code/Assembly.cs": {
+    "mtime": 1780847046.8987646,
+    "ast_hash": "98e5754dd0a0933e54ebad87b7d013d3",
+    "semantic_hash": "98e5754dd0a0933e54ebad87b7d013d3"
+  },
+  "Code/Core/SceneLoaderComponent.cs": {
+    "mtime": 1782084506.717061,
+    "ast_hash": "23d03f9d00b68dd23f5e0170cb65eebe",
+    "semantic_hash": "23d03f9d00b68dd23f5e0170cb65eebe"
+  },
+  "Code/Glue/DebugInventoryBootstrapper.cs": {
+    "mtime": 1782125526.9982748,
+    "ast_hash": "faf7c56e5b138a7b3467cde168884fe5",
+    "semantic_hash": "faf7c56e5b138a7b3467cde168884fe5"
+  },
+  "Code/Glue/WorldInventoryInteractionBridge.cs": {
+    "mtime": 1782082581.6638856,
+    "ast_hash": "05de4b8244eebdd3b21c5b00d85a6c58",
+    "semantic_hash": "05de4b8244eebdd3b21c5b00d85a6c58"
+  },
+  "Code/World/WorldRootComponent.cs": {
+    "mtime": 1782067008.065417,
+    "ast_hash": "fc09b0a3c8e7e6f557a0df5c27cdc956",
+    "semantic_hash": "fc09b0a3c8e7e6f557a0df5c27cdc956"
+  },
+  "Editor/Assembly.cs": {
+    "mtime": 1780847046.9002843,
+    "ast_hash": "c32f579c25e2c73387ad8274f5e3cf0e",
+    "semantic_hash": "c32f579c25e2c73387ad8274f5e3cf0e"
+  },
+  "Libraries/KodokuLib/Code/Assembly.cs": {
+    "mtime": 1781993444.040296,
+    "ast_hash": "ea60613bc3880ead50937f2d2b51c43f",
+    "semantic_hash": "ea60613bc3880ead50937f2d2b51c43f"
+  },
+  "Libraries/KodokuLib/Code/AssetPaths/KodokuItemAssetPaths.cs": {
+    "mtime": 1782085495.232289,
+    "ast_hash": "d10eddad24f61a9d3d8898c25a69582b",
+    "semantic_hash": "d10eddad24f61a9d3d8898c25a69582b"
+  },
+  "Libraries/KodokuLib/Code/AssetPaths/KodokuUiAssetPaths.cs": {
+    "mtime": 1782078603.099225,
+    "ast_hash": "455b200c4294170192ce0680fd08ee52",
+    "semantic_hash": "455b200c4294170192ce0680fd08ee52"
+  },
+  "Libraries/KodokuLib/Code/GameMenu/GameMenuComponent.cs": {
+    "mtime": 1782066987.6159062,
+    "ast_hash": "6ed20613afa8aaf5b901d8ea92b15177",
+    "semantic_hash": "6ed20613afa8aaf5b901d8ea92b15177"
+  },
+  "Libraries/KodokuLib/Code/GameMenu/GameMenuState.cs": {
+    "mtime": 1781997477.5463927,
+    "ast_hash": "01787dea8298b661992fdf0e6452ca9b",
+    "semantic_hash": "01787dea8298b661992fdf0e6452ca9b"
+  },
+  "Libraries/KodokuLib/Code/GameMenu/GameMenuTab.cs": {
+    "mtime": 1781997465.6364174,
+    "ast_hash": "520475d323f1b128360323516098bb51",
+    "semantic_hash": "520475d323f1b128360323516098bb51"
+  },
+  "Libraries/KodokuLib/Code/GameMenu/InventoryMenuState.cs": {
+    "mtime": 1781997474.445728,
+    "ast_hash": "d5caffa040da4f5f9ec1b1f94f4cc9ba",
+    "semantic_hash": "d5caffa040da4f5f9ec1b1f94f4cc9ba"
+  },
+  "Libraries/KodokuLib/Code/GameMenu/NavigationMenuState.cs": {
+    "mtime": 1781997470.5898838,
+    "ast_hash": "946de19be8347510c55b4dced6818258",
+    "semantic_hash": "946de19be8347510c55b4dced6818258"
+  },
+  "Libraries/KodokuLib/Code/Interaction/WorldInteractionComponent.cs": {
+    "mtime": 1782066984.5389037,
+    "ast_hash": "ba3ed70f3f60bda4f477a4f2aa989508",
+    "semantic_hash": "ba3ed70f3f60bda4f477a4f2aa989508"
+  },
+  "Libraries/KodokuLib/Code/Interaction/WorldInteractionPromptAction.cs": {
+    "mtime": 1782044811.4035666,
+    "ast_hash": "95df487dddd40473f9dbdce52ce79cdd",
+    "semantic_hash": "95df487dddd40473f9dbdce52ce79cdd"
+  },
+  "Libraries/KodokuLib/Code/Interaction/WorldInteractionQuery.cs": {
+    "mtime": 1781997217.0937355,
+    "ast_hash": "7d7e5bd7c76c24ab9908b827f8d35944",
+    "semantic_hash": "7d7e5bd7c76c24ab9908b827f8d35944"
+  },
+  "Libraries/KodokuLib/Code/Inventory/IInventoryDebugActions.cs": {
+    "mtime": 1782043992.1132052,
+    "ast_hash": "7708842ef95558cbfdc83531abf9a24c",
+    "semantic_hash": "7708842ef95558cbfdc83531abf9a24c"
+  },
+  "Libraries/KodokuLib/Code/Inventory/InventoryActionResult.cs": {
+    "mtime": 1781994389.4006581,
+    "ast_hash": "6973204eb80a8fd4e2cfc57db34e2637",
+    "semantic_hash": "6973204eb80a8fd4e2cfc57db34e2637"
+  },
+  "Libraries/KodokuLib/Code/Inventory/InventoryBootstrapper.cs": {
+    "mtime": 1782066981.4585886,
+    "ast_hash": "bc6b171b23e943faca40bef6dded8ad1",
+    "semantic_hash": "bc6b171b23e943faca40bef6dded8ad1"
+  },
+  "Libraries/KodokuLib/Code/Inventory/InventoryComponent.cs": {
+    "mtime": 1782066978.3940156,
+    "ast_hash": "58621229d57854bc91cd87aa0c411b20",
+    "semantic_hash": "58621229d57854bc91cd87aa0c411b20"
+  },
+  "Libraries/KodokuLib/Code/Inventory/InventoryContainer.cs": {
+    "mtime": 1781994419.9380033,
+    "ast_hash": "f6e7b89b52aa7844a16950ab03bf72aa",
+    "semantic_hash": "f6e7b89b52aa7844a16950ab03bf72aa"
+  },
+  "Libraries/KodokuLib/Code/Inventory/InventoryDebugItemOption.cs": {
+    "mtime": 1782125514.4667785,
+    "ast_hash": "84760e87a2b0f0b3674217be4c7422bc",
+    "semantic_hash": "84760e87a2b0f0b3674217be4c7422bc"
+  },
+  "Libraries/KodokuLib/Code/Inventory/InventoryEnums.cs": {
+    "mtime": 1781994387.496136,
+    "ast_hash": "9cc4ac9b2c753060936eb891717f4765",
+    "semantic_hash": "9cc4ac9b2c753060936eb891717f4765"
+  },
+  "Libraries/KodokuLib/Code/Inventory/InventoryItemPlacement.cs": {
+    "mtime": 1781994392.115564,
+    "ast_hash": "e713f8b345b12fd129e85826835d8452",
+    "semantic_hash": "e713f8b345b12fd129e85826835d8452"
+  },
+  "Libraries/KodokuLib/Code/Inventory/InventoryPlayerInteractionComponent.cs": {
+    "mtime": 1782066980.42859,
+    "ast_hash": "478a91e080569104d9d454c062a9d23b",
+    "semantic_hash": "478a91e080569104d9d454c062a9d23b"
+  },
+  "Libraries/KodokuLib/Code/Inventory/LootContainerComponent.cs": {
+    "mtime": 1782066983.5144343,
+    "ast_hash": "ac0cdc2c4f78640fd1c96740b1cbecc2",
+    "semantic_hash": "ac0cdc2c4f78640fd1c96740b1cbecc2"
+  },
+  "Libraries/KodokuLib/Code/Inventory/WorldItemComponent.cs": {
+    "mtime": 1782124602.050045,
+    "ast_hash": "e33b3bb760e8bb8607972e67ec3299f9",
+    "semantic_hash": "e33b3bb760e8bb8607972e67ec3299f9"
+  },
+  "Libraries/KodokuLib/Code/Items/ItemDefinition.cs": {
+    "mtime": 1782085486.1927078,
+    "ast_hash": "5eba7aa42be05aad4af61a29e2248748",
+    "semantic_hash": "5eba7aa42be05aad4af61a29e2248748"
+  },
+  "Libraries/KodokuLib/Code/Items/ItemEnums.cs": {
+    "mtime": 1781993656.246849,
+    "ast_hash": "27a54f7701b14759e8154b38ce324182",
+    "semantic_hash": "27a54f7701b14759e8154b38ce324182"
+  },
+  "Libraries/KodokuLib/Code/Items/ItemInstance.cs": {
+    "mtime": 1781998816.8642738,
+    "ast_hash": "4bbda19a407ab49125086bc5040c0191",
+    "semantic_hash": "4bbda19a407ab49125086bc5040c0191"
+  },
+  "Libraries/KodokuLib/Code/Loadout/LoadoutComponent.cs": {
+    "mtime": 1782066979.4126256,
+    "ast_hash": "ea39d95dea92bc53483af701b3c82bdb",
+    "semantic_hash": "ea39d95dea92bc53483af701b3c82bdb"
+  },
+  "Libraries/KodokuLib/Code/Loadout/LoadoutSlotConfig.cs": {
+    "mtime": 1781995051.8898962,
+    "ast_hash": "927d80368a8e2bded1a0c310c8a0ed3d",
+    "semantic_hash": "927d80368a8e2bded1a0c310c8a0ed3d"
+  },
+  "Libraries/KodokuLib/Code/Loadout/LoadoutSlotRegistry.cs": {
+    "mtime": 1782066446.506969,
+    "ast_hash": "39f27a40b036888e9a10a2ad6280054d",
+    "semantic_hash": "39f27a40b036888e9a10a2ad6280054d"
+  },
+  "Libraries/KodokuLib/Code/UI/Components/GameMenuHeader.razor": {
+    "mtime": 1782044103.505242,
+    "ast_hash": "41bbdb26a7ed408203b12989c3183e0a",
+    "semantic_hash": "41bbdb26a7ed408203b12989c3183e0a"
+  },
+  "Libraries/KodokuLib/Code/UI/Components/GameMenuSidebar.razor": {
+    "mtime": 1782045813.3223634,
+    "ast_hash": "2cd8a409b1bd2eb9d2b9709de40d1178",
+    "semantic_hash": "2cd8a409b1bd2eb9d2b9709de40d1178"
+  },
+  "Libraries/KodokuLib/Code/UI/DebugMenuUI.razor": {
+    "mtime": 1782125557.6378682,
+    "ast_hash": "24142aba5bcbc181875f15cac7729754",
+    "semantic_hash": "24142aba5bcbc181875f15cac7729754"
+  },
+  "Libraries/KodokuLib/Code/UI/GameMenuUI.razor": {
+    "mtime": 1782125698.1168299,
+    "ast_hash": "55c9047f4a2be8e120360a8f8f05331e",
+    "semantic_hash": "55c9047f4a2be8e120360a8f8f05331e"
+  },
+  "Libraries/KodokuLib/Code/UI/Pages/InventoryPage.razor": {
+    "mtime": 1782125751.954139,
+    "ast_hash": "de128e3179c6cdb0d28b9437e11eeec5",
+    "semantic_hash": "de128e3179c6cdb0d28b9437e11eeec5"
+  },
+  "Libraries/KodokuLib/Code/UI/Pages/MapPage.razor": {
+    "mtime": 1782044356.447001,
+    "ast_hash": "1429f4c079b1aa780598007cd25d5235",
+    "semantic_hash": "1429f4c079b1aa780598007cd25d5235"
+  },
+  "Libraries/KodokuLib/Code/UI/Pages/OptionsPage.razor": {
+    "mtime": 1782044359.6513703,
+    "ast_hash": "81c307c763ba4fbd304818a5fdbf51f9",
+    "semantic_hash": "81c307c763ba4fbd304818a5fdbf51f9"
+  },
+  "Libraries/KodokuLib/Code/UI/Pages/QuestsPage.razor": {
+    "mtime": 1782044358.6335497,
+    "ast_hash": "13f3780770929b3d7eeb658e05396ac5",
+    "semantic_hash": "13f3780770929b3d7eeb658e05396ac5"
+  },
+  "Libraries/KodokuLib/Code/UI/Pages/StatsPage.razor": {
+    "mtime": 1782044357.606019,
+    "ast_hash": "c973fdc73ac592cd4edfa34de37c00ea",
+    "semantic_hash": "c973fdc73ac592cd4edfa34de37c00ea"
+  },
+  "Libraries/KodokuLib/Code/UI/WorldInteractionHud.razor": {
+    "mtime": 1782067009.9650404,
+    "ast_hash": "b619d90ddf27fb69e67972715bafe2dc",
+    "semantic_hash": "b619d90ddf27fb69e67972715bafe2dc"
+  },
+  "Libraries/KodokuLib/Code/UI/_Imports.razor": {
+    "mtime": 1782044048.0558314,
+    "ast_hash": "40db2f7f8924df29e093f0b6c631b573",
+    "semantic_hash": "40db2f7f8924df29e093f0b6c631b573"
+  },
+  "Libraries/KodokuLib/UnitTests/GameMenu/GameMenuStateTests.cs": {
+    "mtime": 1781997492.0284598,
+    "ast_hash": "8e1d3e313dda9f34f9f31a440284c9ff",
+    "semantic_hash": "8e1d3e313dda9f34f9f31a440284c9ff"
+  },
+  "Libraries/KodokuLib/UnitTests/Inventory/InventoryActionResultTests.cs": {
+    "mtime": 1781994428.0208898,
+    "ast_hash": "546d64d6a39372896c95e26a809e81d2",
+    "semantic_hash": "546d64d6a39372896c95e26a809e81d2"
+  },
+  "Libraries/KodokuLib/UnitTests/Inventory/InventoryContainerTests.cs": {
+    "mtime": 1781994444.60235,
+    "ast_hash": "fc388e19cd793926ba476070c9eb21da",
+    "semantic_hash": "fc388e19cd793926ba476070c9eb21da"
+  },
+  "Libraries/KodokuLib/UnitTests/Items/ItemDefinitionTests.cs": {
+    "mtime": 1782085496.3267481,
+    "ast_hash": "15339c4e8d76e087b57770d69d4c4e84",
+    "semantic_hash": "15339c4e8d76e087b57770d69d4c4e84"
+  },
+  "Libraries/KodokuLib/UnitTests/Loadout/LoadoutComponentTests.cs": {
+    "mtime": 1781999214.6348195,
+    "ast_hash": "7b32d099f39acbf7ab7bcb1b52011090",
+    "semantic_hash": "7b32d099f39acbf7ab7bcb1b52011090"
+  },
+  "Libraries/KodokuLib/UnitTests/Loadout/LoadoutSlotRegistryTests.cs": {
+    "mtime": 1781995067.0038815,
+    "ast_hash": "3b063e2ac62b03d8669a5392237c8731",
+    "semantic_hash": "3b063e2ac62b03d8669a5392237c8731"
+  },
+  "Libraries/KodokuLib/UnitTests/TestInit.cs": {
+    "mtime": 1781993872.9894452,
+    "ast_hash": "00746a76e09e51144ef74eae915a18dc",
+    "semantic_hash": "00746a76e09e51144ef74eae915a18dc"
+  },
+  "Assets/Data/Items/README.md": {
+    "mtime": 1782085523.5301692,
+    "ast_hash": "98dca00413df41e1a69fbe38628d2dde",
+    "semantic_hash": "98dca00413df41e1a69fbe38628d2dde"
+  },
+  "Assets/Models/Items/Equipment/Backpacks/raider_backpack_LICENSE.txt": {
+    "mtime": 1782082258.22359,
+    "ast_hash": "4173307b7142248230859bb21630c8e3",
+    "semantic_hash": "4173307b7142248230859bb21630c8e3"
+  },
+  "CLAUDE.md": {
+    "mtime": 1782278978.1278477,
+    "ast_hash": "8a6643a420fdad6bfb583523bc6cef16",
+    "semantic_hash": "8a6643a420fdad6bfb583523bc6cef16"
+  },
+  "Docs/EditorComponentPlacement.md": {
+    "mtime": 1782069730.5197294,
+    "ast_hash": "52c0ef9472a20dab7f540df3c0f3b3e2",
+    "semantic_hash": "52c0ef9472a20dab7f540df3c0f3b3e2"
+  },
+  "IA.md": {
+    "mtime": 1782082577.3060436,
+    "ast_hash": "f2ec8b2e12fc7ba28c9f49f04556e6fd",
+    "semantic_hash": "f2ec8b2e12fc7ba28c9f49f04556e6fd"
+  },
+  "Assets/Textures/Items/Equipment/Backpacks/RaiderBackpack/raider_backpack_albedo.png": {
+    "mtime": 1782079711.3339086,
+    "ast_hash": "7162a8e22177e7c7f191a3f6614d51c7",
+    "semantic_hash": "7162a8e22177e7c7f191a3f6614d51c7"
+  },
+  "Assets/Textures/Items/Equipment/Weapons/Ranged/nockgun_tex.png": {
+    "mtime": 1714749742.2396746,
+    "ast_hash": "0f9188d1fb09ca52b41e5c0e23afeca5",
+    "semantic_hash": "0f9188d1fb09ca52b41e5c0e23afeca5"
+  },
+  "Assets/UI/GameMenu/InventoryPage/Background/broken_weather.png": {
+    "mtime": 1781545794.5182998,
+    "ast_hash": "ce395ae04b6a8bd7beabb5f8e81698f5",
+    "semantic_hash": "ce395ae04b6a8bd7beabb5f8e81698f5"
+  },
+  "Assets/UI/GameMenu/InventoryPage/Background/container.png": {
+    "mtime": 1781528178.4966218,
+    "ast_hash": "d62ba6d44d3b17d48be5849a21009a2a",
+    "semantic_hash": "d62ba6d44d3b17d48be5849a21009a2a"
+  },
+  "Assets/UI/GameMenu/InventoryPage/Background/equipement.png": {
+    "mtime": 1781592452.5079007,
+    "ast_hash": "ddae4ee4ca2de2bccfdbd5fb493a9c6e",
+    "semantic_hash": "ddae4ee4ca2de2bccfdbd5fb493a9c6e"
+  },
+  "Assets/UI/GameMenu/InventoryPage/Background/hotbar.png": {
+    "mtime": 1781528756.3295064,
+    "ast_hash": "8c084280fae53d293620bb1cf3099ad9",
+    "semantic_hash": "8c084280fae53d293620bb1cf3099ad9"
+  },
+  "Assets/UI/GameMenu/InventoryPage/Background/inventory.png": {
+    "mtime": 1781528324.9434032,
+    "ast_hash": "41e079d38e6bf67836e4bf38e9dd1504",
+    "semantic_hash": "41e079d38e6bf67836e4bf38e9dd1504"
+  },
+  "Assets/UI/GameMenu/InventoryPage/Background/repair_weather.png": {
+    "mtime": 1781545739.6421149,
+    "ast_hash": "84417fc458c4264eb62829846f2689a8",
+    "semantic_hash": "84417fc458c4264eb62829846f2689a8"
+  },
+  "Assets/UI/GameMenu/InventoryPage/Background/ui_background_charcoal_noise.png": {
+    "mtime": 1781102159.5157616,
+    "ast_hash": "9791bca69ff9cb184df6e2c05fc90914",
+    "semantic_hash": "9791bca69ff9cb184df6e2c05fc90914"
+  },
+  "Assets/UI/GameMenu/InventoryPage/Icons/slot_backpack.png": {
+    "mtime": 1780774069.3511813,
+    "ast_hash": "22acb648a0c009202b091e2d6fddeb7d",
+    "semantic_hash": "22acb648a0c009202b091e2d6fddeb7d"
+  },
+  "Assets/UI/GameMenu/InventoryPage/Icons/slot_bodyarmor.png": {
+    "mtime": 1780774087.2935607,
+    "ast_hash": "4e214169cd59c179cfa9de97269c0776",
+    "semantic_hash": "4e214169cd59c179cfa9de97269c0776"
+  },
+  "Assets/UI/GameMenu/InventoryPage/Icons/slot_footwear.png": {
+    "mtime": 1780774122.8162956,
+    "ast_hash": "d0cd0201b65d6614616804a6b0e43948",
+    "semantic_hash": "d0cd0201b65d6614616804a6b0e43948"
+  },
+  "Assets/UI/GameMenu/InventoryPage/Icons/slot_gasmask.png": {
+    "mtime": 1780774114.620823,
+    "ast_hash": "14aeb684e8638815e2a3377ac164035d",
+    "semantic_hash": "14aeb684e8638815e2a3377ac164035d"
+  },
+  "Assets/UI/GameMenu/InventoryPage/Icons/slot_headwear.png": {
+    "mtime": 1780774133.6053023,
+    "ast_hash": "ea41c486be00ea69b681ca79651b44af",
+    "semantic_hash": "ea41c486be00ea69b681ca79651b44af"
+  },
+  "Assets/UI/GameMenu/InventoryPage/Icons/slot_pants.png": {
+    "mtime": 1780774142.8132968,
+    "ast_hash": "a0f1bda6430d1db54aeb90356bb84859",
+    "semantic_hash": "a0f1bda6430d1db54aeb90356bb84859"
+  },
+  "Assets/UI/GameMenu/InventoryPage/Icons/slot_pouch.png": {
+    "mtime": 1780774150.711882,
+    "ast_hash": "449e85b78b0408d9f2c70049f030b143",
+    "semantic_hash": "449e85b78b0408d9f2c70049f030b143"
+  },
+  "Assets/UI/GameMenu/InventoryPage/Icons/slot_tacticalrig.png": {
+    "mtime": 1780774161.0622504,
+    "ast_hash": "f9868f58a5c0303b783a20f96f346e90",
+    "semantic_hash": "f9868f58a5c0303b783a20f96f346e90"
+  },
+  "Assets/UI/GameMenu/InventoryPage/Icons/slot_weapon.png": {
+    "mtime": 1780774319.643696,
+    "ast_hash": "e3901c220f6c1ccd92dab992ce95b874",
+    "semantic_hash": "e3901c220f6c1ccd92dab992ce95b874"
+  },
+  "Assets/UI/Game/Icons/Items/Consumables/Drinks/Icon_water.png": {
+    "mtime": 1780415760.109593,
+    "ast_hash": "9fb8862e1c767232ff438fa13283f41c",
+    "semantic_hash": "9fb8862e1c767232ff438fa13283f41c"
+  },
+  "Assets/UI/Game/Icons/Items/Consumables/Medical/Icon_bandage.png": {
+    "mtime": 1780415760.098359,
+    "ast_hash": "f5ffa33c66a6e6027e8a25c94093d7d8",
+    "semantic_hash": "f5ffa33c66a6e6027e8a25c94093d7d8"
+  },
+  "Assets/UI/Game/Icons/Items/Equipment/Backpacks/Icon_small_backpack.png": {
+    "mtime": 1780415760.124941,
+    "ast_hash": "25f2b9f2082aa87e4a91f6728592bfab",
+    "semantic_hash": "25f2b9f2082aa87e4a91f6728592bfab"
+  },
+  "Assets/UI/Game/Icons/Items/Equipment/Backpacks/raider_backpack.png": {
+    "mtime": 1782080217.8495479,
+    "ast_hash": "48d7dfbd64d5808f72cc0e33943b9c8c",
+    "semantic_hash": "48d7dfbd64d5808f72cc0e33943b9c8c"
+  },
+  "Assets/UI/Game/Icons/Items/Equipment/Weapons/Ranged/shotgun.png": {
+    "mtime": 1782083515.7424245,
+    "ast_hash": "f110f7973fd2cddc0b05ea5559008e55",
+    "semantic_hash": "f110f7973fd2cddc0b05ea5559008e55"
+  },
+  "Assets/UI/Game/Icons/System/Default/Icon_default.png": {
+    "mtime": 1780415335.4923015,
+    "ast_hash": "842b195951002974986812c209c16185",
+    "semantic_hash": "842b195951002974986812c209c16185"
+  }
+}
