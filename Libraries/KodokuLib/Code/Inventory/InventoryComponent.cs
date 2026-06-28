@@ -275,6 +275,15 @@ public sealed class InventoryComponent : Component
 		// for tightly coupled gameplay. SpawnDropped is the single world-item spawn entry-point;
 		// collider fitting is handled by WorldItemComponent itself — do not add a hardcoded collider here.
 		worldItem = WorldItemComponent.SpawnDropped( Scene, transform, droppedItem );
+		if ( worldItem is null || !worldItem.IsValid() )
+		{
+			// Spawn failed — restore the item so it is not silently lost.
+			var rollback = TryAddItem( droppedItem );
+			return rollback.Success
+				? InventoryActionResult.Fail( "Could not create dropped WorldItem." )
+				: InventoryActionResult.Fail( $"Could not create dropped WorldItem. Rollback failed: {rollback.Reason}" );
+		}
+
 		return InventoryActionResult.Ok( $"{droppedItem.DisplayName} dropped to world." );
 	}
 

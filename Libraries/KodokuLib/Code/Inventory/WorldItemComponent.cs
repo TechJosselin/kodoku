@@ -18,6 +18,7 @@ public sealed class WorldItemComponent : Component, Component.ExecuteInEditor
 	[Property] public bool OverrideExistingCollider { get; set; } = false;
 	[Property] public float ColliderPadding { get; set; } = 2f;
 	[Property] public Vector3 FallbackColliderSize { get; set; } = new Vector3( 16f, 16f, 16f );
+	[Property] public bool EnablePhysics { get; set; } = true;
 
 	public ItemInstance Item { get; private set; }
 
@@ -31,6 +32,7 @@ public sealed class WorldItemComponent : Component, Component.ExecuteInEditor
 	{
 		EnsureWorldItemSetup();
 		TryFitCollider();
+		EnsureRigidbody();
 	}
 
 	protected override void OnUpdate()
@@ -68,6 +70,9 @@ public sealed class WorldItemComponent : Component, Component.ExecuteInEditor
 
 	public static WorldItemComponent SpawnDropped( Scene scene, Transform transform, ItemInstance item )
 	{
+		if ( TrySpawnFromPrefab( scene, transform, item, out var prefabWorldItem ) )
+			return prefabWorldItem;
+
 		var gameObject = new GameObject( true, item?.DisplayName ?? "World Item" );
 		gameObject.WorldTransform = transform;
 
@@ -84,6 +89,38 @@ public sealed class WorldItemComponent : Component, Component.ExecuteInEditor
 	{
 		var transform = new Transform( position, Rotation.Identity, 1f );
 		return SpawnDropped( scene, transform, item );
+	}
+
+	// Returns true when the item definition has a valid PrefabPath and the prefab could be instantiated.
+	// Sets CreateDebugVisual = false on the resulting component because the prefab owns its own visuals.
+	static bool TrySpawnFromPrefab( Scene scene, Transform transform, ItemInstance item, out WorldItemComponent worldItem )
+	{
+		worldItem = null;
+
+		var prefabPath = item?.Definition?.PrefabPath;
+		if ( string.IsNullOrWhiteSpace( prefabPath ) )
+			return false;
+
+		var prefabFile = ResourceLibrary.Get<PrefabFile>( prefabPath );
+		if ( prefabFile is null )
+			return false;
+
+		var go = SceneUtility.GetPrefabScene( prefabFile )?.Clone();
+		if ( go is null )
+			return false;
+
+		go.WorldTransform = transform;
+
+		if ( scene is not null && go.Scene != scene )
+			go.Parent = scene;
+
+		worldItem = go.Components.Get<WorldItemComponent>( FindMode.EnabledInSelfAndDescendants )
+			?? go.Components.Create<WorldItemComponent>();
+
+		// Prefab provides its own mesh and materials — skip the debug sphere / ModelPath visual.
+		worldItem.CreateDebugVisual = false;
+		worldItem.SetExistingItem( item );
+		return true;
 	}
 
 	void EnsureWorldItemSetup()
@@ -296,6 +333,15 @@ public sealed class WorldItemComponent : Component, Component.ExecuteInEditor
 				Math.Max( a.Maxs.z, b.Maxs.z )
 			)
 		);
+	}
+
+	void EnsureRigidbody()
+	{
+		if ( !EnablePhysics )
+			return;
+
+		if ( !Components.Get<Rigidbody>().IsValid() )
+			Components.Create<Rigidbody>();
 	}
 
 	int GetClampedQuantity()

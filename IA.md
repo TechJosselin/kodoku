@@ -38,7 +38,7 @@ The `Docs/EditorComponentPlacement.md` file is the authoritative guide for wirin
 `InventoryContainer` (pure C# class, not a Component) holds a flat list of `InventoryItemPlacement` records. Each placement stores an `ItemInstance`, an (x, y) origin, and a rotation flag. Items occupy multiple cells based on their `ItemDefinition.Width`/`Height`. Call `CanAddItemAt()` before `TryAddItem()` — placement is never forced.
 
 Key types:
-- `ItemDefinition` — `GameResource` asset defining an item's properties, size, and equipment slot.
+- `ItemDefinition` — `GameResource` asset. Fields: `ItemId`, `DisplayName`, `Description`, `IconPath`, `ModelPath`, `PrefabPath`, `ItemKind` (`InventoryItemKind` enum), `Width`, `Height`, `CanRotate`, `IsStackable`, `MaxStack`, `Weight`, `StorageWidth` (capped at 8), `StorageHeight`. **No `EquipSlot` or `WeaponKind` fields.** `CreatesContainer` is a computed property (`StorageWidth > 0 && StorageHeight > 0`).
 - `ItemInstance` — runtime item with a unique `InstanceId`, stack count, and reference to its `ItemDefinition`.
 - `InventoryContainer` — grid storage with stacking and split support.
 - `InventoryComponent` — s.box Component that owns one `pockets` container and delegates to `LoadoutComponent` for equipped items.
@@ -58,6 +58,20 @@ All inventory mutations return `InventoryActionResult` (immutable, `Success` + `
 UI is Razor Components (`.razor` files). `GameMenuComponent` manages open/close state and the active `GameMenuTab` (Inventory, Stats, Quests, Map, Options). `GameMenuUI.razor` renders the active page. Tab-key toggles the menu. The menu auto-resolves `InventoryComponent` from the scene using `Scene.GetAllComponents<InventoryComponent>()`.
 
 `WorldInteractionHud.razor` renders the context-sensitive interaction prompt (action list + selected index) based on `WorldInteractionComponent` state.
+
+`DebugMenuUI.razor` is a standalone debug panel (comma key toggle, works independently of inventory). It provides per-item **Give** (add to inventory) and **Spawn** (drop in world) actions with a configurable quantity (1–99). It resolves `IInventoryDebugActions` from the scene at runtime. `GameMenuUI` reads `DebugMenuUI.IsOpen` in its own `RootClass` getter (and `BuildHash`) to apply `debug-overlay-active`, which disables pointer events on the inventory panel while the debug panel is open.
+
+### s&box UI — Pointer Events Between PanelComponents
+
+`z-index` affects visual stacking only; inter-PanelComponent hit-testing follows **panel tree order** (later sibling wins). Two important rules:
+
+1. **Do not call `Panel.SetClass()` from an external component.** The owning component's next Razor re-render (`StateHasChanged`) replaces the full class list on its root, discarding any externally-set class. Cross-component state must be read inside the owning component's own `RootClass` getter and tracked in `BuildHash()`.
+
+2. **`pointer-events: none` on a root does not propagate if descendants declare `pointer-events: all`.** Interactive children (inventory slots, drag targets) set this explicitly. To block an entire component subtree, use:
+   ```scss
+   &.blocked-state,
+   &.blocked-state * { pointer-events: none !important; }
+   ```
 
 ## Asset Conventions
 

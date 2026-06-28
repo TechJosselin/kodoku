@@ -1,12 +1,11 @@
 $kodoku-ui-texture-root: "/ui/gamemenu/inventorypage/background";
 
-$kodoku-tex-charcoal-noise: url( /ui/gamemenu/inventorypage/background/ui_background_charcoal_noise.png );
-$kodoku-tex-inventory:      url( /ui/gamemenu/inventorypage/background/inventory.png );
-$kodoku-tex-equipment:      url( /ui/gamemenu/inventorypage/background/equipement.png );
-$kodoku-tex-container:      url( /ui/gamemenu/inventorypage/background/container.png );
-$kodoku-tex-hotbar:         url( /ui/gamemenu/inventorypage/background/hotbar.png );
-$kodoku-tex-weather-broken: url( /ui/gamemenu/inventorypage/background/broken_weather.png );
-$kodoku-tex-weather-repair: url( /ui/gamemenu/inventorypage/background/repair_weather.png );
+$kodoku-tex-charcoal-noise: url( /ui/gamemenu/inventorypage/background/InventoryPage.png );
+$kodoku-tex-inventory:      url( /ui/gamemenu/inventorypage/background/Panels/Left_Panel.png );
+$kodoku-tex-equipment:      url( /ui/gamemenu/inventorypage/background/Panels/Center_Panel.png );
+$kodoku-tex-container:      url( /ui/gamemenu/inventorypage/background/Panels/Right_Panel.png );
+$kodoku-tex-hotbar:         url( /ui/gamemenu/inventorypage/background/Panels/Bottom_Panel.png );
+
 
 $kodoku-ui-black: #050604;
 $kodoku-ui-charcoal: #0b0d0a;

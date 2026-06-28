@@ -4,7 +4,7 @@
   "Description": "",
   "IconPath": "ui/game/icons/items/equipment/weapons/ranged/shotgun.png",
   "ModelPath": "models/items/equipment/weapons/ranged/shotgun.vmdl",
-  "PrefabPath": "",
+  "PrefabPath": "prefabs/items/equipment/weapons/ranged/shotgun.prefab",
   "ItemKind": "Weapon",
   "Width": 5,
   "Height": 2,

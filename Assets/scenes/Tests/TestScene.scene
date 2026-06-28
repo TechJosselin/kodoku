@@ -381,96 +381,54 @@
               "Components": [],
               "Children": [
                 {
-                  "__guid": "db87d94b-d891-4e4f-be1b-48ee790c9234",
+                  "__guid": "85a9f8ed-bcf3-462f-b4b0-bac5cc430f33",
                   "__version": 2,
-                  "Flags": 0,
-                  "Name": "Loot Container",
-                  "Position": "0,0,57.452774",
-                  "Rotation": "0,0,0,1",
-                  "Scale": "1,1,1",
-                  "Tags": "",
-                  "Enabled": true,
-                  "NetworkMode": 2,
-                  "NetworkFlags": 0,
-                  "NetworkOrphaned": 0,
-                  "NetworkTransmit": true,
-                  "OwnerTransfer": 1,
-                  "Components": [
-                    {
-                      "__type": "Kodoku.Lib.Inventory.LootContainerComponent",
-                      "__guid": "673ba23f-1851-45f4-b5de-4693c5ff1d9a",
-                      "__enabled": true,
-                      "Flags": 0,
-                      "AutoNameGameObject": true,
-                      "ContainerName": "Loot Container",
-                      "CreateDebugVisual": true,
-                      "Height": 4,
-                      "InitialItems": [],
-                      "LogSetupResults": true,
-                      "OnComponentDestroy": null,
-                      "OnComponentDisabled": null,
-                      "OnComponentEnabled": null,
-                      "OnComponentFixedUpdate": null,
-                      "OnComponentStart": null,
-                      "OnComponentUpdate": null,
-                      "SeedInitialItemsOnStart": true,
-                      "Width": 4
-                    },
-                    {
-                      "__type": "Sandbox.ModelRenderer",
-                      "__guid": "e57bd6b1-fcca-491e-9126-08b7903c2878",
-                      "__enabled": true,
-                      "Flags": 0,
-                      "BodyGroups": 18446744073709551615,
-                      "CreateAttachments": false,
-                      "LodOverride": null,
-                      "MaterialGroup": null,
-                      "MaterialOverride": null,
-                      "Materials": null,
-                      "Model": "models/dev/sphere.vmdl",
-                      "OnComponentDestroy": null,
-                      "OnComponentDisabled": null,
-                      "OnComponentEnabled": null,
-                      "OnComponentFixedUpdate": null,
-                      "OnComponentStart": null,
-                      "OnComponentUpdate": null,
-                      "RenderOptions": {
-                        "GameLayer": true,
-                        "OverlayLayer": false,
-                        "BloomLayer": false,
-                        "AfterUILayer": false
+                  "__Prefab": "prefabs/containers/wardrobe/loot_wardrobe/loot_wardrobe.prefab",
+                  "__PrefabInstancePatch": {
+                    "AddedObjects": [],
+                    "RemovedObjects": [],
+                    "PropertyOverrides": [
+                      {
+                        "Target": {
+                          "Type": "GameObject",
+                          "IdValue": "634f3562-e16f-488b-a988-41bad109d53a"
+                        },
+                        "Property": "Name",
+                        "Value": "Wardrobe"
                       },
-                      "RenderType": "On",
-                      "Tint": "0.55,0.45,0.25,1"
-                    },
-                    {
-                      "__type": "Sandbox.BoxCollider",
-                      "__guid": "17f0dda8-af48-439a-9028-2a060212fbf5",
-                      "__enabled": true,
-                      "Flags": 0,
-                      "Center": "0,0,0",
-                      "ColliderFlags": 0,
-                      "Elasticity": null,
-                      "Friction": null,
-                      "IsTrigger": false,
-                      "OnComponentDestroy": null,
-                      "OnComponentDisabled": null,
-                      "OnComponentEnabled": null,
-                      "OnComponentFixedUpdate": null,
-                      "OnComponentStart": null,
-                      "OnComponentUpdate": null,
-                      "OnObjectTriggerEnter": null,
-                      "OnObjectTriggerExit": null,
-                      "OnTriggerEnter": null,
-                      "OnTriggerExit": null,
-                      "RollingResistance": null,
-                      "Scale": "50,50,50",
-                      "Static": false,
-                      "Surface": null,
-                      "SurfaceVelocity": "0,0,0"
-                    }
-                  ],
-                  "Children": []
+                      {
+                        "Target": {
+                          "Type": "GameObject",
+                          "IdValue": "634f3562-e16f-488b-a988-41bad109d53a"
+                        },
+                        "Property": "Position",
+                        "Value": "0,-360.124146,12.7067232"
+                      },
+                      {
+                        "Target": {
+                          "Type": "Component",
+                          "IdValue": "0c353b2a-a8b4-4ee2-99f4-97a371fb7e8a"
+                        },
+                        "Property": "Height",
+                        "Value": 8
+                      },
+                      {
+                        "Target": {
+                          "Type": "Component",
+                          "IdValue": "0c353b2a-a8b4-4ee2-99f4-97a371fb7e8a"
+                        },
+                        "Property": "Width",
+                        "Value": 6
+                      }
+                    ],
+                    "MovedObjects": []
+                  },
+                  "__PrefabIdToInstanceId": {
+                    "634f3562-e16f-488b-a988-41bad109d53a": "85a9f8ed-bcf3-462f-b4b0-bac5cc430f33",
+                    "0c353b2a-a8b4-4ee2-99f4-97a371fb7e8a": "cfe36749-f03f-49b1-adeb-ae76fb6af30b",
+                    "885146a7-304b-4e2e-b61a-2a76b159ee7d": "d026cd88-42a1-43b8-9b5f-38e4cdd2d84d",
+                    "1d0a0d48-eb8b-4d18-8dd9-7007e93675f4": "cb531310-4eee-4211-8e5f-330155d8ffb2"
+                  }
                 }
               ]
             },
@@ -609,6 +567,7 @@
                       "CreateColliderIfMissing": true,
                       "CreateDebugVisual": true,
                       "Definition": "data/items/consumables/medical/bandage.item",
+                      "EnablePhysics": true,
                       "FallbackColliderSize": "16,16,16",
                       "OnComponentDestroy": null,
                       "OnComponentDisabled": null,
@@ -671,6 +630,41 @@
                       "Static": false,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
+                    },
+                    {
+                      "__type": "Sandbox.Rigidbody",
+                      "__guid": "69a6649a-8873-40b3-b1e7-693c6237011c",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "AngularDamping": 0,
+                      "EnableImpactDamage": true,
+                      "EnhancedCcd": false,
+                      "Gravity": true,
+                      "GravityScale": 1,
+                      "ImpactDamage": 0,
+                      "LinearDamping": 0,
+                      "Locking": {
+                        "X": false,
+                        "Y": false,
+                        "Z": false,
+                        "Pitch": false,
+                        "Yaw": false,
+                        "Roll": false
+                      },
+                      "MassCenterOverride": "0,0,0",
+                      "MassOverride": 0,
+                      "MinImpactDamageSpeed": 500,
+                      "MotionEnabled": true,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "OverrideMassCenter": false,
+                      "RigidbodyFlags": 0,
+                      "SleepThreshold": 2,
+                      "StartAsleep": false
                     }
                   ],
                   "Children": []
@@ -702,6 +696,7 @@
                       "CreateColliderIfMissing": true,
                       "CreateDebugVisual": true,
                       "Definition": "data/items/equipment/backpacks/raider_backpack.item",
+                      "EnablePhysics": true,
                       "FallbackColliderSize": "16,16,16",
                       "OnComponentDestroy": null,
                       "OnComponentDisabled": null,
@@ -764,6 +759,41 @@
                       "Static": false,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
+                    },
+                    {
+                      "__type": "Sandbox.Rigidbody",
+                      "__guid": "b8716dac-dc8a-44ba-b3ac-1008d471608c",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "AngularDamping": 0,
+                      "EnableImpactDamage": true,
+                      "EnhancedCcd": false,
+                      "Gravity": true,
+                      "GravityScale": 1,
+                      "ImpactDamage": 0,
+                      "LinearDamping": 0,
+                      "Locking": {
+                        "X": false,
+                        "Y": false,
+                        "Z": false,
+                        "Pitch": false,
+                        "Yaw": false,
+                        "Roll": false
+                      },
+                      "MassCenterOverride": "0,0,0",
+                      "MassOverride": 0,
+                      "MinImpactDamageSpeed": 500,
+                      "MotionEnabled": true,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "OverrideMassCenter": false,
+                      "RigidbodyFlags": 0,
+                      "SleepThreshold": 2,
+                      "StartAsleep": false
                     }
                   ],
                   "Children": []
@@ -795,6 +825,7 @@
                       "CreateColliderIfMissing": true,
                       "CreateDebugVisual": true,
                       "Definition": "data/items/equipment/weapons/ranged/shotgun.item",
+                      "EnablePhysics": true,
                       "FallbackColliderSize": "16,16,16",
                       "OnComponentDestroy": null,
                       "OnComponentDisabled": null,
@@ -837,7 +868,7 @@
                       "__guid": "a739870c-7e92-4725-a841-5e853d74139e",
                       "__enabled": true,
                       "Flags": 0,
-                      "Center": "0,0,0",
+                      "Center": "1.15098715,-0.599163592,-3.21797143E-06",
                       "ColliderFlags": 0,
                       "Elasticity": null,
                       "Friction": null,
@@ -853,13 +884,255 @@
                       "OnTriggerEnter": null,
                       "OnTriggerExit": null,
                       "RollingResistance": null,
-                      "Scale": "10,45,10",
+                      "Scale": "10.939044,45.0320435,3.76397109",
                       "Static": false,
                       "Surface": null,
                       "SurfaceVelocity": "0,0,0"
+                    },
+                    {
+                      "__type": "Sandbox.Rigidbody",
+                      "__guid": "b6d469cb-1e0f-4d6a-924f-269f149f9bf7",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "AngularDamping": 0,
+                      "EnableImpactDamage": true,
+                      "EnhancedCcd": false,
+                      "Gravity": true,
+                      "GravityScale": 1,
+                      "ImpactDamage": 0,
+                      "LinearDamping": 0,
+                      "Locking": {
+                        "X": false,
+                        "Y": false,
+                        "Z": false,
+                        "Pitch": false,
+                        "Yaw": false,
+                        "Roll": false
+                      },
+                      "MassCenterOverride": "0,0,0",
+                      "MassOverride": 0,
+                      "MinImpactDamageSpeed": 500,
+                      "MotionEnabled": true,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "OverrideMassCenter": false,
+                      "RigidbodyFlags": 0,
+                      "SleepThreshold": 2,
+                      "StartAsleep": false
                     }
                   ],
                   "Children": []
+                },
+                {
+                  "__guid": "8007c2b4-5e71-4a05-a314-95a8def3e100",
+                  "__version": 2,
+                  "Flags": 0,
+                  "Name": "World Item - Water Bottle",
+                  "Position": "-56.2571754,-188.142639,44.9511299",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [
+                    {
+                      "__type": "Kodoku.Lib.Inventory.WorldItemComponent",
+                      "__guid": "5f40de7c-fef8-4141-8ed3-e5ca15859c52",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "AutoFitColliderToModel": true,
+                      "AutoNameGameObject": true,
+                      "ColliderPadding": 2,
+                      "CreateColliderIfMissing": true,
+                      "CreateDebugVisual": true,
+                      "Definition": "data/items/consumables/drinks/water.item",
+                      "EnablePhysics": true,
+                      "FallbackColliderSize": "16,16,16",
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "OverrideExistingCollider": false,
+                      "Quantity": 1
+                    },
+                    {
+                      "__type": "Sandbox.ModelRenderer",
+                      "__guid": "a6e86f36-3bed-4ff4-91ee-fed71139eee9",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "BodyGroups": 18446744073709551615,
+                      "CreateAttachments": false,
+                      "LodOverride": null,
+                      "MaterialGroup": null,
+                      "MaterialOverride": null,
+                      "Materials": null,
+                      "Model": "models/items/consumables/drinks/waterbottle/waterbottle.vmdl",
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "RenderOptions": {
+                        "GameLayer": true,
+                        "OverlayLayer": false,
+                        "BloomLayer": false,
+                        "AfterUILayer": false
+                      },
+                      "RenderType": "On",
+                      "Tint": "0.95,0.75,0.35,1"
+                    },
+                    {
+                      "__type": "Sandbox.BoxCollider",
+                      "__guid": "80172f08-abfa-4f79-9ea7-21d2534c8550",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "Center": "0,0,8.91003799",
+                      "ColliderFlags": 0,
+                      "Elasticity": null,
+                      "Friction": null,
+                      "IsTrigger": false,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "OnObjectTriggerEnter": null,
+                      "OnObjectTriggerExit": null,
+                      "OnTriggerEnter": null,
+                      "OnTriggerExit": null,
+                      "RollingResistance": null,
+                      "Scale": "6.42000008,6.42000008,16.6100388",
+                      "Static": false,
+                      "Surface": null,
+                      "SurfaceVelocity": "0,0,0"
+                    },
+                    {
+                      "__type": "Sandbox.Rigidbody",
+                      "__guid": "cd6d27af-6e9a-444f-bf45-eef7c1537267",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "AngularDamping": 0,
+                      "EnableImpactDamage": true,
+                      "EnhancedCcd": false,
+                      "Gravity": true,
+                      "GravityScale": 1,
+                      "ImpactDamage": 0,
+                      "LinearDamping": 0,
+                      "Locking": {
+                        "X": false,
+                        "Y": false,
+                        "Z": false,
+                        "Pitch": false,
+                        "Yaw": false,
+                        "Roll": false
+                      },
+                      "MassCenterOverride": "0,0,0",
+                      "MassOverride": 0,
+                      "MinImpactDamageSpeed": 500,
+                      "MotionEnabled": true,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "OverrideMassCenter": false,
+                      "RigidbodyFlags": 0,
+                      "SleepThreshold": 2,
+                      "StartAsleep": false
+                    }
+                  ],
+                  "Children": []
+                },
+                {
+                  "__guid": "80c32fe7-0e75-458b-a327-b3fab2fdb0f1",
+                  "__version": 2,
+                  "__Prefab": "prefabs/items/consumables/drinks/waterbottle/water_bottle.prefab",
+                  "__PrefabInstancePatch": {
+                    "AddedObjects": [
+                      {
+                        "Id": {
+                          "Type": "Component",
+                          "IdValue": "da692188-fc0a-44f1-adf5-bfe1be4ef417"
+                        },
+                        "Parent": {
+                          "Type": "GameObject",
+                          "IdValue": "bea18501-b0c6-494a-92a5-f2985d800afe"
+                        },
+                        "PreviousElement": {
+                          "Type": "Component",
+                          "IdValue": "1d258c2d-bb0f-488a-b293-ea2d5d186571"
+                        },
+                        "ContainerProperty": "Components",
+                        "IsContainerArray": true,
+                        "Data": {
+                          "__type": "Sandbox.BoxCollider",
+                          "__guid": "da692188-fc0a-44f1-adf5-bfe1be4ef417",
+                          "__enabled": true,
+                          "Flags": 0,
+                          "Center": "-1.1920929E-06,0,9.12145138",
+                          "ColliderFlags": 0,
+                          "Elasticity": null,
+                          "Friction": null,
+                          "IsTrigger": false,
+                          "OnComponentDestroy": null,
+                          "OnComponentDisabled": null,
+                          "OnComponentEnabled": null,
+                          "OnComponentFixedUpdate": null,
+                          "OnComponentStart": null,
+                          "OnComponentUpdate": null,
+                          "OnObjectTriggerEnter": null,
+                          "OnObjectTriggerExit": null,
+                          "OnTriggerEnter": null,
+                          "OnTriggerExit": null,
+                          "RollingResistance": null,
+                          "Scale": "8.39379597,8.39379406,18.9615288",
+                          "Static": false,
+                          "Surface": null,
+                          "SurfaceVelocity": "0,0,0"
+                        }
+                      }
+                    ],
+                    "RemovedObjects": [],
+                    "PropertyOverrides": [
+                      {
+                        "Target": {
+                          "Type": "GameObject",
+                          "IdValue": "bea18501-b0c6-494a-92a5-f2985d800afe"
+                        },
+                        "Property": "Name",
+                        "Value": "World Item - Water Bottle"
+                      },
+                      {
+                        "Target": {
+                          "Type": "GameObject",
+                          "IdValue": "bea18501-b0c6-494a-92a5-f2985d800afe"
+                        },
+                        "Property": "Position",
+                        "Value": "0,-229.333237,42.8829384"
+                      }
+                    ],
+                    "MovedObjects": []
+                  },
+                  "__PrefabIdToInstanceId": {
+                    "bea18501-b0c6-494a-92a5-f2985d800afe": "80c32fe7-0e75-458b-a327-b3fab2fdb0f1",
+                    "3d47e216-ca1a-48b2-94ba-fa3e2a072bec": "0c55049c-4447-402c-8862-bdd7672706bb",
+                    "4eb6075d-7c3f-49db-9cf2-780ec3b9e630": "9922937a-72c1-4355-ba12-a272a0ec9fab",
+                    "99020782-0181-4044-9cec-071b44e814f5": "a47da160-682f-4ce0-b08d-1130829a1716",
+                    "1d258c2d-bb0f-488a-b293-ea2d5d186571": "b1f078fa-898b-44d1-a98d-0221adf234e4"
+                  }
                 }
               ]
             }
