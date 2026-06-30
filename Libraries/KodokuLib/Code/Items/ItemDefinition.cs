@@ -7,7 +7,7 @@ namespace Kodoku.Lib.Items;
 public sealed class ItemDefinition : GameResource
 {
 	public const string DefaultIconPath = "ui/game/icons/system/default/icon_default.png";
-	public const int MaxStorageWidth = 8;
+	public const int MaxStorageWidth = 6;
 
 	int _storageWidth;
 

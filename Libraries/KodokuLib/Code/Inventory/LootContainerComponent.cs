@@ -17,7 +17,7 @@ public sealed class LootContainerInitialItem
 public sealed class LootContainerComponent : Component, Component.ExecuteInEditor
 {
 	[Property] public string ContainerName { get; set; } = "Loot Container";
-	[Property, Range( 1, 9 )] public int Width { get; set; } = 4;
+	[Property, Range( 1, 6 )] public int Width { get; set; } = 4;
 	[Property, Range( 1, 12 )] public int Height { get; set; } = 4;
 	[Property] public List<LootContainerInitialItem> InitialItems { get; set; } = new();
 	[Property] public bool SeedInitialItemsOnStart { get; set; } = true;

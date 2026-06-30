@@ -1,6 +1,5 @@
 @using Kodoku.Lib.GameMenu
 @using Kodoku.Lib.Inventory
-@using Kodoku.Lib.UI.Components
 @using Kodoku.Lib.UI.Pages
 @inherits PanelComponent
 @namespace Kodoku.Lib.UI
@@ -9,36 +8,47 @@
 @attribute [Icon( "menu_open" )]
 
 <root class="@RootClass">
-	<GameMenuSidebar Tabs="@GameMenuState.DefaultTabs" ActiveTab="@MenuState.ActiveTab" OnTabSelected="@SetActiveTab" />
+	<nav class="game-menu-topnav">
+		@foreach ( var tab in NavTabs )
+		{
+			<button class="@GetNavTabClass( tab )" onclick=@( () => SetActiveTab( tab ) )>
+				@GameMenuState.GetTabTitle( tab )
+			</button>
+		}
+	</nav>
 
-	<main class="game-menu-main">
-		<GameMenuHeader ActiveTab="@MenuState.ActiveTab" />
-
-		<section class="@PageHostClass">
-			@switch ( MenuState.ActiveTab )
-			{
-				case GameMenuTab.Inventory:
-					<InventoryPage Inventory="@Inventory" Interactor="@InventoryInteractor" />
-					break;
-				case GameMenuTab.Stats:
-					<StatsPage />
-					break;
-				case GameMenuTab.Quests:
-					<QuestsPage />
-					break;
-				case GameMenuTab.Map:
-					<MapPage />
-					break;
-				case GameMenuTab.Options:
-					<OptionsPage />
-					break;
-			}
-		</section>
-	</main>
+	<section class="@PageHostClass">
+		@switch ( MenuState.ActiveTab )
+		{
+			case GameMenuTab.Inventory:
+				<InventoryPage Inventory="@Inventory" Interactor="@InventoryInteractor" />
+				break;
+			case GameMenuTab.Stats:
+				<StatsPage />
+				break;
+			case GameMenuTab.Map:
+				<MapPage />
+				break;
+			case GameMenuTab.Options:
+				<OptionsPage />
+				break;
+			default:
+				<InventoryPage Inventory="@Inventory" Interactor="@InventoryInteractor" />
+				break;
+		}
+	</section>
 </root>
 
 @code
 {
+	private static readonly GameMenuTab[] NavTabs =
+	{
+		GameMenuTab.Inventory,
+		GameMenuTab.Stats,
+		GameMenuTab.Map,
+		GameMenuTab.Options
+	};
+
 	[Property] public bool OpenOnStart { get; set; }
 	[Property] public string ToggleKey { get; set; } = "TAB";
 
@@ -59,6 +69,12 @@
 	}
 
 	private string PageHostClass => $"game-menu-page-host game-menu-page-host--{MenuState.ActiveTab.ToString().ToLowerInvariant()}";
+	private string GetNavTabClass( GameMenuTab tab )
+	{
+		var slug = tab.ToString().ToLowerInvariant();
+		var active = tab == MenuState.ActiveTab ? " active" : "";
+		return $"game-menu-nav-tab game-menu-nav-tab--{slug}{active}";
+	}
 	public bool IsOpen => MenuState.IsOpen;
 
 	protected override void OnStart()

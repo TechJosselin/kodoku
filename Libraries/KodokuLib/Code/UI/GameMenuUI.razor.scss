@@ -1,5 +1,16 @@
 @import "Styles/kodoku_inventory_textures.scss";
 
+// --- Layout safe zones aligned with GameMenu-Master.png (16:9) ---
+// Left/right border frame  : ~3.5% of width  (~67px at 1920px)
+// Top thin border           : ~1.5% of height (~16px at 1080px)
+// Metal tab bar             : ~3.4% to ~7.8%  (~4.4% zone)
+// Content area              : ~10% to ~97%
+// Bottom border frame       : ~3%  of height  (~32px at 1080px)
+// TODO: replace with 9-slice (TopBar / LeftBorder / RightBorder / BottomBorder / CenterFill)
+//       when the split assets are ready.
+
+
+
 GameMenuUI
 {
 	position: absolute;
@@ -7,11 +18,14 @@ GameMenuUI
 	left: 0;
 	right: 0;
 	bottom: 0;
-	width: 100%;
-	height: 100%;
+	width: 100vw;
+	height: 100vh;
 	display: flex;
-	flex-direction: row;
-	@include kodoku-textured-surface( $kodoku-tex-charcoal-noise, $kodoku-ui-black );
+	flex-direction: column;
+	background-color: $kodoku-ui-black;
+	background-image: url( "/ui/gamemenu/gamemenu-master.png" );
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
 	color: $kodoku-ui-text;
 	font-family: Poppins;
 	z-index: 50;
@@ -30,40 +44,92 @@ GameMenuUI
 		pointer-events: none !important;
 	}
 
-	.game-menu-main
+	// Overlay absolu calé sur le background 16:9.
+	// Les boutons sont positionnés en % de l'écran via left sur chaque --tab.
+	.game-menu-topnav
 	{
-		flex-grow: 1;
-		flex-shrink: 1;
-		min-width: 0;
-		width: 100%;
-		height: 100%;
+		position: absolute;
+		top: 5.3%;
+		left: 0;
+		right: 0;
+		height: 4.4%;
 		display: flex;
-		flex-direction: column;
-		background-color: #10120f;
-		border-left: 1px solid rgba( 160, 151, 125, 0.16 );
+		padding: 0;
+		pointer-events: none;
+		z-index: 20;
 	}
 
+	.game-menu-nav-tab
+	{
+		position: absolute;
+		top: 0;
+		width: 13%;
+		height: 100%;
+		transform: translateX( -50% );
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		text-align: center;
+		line-height: 1;
+		border: none;
+		color: $kodoku-ui-text-dim;
+		font-family: Poppins;
+		font-size: clamp( 15px, 1.1vw, 24px );
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		cursor: pointer;
+		pointer-events: all;
+
+		&:hover
+		{
+			background-color: rgba( 255, 255, 255, 0.06 );
+			color: $kodoku-ui-text-muted;
+		}
+
+		&.active
+		{
+			background-color: rgba( 214, 154, 53, 0.10 );
+			color: $kodoku-ui-amber;
+			border-bottom: 2px solid $kodoku-ui-amber;
+		}
+	}
+
+	// --- Position individuelle de chaque bouton ---
+	// Ajuste left pour centrer le bouton sur la plaque métallique correspondante.
+
+	.game-menu-nav-tab--inventory
+	{
+		left: 14.5%;
+	}
+	.game-menu-nav-tab--stats
+	{
+		left: 38.5%;
+	}
+	.game-menu-nav-tab--map
+	{
+		left: 62.2%;
+	}
+	.game-menu-nav-tab--options
+	{
+		left: 85.7%;
+	}
+
+	// Absolu : démarre sous la barre nav, s'étend jusqu'au bas de l'écran.
 	.game-menu-page-host
 	{
-		position: relative;
-		flex-grow: 1;
-		flex-shrink: 1;
-		min-width: 0;
-		min-height: 0;
-		width: 100%;
-		padding: 20px;
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 11%;
+		bottom: 0;
+		z-index: 10;
 		display: flex;
-		background-color: #0b0d0a;
+		padding-top:    1%;
+		padding-right:  2%;
+		padding-bottom: 1.5%;
+		padding-left:   2%;
 		overflow: hidden;
-	}
-
-	.game-menu-page-host--inventory
-	{
-		padding: 0;
-		background-color: #080a08;
-		background-image: $kodoku-tex-charcoal-noise;
-		background-size: cover;
-		background-repeat: no-repeat;
-		background-position: center;
 	}
 }
