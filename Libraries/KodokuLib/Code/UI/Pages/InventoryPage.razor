@@ -128,7 +128,24 @@
 				}
 			</div>
 		</div>
-		<div class="inventory-page-panel HotbarPanel hotbar-panel" @ref="HotbarPanel"></div>
+		<div class="inventory-page-panel HotbarPanel hotbar-panel" @ref="HotbarPanel">
+			<div class="hotbar-slots">
+				@for ( var i = 0; i < HotbarComponent.SlotCount; i++ )
+				{
+					var index = i;
+					var item = GetHotbarItem( index );
+
+					<button class="@GetHotbarSlotClass( index, item )"
+					        onclick=@( () => ClickHotbarSlot( index ) )
+					        @onrightclick=@( () => ClearHotbarSlot( index ) )>
+						@if ( item is not null )
+						{
+							<div class="hotbar-item-icon" style="@GetItemIconStyle( item )"></div>
+						}
+					</button>
+				}
+			</div>
+		</div>
 
 @if ( ContextMenuOpen && GetContextItem() is { } contextItem )
 		{
@@ -315,6 +332,17 @@
 		var openedStorage = GetOpenedStorageContainer();
 		if ( openedStorage is not null )
 			hash = HashContainer( hash, openedStorage );
+
+		if ( Inventory?.Hotbar is not null )
+		{
+			for ( var i = 0; i < HotbarComponent.SlotCount; i++ )
+			{
+				var hotbarItemId = Inventory.Hotbar.GetItemId( i );
+				var hotbarItem = Inventory.Hotbar.GetItem( i );
+				hash = (hash * 397) ^ (hotbarItemId?.GetHashCode() ?? 0);
+				hash = (hash * 397) ^ (hotbarItem?.Quantity ?? 0);
+			}
+		}
 
 		if ( !string.IsNullOrWhiteSpace( HeldItemId ) )
 		{
@@ -646,6 +674,59 @@
 		HoveredX = -1;
 		HoveredY = -1;
 		Rotated = false;
+	}
+
+	ItemInstance GetHotbarItem( int index )
+	{
+		return Inventory?.Hotbar?.GetItem( index );
+	}
+
+	string GetHotbarSlotClass( int index, ItemInstance item )
+	{
+		var classes = "hotbar-slot";
+		classes += item is null ? " empty" : " assigned";
+
+		if ( !string.IsNullOrWhiteSpace( HeldItemId ) )
+			classes += " hotbar-drop-target";
+
+		return classes;
+	}
+
+	void ClickHotbarSlot( int index )
+	{
+		CloseContextMenu();
+		CloseSlotContext();
+
+		if ( SplitHeldItem is not null )
+		{
+			Run( InventoryActionResult.Fail( "Split items must be placed in a grid slot first." ) );
+			return;
+		}
+
+		if ( !string.IsNullOrWhiteSpace( HeldItemId ) )
+		{
+			var assignResult = Inventory?.Hotbar?.Assign( index, HeldItemId )
+				?? InventoryActionResult.Fail( "No hotbar." );
+
+			Run( assignResult );
+
+			if ( assignResult.Success )
+				ClearHeldItem();
+
+			return;
+		}
+
+		Run( Inventory?.Hotbar?.UseSlot( index )
+			?? InventoryActionResult.Fail( "No hotbar." ) );
+	}
+
+	void ClearHotbarSlot( int index )
+	{
+		CloseContextMenu();
+		CloseSlotContext();
+
+		Run( Inventory?.Hotbar?.Clear( index )
+			?? InventoryActionResult.Fail( "No hotbar." ) );
 	}
 
 	void ToggleRotation()

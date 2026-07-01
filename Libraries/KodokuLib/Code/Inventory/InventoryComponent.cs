@@ -24,6 +24,7 @@ public sealed class InventoryComponent : Component
 
 	public InventoryContainer Pockets { get; private set; }
 	public LoadoutComponent Loadout { get; private set; }
+	public HotbarComponent Hotbar { get; private set; }
 
 	public InventoryContainer BackpackContainer => GetStorageContainer( InventoryEquipmentSlot.Backpack );
 
@@ -43,6 +44,11 @@ public sealed class InventoryComponent : Component
 		Loadout = Components.Get<LoadoutComponent>();
 		if ( Loadout is null || !Loadout.IsValid() )
 			Loadout = Components.Create<LoadoutComponent>();
+
+		Hotbar = Components.Get<HotbarComponent>();
+		if ( Hotbar is null || !Hotbar.IsValid() )
+			Hotbar = Components.Create<HotbarComponent>();
+		Hotbar.BindInventory( this );
 
 		RebuildActiveContainers();
 	}
@@ -408,6 +414,30 @@ public sealed class InventoryComponent : Component
 		var result = TryPickupWorldItem( nearest );
 		LogResult( result );
 		return result;
+	}
+
+	public ItemInstance FindOwnedItem( string itemId )
+	{
+		if ( string.IsNullOrWhiteSpace( itemId ) )
+			return null;
+
+		var equippedSlot = Loadout?.FindItemSlot( itemId );
+		if ( equippedSlot.HasValue )
+			return Loadout.GetEquipped( equippedSlot.Value );
+
+		foreach ( var container in ActiveContainers )
+		{
+			var placement = container.FindPlacement( itemId );
+			if ( placement is not null )
+				return placement.Item;
+		}
+
+		return null;
+	}
+
+	public bool OwnsItem( string itemId )
+	{
+		return FindOwnedItem( itemId ) is not null;
 	}
 
 	InventoryContainer FindContainer( string containerId )

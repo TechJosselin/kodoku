@@ -649,3 +649,60 @@ InventoryPage
 	opacity: 0.92;
 	overflow: hidden;
 }
+
+.hotbar-slots
+{
+	position: absolute;
+	left: 4.5%;
+	right: 4.5%;
+	top: 24%;
+	bottom: 21%;
+	display: flex;
+	flex-direction: row;
+	gap: 13px;
+	
+}
+
+.hotbar-slot
+{
+	flex-grow: 1;
+	flex-shrink: 1;
+	flex-basis: 0;
+	position: relative;
+	min-width: 0;
+	min-height: 0;
+	padding: 0;
+	background-color: transparent;
+	border: 0;
+	cursor: pointer;
+	overflow: hidden;
+	
+}
+
+.hotbar-slot:hover
+{
+	background-color: rgba( 255, 220, 150, 0.05 );
+}
+
+.hotbar-slot.assigned
+{
+	background-color: rgba( 0, 0, 0, 0.10 );
+}
+
+.hotbar-slot.hotbar-drop-target
+{
+	background-color: rgba( 255, 220, 150, 0.06 );
+}
+
+.hotbar-item-icon
+{
+	position: absolute;
+	left: 10%;
+	top: 12%;
+	right: 10%;
+	bottom: 10%;
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	opacity: 0.90;
+}
