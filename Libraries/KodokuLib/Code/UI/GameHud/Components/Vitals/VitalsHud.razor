@@ -1,0 +1,86 @@
+@using Kodoku.Lib.Vitals
+@namespace Kodoku.Lib.UI.GameHud.Components.Vitals
+
+<root class="vitals-hud">
+	@if ( Vitals is not null )
+	{
+		<div class="vital-row vital-row--health">
+			<div class="vital-icon vital-icon--health">
+				<div class="cross-line cross-line--h"></div>
+				<div class="cross-line cross-line--v"></div>
+			</div>
+			<div class="vital-bar">
+				<div class="vital-bar-fill" style="@GetFillStyle( Vitals.Health )"></div>
+			</div>
+		</div>
+
+		<div class="vital-row vital-row--stamina">
+			<div class="vital-icon vital-icon--stamina">
+				<div class="bolt-top"></div>
+				<div class="bolt-bottom"></div>
+			</div>
+			<div class="vital-bar">
+				<div class="vital-bar-fill" style="@GetFillStyle( Vitals.Stamina )"></div>
+			</div>
+		</div>
+
+		<div class="vital-row vital-row--hunger">
+			<div class="vital-icon vital-icon--hunger">
+				<div class="hunger-ring"></div>
+			</div>
+			<div class="vital-bar">
+				<div class="vital-bar-fill" style="@GetFillStyle( Vitals.Hunger )"></div>
+			</div>
+		</div>
+
+		<div class="vital-row vital-row--thirst">
+			<div class="vital-icon vital-icon--thirst">
+				<div class="thirst-drop"></div>
+			</div>
+			<div class="vital-bar">
+				<div class="vital-bar-fill" style="@GetFillStyle( Vitals.Thirst )"></div>
+			</div>
+		</div>
+
+		<div class="vital-row vital-row--madness">
+			<div class="vital-icon vital-icon--madness">
+				<div class="eye-shape">
+					<div class="eye-pupil"></div>
+				</div>
+			</div>
+			<div class="vital-bar">
+				<div class="vital-bar-fill" style="@GetFillStyle( Vitals.Madness )"></div>
+			</div>
+		</div>
+	}
+</root>
+
+@code
+{
+	[Parameter] public PlayerVitalsComponent Vitals { get; set; }
+
+	string GetFillStyle( VitalStat stat )
+	{
+		if ( stat is null )
+			return "width: 0%;";
+		return $"width: {stat.Normalized * 100f:0.#}%;";
+	}
+
+	protected override int BuildHash()
+	{
+		if ( Vitals is null )
+			return 0;
+
+		var hash = Vitals.Health.Current.GetHashCode();
+		hash = (hash * 397) ^ Vitals.Health.Max.GetHashCode();
+		hash = (hash * 397) ^ Vitals.Stamina.Current.GetHashCode();
+		hash = (hash * 397) ^ Vitals.Stamina.Max.GetHashCode();
+		hash = (hash * 397) ^ Vitals.Hunger.Current.GetHashCode();
+		hash = (hash * 397) ^ Vitals.Hunger.Max.GetHashCode();
+		hash = (hash * 397) ^ Vitals.Thirst.Current.GetHashCode();
+		hash = (hash * 397) ^ Vitals.Thirst.Max.GetHashCode();
+		hash = (hash * 397) ^ Vitals.Madness.Current.GetHashCode();
+		hash = (hash * 397) ^ Vitals.Madness.Max.GetHashCode();
+		return hash;
+	}
+}

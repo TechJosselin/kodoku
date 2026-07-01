@@ -1,0 +1,51 @@
+using Sandbox;
+
+namespace Kodoku.Lib.Vitals;
+
+[Title( "Player Vitals" )]
+[Category( "Kodoku/Vitals" )]
+[Icon( "favorite" )]
+public sealed class PlayerVitalsComponent : Component
+{
+	public VitalStat Health { get; } = new();
+	public VitalStat Stamina { get; } = new();
+	public VitalStat Hunger { get; } = new();
+	public VitalStat Thirst { get; } = new();
+	public VitalStat Madness { get; } = new();
+
+	[Property] public bool UseDebugValues { get; set; } = true;
+
+	[Property] public float DebugHealth { get; set; } = 100f;
+	[Property] public float DebugStamina { get; set; } = 85f;
+	[Property] public float DebugHunger { get; set; } = 70f;
+	[Property] public float DebugThirst { get; set; } = 55f;
+	[Property] public float DebugMadness { get; set; } = 25f;
+
+	public VitalStat GetStat( VitalStatKind kind ) => kind switch
+	{
+		VitalStatKind.Health  => Health,
+		VitalStatKind.Stamina => Stamina,
+		VitalStatKind.Hunger  => Hunger,
+		VitalStatKind.Thirst  => Thirst,
+		VitalStatKind.Madness => Madness,
+		_                     => Health
+	};
+
+	protected override void OnUpdate()
+	{
+		if ( !UseDebugValues )
+			return;
+
+		Health.Max  = 100f;
+		Stamina.Max = 100f;
+		Hunger.Max  = 100f;
+		Thirst.Max  = 100f;
+		Madness.Max = 100f;
+
+		Health.Set( DebugHealth );
+		Stamina.Set( DebugStamina );
+		Hunger.Set( DebugHunger );
+		Thirst.Set( DebugThirst );
+		Madness.Set( DebugMadness );
+	}
+}

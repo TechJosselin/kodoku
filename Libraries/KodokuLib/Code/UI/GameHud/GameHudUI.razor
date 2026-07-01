@@ -1,6 +1,8 @@
 @using Kodoku.Lib.Inventory
 @using Kodoku.Lib.UI
 @using Kodoku.Lib.UI.GameHud.Components.Hotbar
+@using Kodoku.Lib.UI.GameHud.Components.Vitals
+@using Kodoku.Lib.Vitals
 @inherits PanelComponent
 @namespace Kodoku.Lib.UI.GameHud
 @attribute [Title( "Game HUD UI" )]
@@ -9,11 +11,13 @@
 
 <root class="@RootClass">
 	<HotbarHud Inventory="@Inventory" />
+	<VitalsHud Vitals="@Vitals" />
 </root>
 
 @code
 {
 	private InventoryComponent Inventory { get; set; }
+	private PlayerVitalsComponent Vitals { get; set; }
 	private GameMenuUI _gameMenu;
 
 	private string RootClass => _gameMenu is not null && _gameMenu.IsValid() && _gameMenu.IsOpen
@@ -42,6 +46,15 @@
 		if ( Inventory is not null && Inventory.IsValid() )
 			Inventory.EnsureInitialized();
 
+		if ( Vitals is null || !Vitals.IsValid() )
+		{
+			Vitals = Inventory is not null && Inventory.IsValid()
+				? Inventory.GameObject.Components.Get<PlayerVitalsComponent>()
+				: null;
+
+			Vitals ??= Scene.GetAllComponents<PlayerVitalsComponent>().FirstOrDefault();
+		}
+
 		if ( _gameMenu is null || !_gameMenu.IsValid() )
 			_gameMenu = Scene.GetAllComponents<GameMenuUI>().FirstOrDefault();
 	}
@@ -49,6 +62,7 @@
 	protected override int BuildHash()
 	{
 		var hash = Inventory?.GetHashCode() ?? 0;
+		hash = (hash * 397) ^ (Vitals?.GetHashCode() ?? 0);
 		hash = (hash * 397) ^ (_gameMenu is not null && _gameMenu.IsValid() && _gameMenu.IsOpen).GetHashCode();
 		return hash;
 	}
