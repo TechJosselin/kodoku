@@ -13,7 +13,9 @@ public sealed class PlayerVitalsComponent : Component
 	public VitalStat Thirst { get; } = new();
 	public VitalStat Madness { get; } = new();
 
-	[Property] public bool UseDebugValues { get; set; } = true;
+	// Quand activé, les sliders écrasent les stats à chaque frame.
+	// Désactiver pour que les effets d'items persistent.
+	[Property] public bool OverrideWithDebugValues { get; set; } = false;
 
 	[Property] public float DebugHealth { get; set; } = 100f;
 	[Property] public float DebugStamina { get; set; } = 85f;
@@ -31,6 +33,22 @@ public sealed class PlayerVitalsComponent : Component
 		_                     => Health
 	};
 
+	// Applique les sliders une seule fois sans activer l'override continu.
+	public void ApplyDebugValues()
+	{
+		Health.Max  = 100f;
+		Stamina.Max = 100f;
+		Hunger.Max  = 100f;
+		Thirst.Max  = 100f;
+		Madness.Max = 100f;
+
+		Health.Set( DebugHealth );
+		Stamina.Set( DebugStamina );
+		Hunger.Set( DebugHunger );
+		Thirst.Set( DebugThirst );
+		Madness.Set( DebugMadness );
+	}
+
 	public void ApplyItemUseEffects(
 		float healthDelta,
 		float staminaDelta,
@@ -45,21 +63,16 @@ public sealed class PlayerVitalsComponent : Component
 		if ( madnessDelta != 0f ) Madness.Add( madnessDelta );
 	}
 
+	protected override void OnStart()
+	{
+		ApplyDebugValues();
+	}
+
 	protected override void OnUpdate()
 	{
-		if ( !UseDebugValues )
+		if ( !OverrideWithDebugValues )
 			return;
 
-		Health.Max  = 100f;
-		Stamina.Max = 100f;
-		Hunger.Max  = 100f;
-		Thirst.Max  = 100f;
-		Madness.Max = 100f;
-
-		Health.Set( DebugHealth );
-		Stamina.Set( DebugStamina );
-		Hunger.Set( DebugHunger );
-		Thirst.Set( DebugThirst );
-		Madness.Set( DebugMadness );
+		ApplyDebugValues();
 	}
 }
