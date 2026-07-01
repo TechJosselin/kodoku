@@ -8,13 +8,13 @@
 		{
 			var index = i;
 			var item = GetItem( index );
-			<button class="@GetSlotClass( index, item )" onclick=@( () => UseSlot( index ) )>
+			<div class="@GetSlotClass( index, item )">
 				@if ( item is not null )
 				{
 					<div class="hotbar-hud-item-icon" style="@GetItemIconStyle( item )"></div>
 				}
 				<span class="hotbar-hud-slot-number">@( index + 1 )</span>
-			</button>
+			</div>
 		}
 	</div>
 </div>
@@ -32,11 +32,6 @@
 		if ( Inventory?.Hotbar?.ActiveSlotIndex == index )
 			cls += " active";
 		return cls;
-	}
-
-	void UseSlot( int index )
-	{
-		Inventory?.Hotbar?.UseSlot( index );
 	}
 
 	string GetItemIconStyle( ItemInstance item )
