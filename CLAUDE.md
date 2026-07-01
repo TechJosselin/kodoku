@@ -48,11 +48,13 @@ The `Docs/EditorComponentPlacement.md` file is the authoritative guide for wirin
 `InventoryContainer` (pure C# class, not a Component) holds a flat list of `InventoryItemPlacement` records. Each placement stores an `ItemInstance`, an (x, y) origin, and a rotation flag. Items occupy multiple cells based on their `ItemDefinition.Width`/`Height`. Call `CanAddItemAt()` before `TryAddItem()` — placement is never forced.
 
 Key types:
-- `ItemDefinition` — `GameResource` asset. Fields: `ItemId`, `DisplayName`, `Description`, `IconPath`, `ModelPath`, `PrefabPath`, `ItemKind` (`InventoryItemKind` enum), `Width`, `Height`, `CanRotate`, `IsStackable`, `MaxStack`, `Weight`, `StorageWidth` (capped at 6), `StorageHeight`. **No `EquipSlot` or `WeaponKind` fields.** `CreatesContainer` is a computed property (`StorageWidth > 0 && StorageHeight > 0`).
+- `ItemDefinition` — `GameResource` asset. Fields: `ItemId`, `DisplayName`, `Description`, `IconPath`, `ModelPath`, `PrefabPath`, `ItemKind` (`InventoryItemKind` enum), `Width`, `Height`, `CanRotate`, `IsStackable`, `MaxStack`, `Weight`, `StorageWidth` (capped at `ItemDefinition.MaxStorageWidth` = 6), `StorageHeight`. **No `EquipSlot` or `WeaponKind` fields.** `CreatesContainer` is a computed property (`StorageWidth > 0 && StorageHeight > 0`). Consumable fields: `IsUsable`, `ConsumeOnUse`, `UseQuantity`, and per-vital deltas (`UseHealthDelta`, `UseStaminaDelta`, `UseHungerDelta`, `UseThirstDelta`, `UseMadnessDelta`) applied via `PlayerVitalsComponent.ApplyItemUseEffects()`; `HasUseEffects()` checks whether any delta is non-zero.
 - `ItemInstance` — runtime item with a unique `InstanceId`, stack count, and reference to its `ItemDefinition`.
 - `InventoryContainer` — grid storage with stacking and split support. Tagged with an `InventoryContainerKind`: `Pockets` (player's own inventory), `Loot` (`LootContainerComponent` world containers), or `Backpack` (item-owned sub-containers, created lazily via `ItemInstance.EnsureStoredContainer()` when `CreatesContainer == true`).
-- `InventoryComponent` — s.box Component that owns one `pockets` container and delegates to `LoadoutComponent` for equipped items.
+- `InventoryComponent` — s.box Component that owns one `pockets` container, delegates to `LoadoutComponent` for equipped items, and resolves sibling `HotbarComponent`/`PlayerVitalsComponent` references in `EnsureInitialized()`. `TryUseItem(itemId)` validates `IsUsable`/`HasUseEffects()`, applies vitals deltas, and consumes the item (via `ConsumeOwnedItemQuantity`) when `ConsumeOnUse` is set.
 - `LoadoutComponent` / `LoadoutSlotRegistry` — manages equipment slots (headwear, armor, backpack, sling weapon, back weapon, etc.).
+- `HotbarComponent` — 8 fixed slots (`SlotCount`) mapping number keys to owned item IDs. `UseSlot(index)` calls `InventoryComponent.TryUseItem()` for usable items, or arms `Weapon`-kind items (sets `ActiveSlotIndex`/`ActiveItemId`) if equipped; otherwise fails.
+- `PlayerVitalsComponent` — owns five `VitalStat`s (Health, Stamina, Hunger, Thirst, Madness). `ApplyItemUseEffects()` adds deltas from item use. `OverrideWithDebugValues` (off by default) re-applies the `Debug*` slider values every frame — leave it off so item effects persist; only `ApplyDebugValues()`-on-`OnStart` runs once otherwise.
 - `WorldItemComponent` — represents a pickable item in the world. Automatically creates and fits a `BoxCollider` to the model bounds (retry loop up to 10 frames). Do not add a collider manually unless `OverrideExistingCollider` is set.
 - `LootContainerComponent` — world container that players can loot from. Owns an `InventoryContainer` of kind `InventoryContainerKind.Loot`. Configured via an `InitialItems` list seeded on `OnStart`; shows a debug-sphere visual in the editor. Do not create the `InventoryContainer` manually — `EnsureSetup()` manages it internally.
 
@@ -66,11 +68,17 @@ All inventory mutations return `InventoryActionResult` (immutable, `Success` + `
 
 ### UI
 
-UI is Razor Components (`.razor` files). `GameMenuComponent` manages open/close state and the active `GameMenuTab` (Inventory, Stats, Quests, Map, Options). `GameMenuUI.razor` renders the active page. Tab-key toggles the menu. The menu auto-resolves `InventoryComponent` from the scene using `Scene.GetAllComponents<InventoryComponent>()`.
+UI is Razor Components (`.razor` files). `GameMenuUI.razor` is the real central controller: it owns its own `GameMenuState` instance (open/closed + active `GameMenuTab`) and renders the active page. **`GameMenuComponent.cs` (and `GameMenuSidebar.razor`/`GameMenuHeader.razor`) are dead code** — never instantiated or referenced anywhere; do not treat them as the source of truth. The menu auto-resolves `InventoryComponent` from the scene using `Scene.GetAllComponents<InventoryComponent>()`.
+
+`GameMenuUI` handles all its own keyboard shortcuts in `OnUpdate()` (no separate input manager): `ToggleKey` ("TAB") toggles Inventory, `MapKey` ("M") toggles Map, `StatsKey` ("I") toggles Stats — all via the same `MenuState.Toggle(tab)` call. Escape is handled separately via `Input.EscapePressed`: if an s&box overlay is already open (checked through `IsSandboxOverlayOpen()`, a workaround since `Game.Overlay.IsOpen`/`IsPauseMenuOpen` are — unusually — instance properties while every `Show*`/`Close` method on `Game.Overlay` is static) Escape is left untouched; otherwise it's consumed (`Input.EscapePressed = false`) and toggles the menu open on the Options tab. `IsBlockingUiActive()` guards the Map/Stats shortcuts against firing while an overlay or the debug menu is open.
+
+`OptionsPage.razor` has an s&box System section with buttons wrapping `Game.Overlay.ShowPauseMenu()` and `Game.Overlay.ShowSettingsModal("keybinds"|"audio"|"video")`.
 
 `WorldInteractionHud.razor` renders the context-sensitive interaction prompt (action list + selected index) based on `WorldInteractionComponent` state.
 
 `DebugMenuUI.razor` is a standalone debug panel (comma key toggle, works independently of inventory). It provides per-item **Give** (add to inventory) and **Spawn** (drop in world) actions with a configurable quantity (1–99). It resolves `IInventoryDebugActions` from the scene at runtime. `GameMenuUI` reads `DebugMenuUI.IsOpen` in its own `RootClass` getter (and `BuildHash`) to apply `debug-overlay-active`, which disables pointer events on the inventory panel while the debug panel is open.
+
+`GameHudUI.razor` composes `HotbarHud` and `VitalsHud`, hiding itself (`game-hud-hidden`) whenever `GameMenuUI.IsOpen`. It resolves `InventoryComponent` (by `GameObject.Name == "Inventory"`) and then `PlayerVitalsComponent` off that same GameObject, falling back to a scene-wide lookup for either.
 
 ### s&box UI — Pointer Events Between PanelComponents
 
@@ -126,10 +134,11 @@ See `Assets/Data/Items/README.md` for the full category reference and path examp
 
 | Namespace | Content |
 |---|---|
-| `Kodoku.Lib.Inventory` | `InventoryContainer`, `InventoryComponent`, `LootContainerComponent`, `WorldItemComponent` |
+| `Kodoku.Lib.Inventory` | `InventoryContainer`, `InventoryComponent`, `HotbarComponent`, `LootContainerComponent`, `WorldItemComponent` |
 | `Kodoku.Lib.Items` | `ItemDefinition`, `ItemInstance`, `InventoryItemPlacement` |
 | `Kodoku.Lib.Loadout` | `LoadoutComponent`, `LoadoutSlotRegistry`, `InventoryEquipmentSlot` |
 | `Kodoku.Lib.Interaction` | `WorldInteractionComponent`, interaction actions |
-| `Kodoku.Lib.UI` | All Razor UI components |
+| `Kodoku.Lib.Vitals` | `PlayerVitalsComponent`, `VitalStat`, `VitalStatKind` |
+| `Kodoku.Lib.UI` | All Razor UI components (`GameHud/`, `GameMenu/`, `Debug/`) |
 | `Kodoku.Lib.GameMenu` | `GameMenuComponent`, `GameMenuState`, `GameMenuTab` |
 | `Sandbox` (root) | Game-specific glue in `Code/` |

@@ -498,7 +498,7 @@
                   ],
                   "Children": [
                     {
-                      "__guid": "b5cb673b-7edd-4833-b4a8-5b02d58178f6",
+                      "__guid": "899fbe42-65a2-4f08-ab53-822bc225285e",
                       "__version": 2,
                       "Flags": 0,
                       "Name": "Clothing - y_front_pants_white",
@@ -515,7 +515,7 @@
                       "Components": [
                         {
                           "__type": "Sandbox.SkinnedModelRenderer",
-                          "__guid": "26bbd535-bd49-4973-b97b-554a4e845d6d",
+                          "__guid": "56308e40-8a38-4a5d-8d2d-1e14857b6f46",
                           "__enabled": true,
                           "Flags": 0,
                           "AnimationGraph": null,
@@ -872,6 +872,43 @@
                   "OwnerTransfer": 1,
                   "Components": [],
                   "Children": []
+                },
+                {
+                  "__guid": "7e8e5b72-0e61-4b2e-9786-501f68addafb",
+                  "__version": 2,
+                  "Flags": 0,
+                  "Name": "PlayerVitals",
+                  "Position": "0,0,0",
+                  "Rotation": "0,0,0,1",
+                  "Scale": "1,1,1",
+                  "Tags": "",
+                  "Enabled": true,
+                  "NetworkMode": 2,
+                  "NetworkFlags": 0,
+                  "NetworkOrphaned": 0,
+                  "NetworkTransmit": true,
+                  "OwnerTransfer": 1,
+                  "Components": [
+                    {
+                      "__type": "Kodoku.Lib.Vitals.PlayerVitalsComponent",
+                      "__guid": "e37d3d20-7225-46fd-8775-0231d503ff5a",
+                      "__enabled": true,
+                      "Flags": 0,
+                      "DebugHealth": 100,
+                      "DebugHunger": 70,
+                      "DebugMadness": 25,
+                      "DebugStamina": 85,
+                      "DebugThirst": 55,
+                      "OnComponentDestroy": null,
+                      "OnComponentDisabled": null,
+                      "OnComponentEnabled": null,
+                      "OnComponentFixedUpdate": null,
+                      "OnComponentStart": null,
+                      "OnComponentUpdate": null,
+                      "OverrideWithDebugValues": false
+                    }
+                  ],
+                  "Children": []
                 }
               ]
             }
@@ -896,48 +933,6 @@
       "OwnerTransfer": 1,
       "Components": [],
       "Children": [
-        {
-          "__guid": "3cc7a3a3-cf62-4e90-8f61-b9a66c923b5a",
-          "__version": 2,
-          "Flags": 0,
-          "Name": "HUD",
-          "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkFlags": 0,
-          "NetworkOrphaned": 0,
-          "NetworkTransmit": true,
-          "OwnerTransfer": 1,
-          "Components": [
-            {
-              "__type": "Sandbox.ScreenPanel",
-              "__guid": "977d64b7-24d4-4a97-867a-d2e3ba18717b",
-              "__enabled": true,
-              "Flags": 0,
-              "AutoScreenScale": true,
-              "OnComponentDestroy": null,
-              "OnComponentDisabled": null,
-              "OnComponentEnabled": null,
-              "OnComponentFixedUpdate": null,
-              "OnComponentStart": null,
-              "OnComponentUpdate": null,
-              "Opacity": 1,
-              "Scale": 1,
-              "ScaleStrategy": "ConsistentHeight",
-              "TargetCamera": {
-                "_type": "component",
-                "component_id": "f836c942-2c5d-46c3-884e-db1bfd15a15a",
-                "go": "70570569-6083-4b74-ad16-261f9c5b8a7d",
-                "component_type": "CameraComponent"
-              },
-              "ZIndex": 100
-            }
-          ],
-          "Children": []
-        },
         {
           "__guid": "3afe45f2-ccb4-4171-b53f-586fa8d1fc9d",
           "__version": 2,
@@ -1098,6 +1093,60 @@
                 "component_type": "CameraComponent"
               },
               "ZIndex": 100
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "dde09681-ef22-4b3f-aad5-0f0e08a6be55",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "GameHudUI",
+          "Position": "0,0,0",
+          "Rotation": "0,0,0,1",
+          "Scale": "1,1,1",
+          "Tags": "",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.ScreenPanel",
+              "__guid": "4b41393c-d1be-4ba9-abe3-c2451c11bcfd",
+              "__enabled": true,
+              "Flags": 0,
+              "AutoScreenScale": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Opacity": 1,
+              "Scale": 1,
+              "ScaleStrategy": "ConsistentHeight",
+              "TargetCamera": {
+                "_type": "component",
+                "component_id": "f836c942-2c5d-46c3-884e-db1bfd15a15a",
+                "go": "70570569-6083-4b74-ad16-261f9c5b8a7d",
+                "component_type": "CameraComponent"
+              },
+              "ZIndex": 100
+            },
+            {
+              "__type": "Kodoku.Lib.UI.GameHud.GameHudUI",
+              "__guid": "32124e41-5430-449a-9d0c-ac1a987fe85f",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
             }
           ],
           "Children": []
