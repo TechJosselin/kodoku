@@ -38,6 +38,25 @@ public sealed class ItemDefinition : GameResource
 
 	public bool CreatesContainer => StorageWidth > 0 && StorageHeight > 0;
 
+	[Property] public bool IsUsable { get; set; }
+	[Property] public bool ConsumeOnUse { get; set; } = true;
+	[Property] public int UseQuantity { get; set; } = 1;
+
+	[Property] public float UseHealthDelta { get; set; }
+	[Property] public float UseStaminaDelta { get; set; }
+	[Property] public float UseHungerDelta { get; set; }
+	[Property] public float UseThirstDelta { get; set; }
+	[Property] public float UseMadnessDelta { get; set; }
+
+	public bool HasUseEffects()
+	{
+		return UseHealthDelta != 0f
+			|| UseStaminaDelta != 0f
+			|| UseHungerDelta != 0f
+			|| UseThirstDelta != 0f
+			|| UseMadnessDelta != 0f;
+	}
+
 	public bool CanEquipTo( InventoryEquipmentSlot slot )
 	{
 		return slot switch

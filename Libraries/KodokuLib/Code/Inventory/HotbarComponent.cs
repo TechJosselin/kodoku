@@ -87,6 +87,9 @@ public sealed class HotbarComponent : Component
 		if ( item is null )
 			return InventoryActionResult.Fail( "Hotbar slot is empty." );
 
+		if ( item.Definition.IsUsable )
+			return _inventory?.TryUseItem( item.InstanceId ) ?? InventoryActionResult.Fail( "No inventory." );
+
 		if ( item.Definition.ItemKind == InventoryItemKind.Weapon )
 		{
 			if ( _inventory?.Loadout?.FindItemSlot( item.InstanceId ).HasValue == true )

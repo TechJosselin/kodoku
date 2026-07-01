@@ -31,6 +31,20 @@ public sealed class PlayerVitalsComponent : Component
 		_                     => Health
 	};
 
+	public void ApplyItemUseEffects(
+		float healthDelta,
+		float staminaDelta,
+		float hungerDelta,
+		float thirstDelta,
+		float madnessDelta )
+	{
+		if ( healthDelta  != 0f ) Health.Add( healthDelta );
+		if ( staminaDelta != 0f ) Stamina.Add( staminaDelta );
+		if ( hungerDelta  != 0f ) Hunger.Add( hungerDelta );
+		if ( thirstDelta  != 0f ) Thirst.Add( thirstDelta );
+		if ( madnessDelta != 0f ) Madness.Add( madnessDelta );
+	}
+
 	protected override void OnUpdate()
 	{
 		if ( !UseDebugValues )

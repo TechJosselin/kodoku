@@ -425,6 +425,17 @@ public sealed class InventoryPlayerInteractionComponent : Component
 		inventory.ReturnSplitQuantity( sourceItemId, quantity );
 	}
 
+	public InventoryActionResult RequestUseItem( string itemId )
+	{
+		if ( !TryGetInventory( out var inventory, out var failed ) )
+			return failed;
+
+		if ( string.IsNullOrWhiteSpace( itemId ) )
+			return InventoryActionResult.Fail( "No selected item." );
+
+		return inventory.TryUseItem( itemId );
+	}
+
 	public InventoryActionResult RequestUnequipItem( InventoryEquipmentSlot slot )
 	{
 		if ( !TryGetInventory( out var inventory, out var failed ) )

@@ -14,5 +14,5 @@
 // - GetItem auto-vide le slot si l'item n'existe plus dans l'inventaire
 // - UseSlot sur slot vide → Fail "Hotbar slot is empty"
 // - UseSlot sur arme déjà équipée → Ok "{DisplayName} selected."
-// - UseSlot sur arme non équipée → appelle TryEquipWeaponItem
+// - UseSlot sur arme non équipée → Fail "{DisplayName} must be equipped before use."
 // - UseSlot sur item non-arme → Fail "{DisplayName} has no use action yet."

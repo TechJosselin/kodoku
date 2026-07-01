@@ -159,6 +159,10 @@
 				{
 					<button onclick=@EquipContextItem>Equip</button>
 				}
+				@if ( CanUseContextItem( contextItem ) )
+				{
+					<button onclick=@UseContextItem>Use</button>
+				}
 				@if ( CanSplitContextItem( contextItem ) )
 				{
 					<button onclick=@SplitContextItem>Split</button>
@@ -1003,6 +1007,22 @@
 				return container;
 
 		return null;
+	}
+
+	bool CanUseContextItem( ItemInstance item )
+	{
+		return item?.Definition?.IsUsable == true;
+	}
+
+	void UseContextItem()
+	{
+		var itemId = GetActionItemId();
+		var result = Interactor?.RequestUseItem( itemId )
+			?? Inventory?.TryUseItem( itemId )
+			?? InventoryActionResult.Fail( "No inventory." );
+
+		Run( result );
+		FinishActionIfSuccess( result, itemId );
 	}
 
 	bool CanSplitContextItem( ItemInstance item )

@@ -1,6 +1,7 @@
 using Sandbox;
 using Kodoku.Lib.Items;
 using Kodoku.Lib.Loadout;
+using Kodoku.Lib.Vitals;
 
 namespace Kodoku.Lib.Inventory;
 
@@ -25,6 +26,7 @@ public sealed class InventoryComponent : Component
 	public InventoryContainer Pockets { get; private set; }
 	public LoadoutComponent Loadout { get; private set; }
 	public HotbarComponent Hotbar { get; private set; }
+	public PlayerVitalsComponent Vitals { get; private set; }
 
 	public InventoryContainer BackpackContainer => GetStorageContainer( InventoryEquipmentSlot.Backpack );
 
@@ -49,6 +51,15 @@ public sealed class InventoryComponent : Component
 		if ( Hotbar is null || !Hotbar.IsValid() )
 			Hotbar = Components.Create<HotbarComponent>();
 		Hotbar.BindInventory( this );
+
+		if ( Vitals is null || !Vitals.IsValid() )
+		{
+			Vitals = Components.Get<PlayerVitalsComponent>();
+			if ( Vitals is null || !Vitals.IsValid() )
+				Vitals = GameObject.Parent?.Components.Get<PlayerVitalsComponent>();
+			if ( Vitals is null || !Vitals.IsValid() )
+				Vitals = Scene.GetAllComponents<PlayerVitalsComponent>().FirstOrDefault();
+		}
 
 		RebuildActiveContainers();
 	}
@@ -414,6 +425,68 @@ public sealed class InventoryComponent : Component
 		var result = TryPickupWorldItem( nearest );
 		LogResult( result );
 		return result;
+	}
+
+	public InventoryActionResult TryUseItem( string itemId )
+	{
+		EnsureInitialized();
+
+		if ( string.IsNullOrWhiteSpace( itemId ) )
+			return InventoryActionResult.Fail( "No item specified." );
+
+		var item = FindOwnedItem( itemId );
+		if ( item is null )
+			return InventoryActionResult.Fail( "Item was not found." );
+
+		if ( !item.Definition.IsUsable )
+			return InventoryActionResult.Fail( $"{item.DisplayName} cannot be used." );
+
+		if ( !item.Definition.HasUseEffects() )
+			return InventoryActionResult.Fail( $"{item.DisplayName} has no use effect." );
+
+		if ( Vitals is null || !Vitals.IsValid() )
+			return InventoryActionResult.Fail( "No vitals component." );
+
+		Vitals.ApplyItemUseEffects(
+			item.Definition.UseHealthDelta,
+			item.Definition.UseStaminaDelta,
+			item.Definition.UseHungerDelta,
+			item.Definition.UseThirstDelta,
+			item.Definition.UseMadnessDelta );
+
+		if ( item.Definition.ConsumeOnUse )
+			ConsumeOwnedItemQuantity( itemId, System.Math.Max( 1, item.Definition.UseQuantity ) );
+
+		var result = InventoryActionResult.Ok( $"{item.DisplayName} used." );
+		LogResult( result );
+		return result;
+	}
+
+	void ConsumeOwnedItemQuantity( string itemId, int quantity )
+	{
+		var item = FindOwnedItem( itemId );
+		if ( item is null )
+			return;
+
+		if ( item.Definition.IsStackable && item.Quantity > quantity )
+		{
+			item.RemoveQuantity( quantity );
+			return;
+		}
+
+		if ( TryFindContainerLocation( itemId, out var container, out _ ) )
+		{
+			container.TryRemoveItem( itemId, out _ );
+			return;
+		}
+
+		var equippedSlot = Loadout?.FindItemSlot( itemId );
+		if ( equippedSlot.HasValue )
+		{
+			SaveStorageContainerForSlot( equippedSlot.Value );
+			Loadout.TryUnequip( equippedSlot.Value, out _ );
+			RebuildActiveContainers();
+		}
 	}
 
 	public ItemInstance FindOwnedItem( string itemId )

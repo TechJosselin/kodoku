@@ -11,5 +11,9 @@
   "CanRotate": false,
   "IsStackable": true,
   "MaxStack": 4,
-  "Weight": 0.1
+  "Weight": 0.1,
+  "IsUsable": true,
+  "ConsumeOnUse": true,
+  "UseQuantity": 1,
+  "UseHealthDelta": 20.0
 }

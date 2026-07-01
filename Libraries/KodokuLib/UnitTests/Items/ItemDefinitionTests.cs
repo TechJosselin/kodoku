@@ -91,4 +91,52 @@ public sealed class ItemDefinitionTests
 
 		Assert.AreEqual( path, definition.GetIconPath() );
 	}
+
+	[TestMethod]
+	public void HasUseEffects_FalseWhenAllDeltasAreZero()
+	{
+		var definition = new ItemDefinition { IsUsable = true };
+
+		Assert.IsFalse( definition.HasUseEffects() );
+	}
+
+	[TestMethod]
+	public void HasUseEffects_TrueWhenHealthDeltaNonZero()
+	{
+		var definition = new ItemDefinition { IsUsable = true, UseHealthDelta = 20f };
+
+		Assert.IsTrue( definition.HasUseEffects() );
+	}
+
+	[TestMethod]
+	public void HasUseEffects_TrueWhenThirstDeltaNonZero()
+	{
+		var definition = new ItemDefinition { IsUsable = true, UseThirstDelta = 35f };
+
+		Assert.IsTrue( definition.HasUseEffects() );
+	}
+
+	[TestMethod]
+	public void IsUsable_DefaultsToFalse()
+	{
+		var definition = new ItemDefinition();
+
+		Assert.IsFalse( definition.IsUsable );
+	}
+
+	[TestMethod]
+	public void ConsumeOnUse_DefaultsToTrue()
+	{
+		var definition = new ItemDefinition();
+
+		Assert.IsTrue( definition.ConsumeOnUse );
+	}
+
+	[TestMethod]
+	public void UseQuantity_DefaultsToOne()
+	{
+		var definition = new ItemDefinition();
+
+		Assert.AreEqual( 1, definition.UseQuantity );
+	}
 }
