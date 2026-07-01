@@ -50,7 +50,7 @@ The `Docs/EditorComponentPlacement.md` file is the authoritative guide for wirin
 Key types:
 - `ItemDefinition` — `GameResource` asset. Fields: `ItemId`, `DisplayName`, `Description`, `IconPath`, `ModelPath`, `PrefabPath`, `ItemKind` (`InventoryItemKind` enum), `Width`, `Height`, `CanRotate`, `IsStackable`, `MaxStack`, `Weight`, `StorageWidth` (capped at 6), `StorageHeight`. **No `EquipSlot` or `WeaponKind` fields.** `CreatesContainer` is a computed property (`StorageWidth > 0 && StorageHeight > 0`).
 - `ItemInstance` — runtime item with a unique `InstanceId`, stack count, and reference to its `ItemDefinition`.
-- `InventoryContainer` — grid storage with stacking and split support. Tagged with an `InventoryContainerKind` (`Pockets` for the player's own inventory, `Loot` for `LootContainerComponent` world containers, etc.).
+- `InventoryContainer` — grid storage with stacking and split support. Tagged with an `InventoryContainerKind`: `Pockets` (player's own inventory), `Loot` (`LootContainerComponent` world containers), or `Backpack` (item-owned sub-containers, created lazily via `ItemInstance.EnsureStoredContainer()` when `CreatesContainer == true`).
 - `InventoryComponent` — s.box Component that owns one `pockets` container and delegates to `LoadoutComponent` for equipped items.
 - `LoadoutComponent` / `LoadoutSlotRegistry` — manages equipment slots (headwear, armor, backpack, sling weapon, back weapon, etc.).
 - `WorldItemComponent` — represents a pickable item in the world. Automatically creates and fits a `BoxCollider` to the model bounds (retry loop up to 10 frames). Do not add a collider manually unless `OverrideExistingCollider` is set.

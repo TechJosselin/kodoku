@@ -30,7 +30,7 @@ InventoryPage
 	height: 100%;
 	min-width: 0;
 	min-height: 0;
-	padding: 0 2% 1.5% 2%;
+	padding: 0 2% 0.3% 2%;
 	gap: 10px;
 	z-index: 1;
 }
@@ -62,6 +62,40 @@ InventoryPage
 	overflow: hidden;
 }
 
+.inventory-panel-label
+{
+	position: absolute;
+	left: 50%;
+	top: 2.8%;
+	transform: translateX( -50% );
+	z-index: 5;
+	pointer-events: none;
+	color: rgba( 228, 215, 185, 0.80 );
+	font-family: "Nothing You Could Do", cursive;
+	font-size: 20px;
+	font-weight: normal;
+	white-space: nowrap;
+	text-shadow: 1px 1px 4px rgba( 0, 0, 0, 0.50 );
+}
+
+.inventory-panel-label--left
+{
+	left: 30%;
+	top: 4.2%;
+}
+
+.inventory-panel-label--center
+{
+	left: 30%;
+	top: 5.5%;
+}
+
+.inventory-panel-label--right
+{
+	left: 30%;
+	top: 4.2%;
+}
+
 .LeftPanel,
 .CenterPanel,
 .RightPanel
@@ -78,10 +112,11 @@ InventoryPage
 	flex-shrink: 0;
 	align-self: center;
 	width: 55%;
-	height: 35%;
-	min-height: 92px;
+	height: 50%;
+	min-height: 100px;
 	max-height: 130px;
 	background-size: 100% 100%;
+	margin-top: 15px;
 }
 
 .LeftPanel,

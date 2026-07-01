@@ -13,6 +13,7 @@
 	<div class="inventory-page-layout" @ref="PagePanel">
 		<div class="inventory-page-main">
 			<div class="inventory-page-panel LeftPanel inventory-panel" @ref="LeftPanel">
+				<div class="inventory-panel-label inventory-panel-label--left">Inventory</div>
 				<div class="panel-work-area inventory-zone">
 					@foreach ( var container in GetInventoryContainers() )
 					{
@@ -60,6 +61,7 @@
 			</div>
 
 			<div class="inventory-page-panel CenterPanel equipment-panel" @ref="CenterPanel">
+				<div class="inventory-panel-label inventory-panel-label--center">Equipments</div>
 <div class="equipment-zone">
 					@foreach ( var slot in EquipmentSlots )
 					{
@@ -79,6 +81,7 @@
 			</div>
 
 			<div class="inventory-page-panel RightPanel container-panel" @ref="RightPanel">
+				<div class="inventory-panel-label inventory-panel-label--right">Container</div>
 				@if ( GetOpenedLootContainer() is { } lootContainer )
 				{
 					var lootPlacements = GetPlacementSnapshot( lootContainer );

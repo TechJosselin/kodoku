@@ -38,12 +38,13 @@ The `Docs/EditorComponentPlacement.md` file is the authoritative guide for wirin
 `InventoryContainer` (pure C# class, not a Component) holds a flat list of `InventoryItemPlacement` records. Each placement stores an `ItemInstance`, an (x, y) origin, and a rotation flag. Items occupy multiple cells based on their `ItemDefinition.Width`/`Height`. Call `CanAddItemAt()` before `TryAddItem()` — placement is never forced.
 
 Key types:
-- `ItemDefinition` — `GameResource` asset. Fields: `ItemId`, `DisplayName`, `Description`, `IconPath`, `ModelPath`, `PrefabPath`, `ItemKind` (`InventoryItemKind` enum), `Width`, `Height`, `CanRotate`, `IsStackable`, `MaxStack`, `Weight`, `StorageWidth` (capped at 8), `StorageHeight`. **No `EquipSlot` or `WeaponKind` fields.** `CreatesContainer` is a computed property (`StorageWidth > 0 && StorageHeight > 0`).
+- `ItemDefinition` — `GameResource` asset. Fields: `ItemId`, `DisplayName`, `Description`, `IconPath`, `ModelPath`, `PrefabPath`, `ItemKind` (`InventoryItemKind` enum), `Width`, `Height`, `CanRotate`, `IsStackable`, `MaxStack`, `Weight`, `StorageWidth` (capped at 6), `StorageHeight`. **No `EquipSlot` or `WeaponKind` fields.** `CreatesContainer` is a computed property (`StorageWidth > 0 && StorageHeight > 0`).
 - `ItemInstance` — runtime item with a unique `InstanceId`, stack count, and reference to its `ItemDefinition`.
-- `InventoryContainer` — grid storage with stacking and split support.
+- `InventoryContainer` — grid storage with stacking and split support. Tagged with an `InventoryContainerKind`: `Pockets` (player's own inventory), `Loot` (`LootContainerComponent` world containers), or `Backpack` (item-owned sub-containers, created lazily via `ItemInstance.EnsureStoredContainer()` when `CreatesContainer == true`).
 - `InventoryComponent` — s.box Component that owns one `pockets` container and delegates to `LoadoutComponent` for equipped items.
 - `LoadoutComponent` / `LoadoutSlotRegistry` — manages equipment slots (headwear, armor, backpack, sling weapon, back weapon, etc.).
 - `WorldItemComponent` — represents a pickable item in the world. Automatically creates and fits a `BoxCollider` to the model bounds (retry loop up to 10 frames). Do not add a collider manually unless `OverrideExistingCollider` is set.
+- `LootContainerComponent` — world container that players can loot from. Owns an `InventoryContainer` of kind `InventoryContainerKind.Loot`. Configured via an `InitialItems` list seeded on `OnStart`; shows a sphere visual in the editor. Do not create the `InventoryContainer` manually — `EnsureSetup()` manages it internally.
 
 ### Action Result Pattern
 
@@ -87,6 +88,7 @@ Asset paths in s&box are **case-insensitive** and relative to `Assets/`. Canonic
 | `Assets/UI/GameMenu/InventoryPage/Background/` | Inventory UI background textures |
 | `Assets/UI/GameMenu/InventoryPage/Icons/` | Loadout slot placeholder images (`slot_headwear.png`, etc.) |
 | `Assets/Scenes/` | Scene files (`.scene`). Do not move — `.scene_c`/`.scene_d` are compiled by s&box |
+| `Assets/Materials/Containers/`, `Assets/Models/Containers/`, `Assets/Prefabs/Containers/`, `Assets/Textures/Containers/` | Assets for `LootContainerComponent` world objects (e.g. wardrobes), organised by container type |
 
 **Item category structure** (identical across Data, Models, Prefabs, UI/Game/Icons/Items):
 `Equipment/{Armor,Backpacks,Clothing,Weapons}` · `Consumables/{Drinks,Food,Medical}` · `Tools` · `Keys` · `Quest` · `Resources` · `Debug`
