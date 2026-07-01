@@ -109,10 +109,16 @@ public sealed class WorldItemComponent : Component, Component.ExecuteInEditor
 		if ( go is null )
 			return false;
 
+		// Dropping must not resize the item — only reposition/reorient it.
+		// Assigning WorldTransform wholesale would overwrite the prefab's own
+		// authored scale with the dropper's (e.g. the player's) world scale.
+		var authoredScale = go.LocalScale;
 		go.WorldTransform = transform;
 
 		if ( scene is not null && go.Scene != scene )
 			go.Parent = scene;
+
+		go.LocalScale = authoredScale;
 
 		worldItem = go.Components.Get<WorldItemComponent>( FindMode.EnabledInSelfAndDescendants )
 			?? go.Components.Create<WorldItemComponent>();
@@ -186,9 +192,14 @@ public sealed class WorldItemComponent : Component, Component.ExecuteInEditor
 			var itemHeight = Definition?.GetHeight( false ) ?? 1;
 			var size = Definition?.ItemKind == InventoryItemKind.Backpack ? 0.55f : 0.28f;
 			GameObject.LocalScale = new Vector3( size * itemWidth, size * itemHeight, size );
+			renderer.Tint = GetDebugTint();
+			return;
 		}
 
-		renderer.Tint = GetDebugTint();
+		// Only the placeholder sphere (no real model available) gets the debug color.
+		// A renderer already showing a real item model keeps its authored Tint.
+		if ( renderer.Model == Model.Sphere )
+			renderer.Tint = GetDebugTint();
 	}
 
 	Model TryLoadItemModel()

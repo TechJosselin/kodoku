@@ -1,7 +1,4 @@
-$vital-amber:        rgba( 190, 135, 42, 0.95 );
-$vital-amber-border: rgba( 155, 110, 40, 0.65 );
-$vital-amber-fill:   rgba( 190, 135, 42, 0.82 );
-$vital-dark:         rgba( 30, 22, 10, 0.55 );
+$vital-amber-fill: rgba( 190, 135, 42, 0.82 );
 
 .vitals-hud
 {
@@ -32,6 +29,9 @@ $vital-dark:         rgba( 30, 22, 10, 0.55 );
 	width: 26px;
 	height: 26px;
 	flex-shrink: 0;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
 }
 
 // ── Bar ──────────────────────────────────────────────────────────────────────
@@ -53,100 +53,4 @@ $vital-dark:         rgba( 30, 22, 10, 0.55 );
 	top: 0;
 	bottom: 0;
 	background-color: $vital-amber-fill;
-}
-
-// ── Health icon : croix ───────────────────────────────────────────────────────
-
-.cross-line
-{
-	position: absolute;
-	background-color: $vital-amber;
-}
-
-.cross-line--h
-{
-	left: 3px;
-	right: 3px;
-	top: 10px;
-	height: 6px;
-}
-
-.cross-line--v
-{
-	top: 3px;
-	bottom: 3px;
-	left: 10px;
-	width: 6px;
-}
-
-// ── Stamina icon : éclair simplifié ──────────────────────────────────────────
-
-.bolt-top
-{
-	position: absolute;
-	left: 10px;
-	right: 3px;
-	top: 3px;
-	bottom: 13px;
-	background-color: $vital-amber;
-}
-
-.bolt-bottom
-{
-	position: absolute;
-	left: 3px;
-	right: 10px;
-	top: 13px;
-	bottom: 3px;
-	background-color: $vital-amber;
-}
-
-// ── Hunger icon : anneau circulaire ──────────────────────────────────────────
-
-.hunger-ring
-{
-	position: absolute;
-	left: 3px;
-	right: 3px;
-	top: 3px;
-	bottom: 3px;
-	border: 2px solid $vital-amber;
-	border-radius: 50%;
-}
-
-// ── Thirst icon : goutte (ovale vertical) ────────────────────────────────────
-
-.thirst-drop
-{
-	position: absolute;
-	left: 6px;
-	right: 6px;
-	top: 2px;
-	bottom: 2px;
-	border: 2px solid $vital-amber;
-	border-radius: 50%;
-}
-
-// ── Madness icon : oeil ──────────────────────────────────────────────────────
-
-.eye-shape
-{
-	position: absolute;
-	left: 1px;
-	right: 1px;
-	top: 8px;
-	height: 10px;
-	border: 2px solid $vital-amber;
-	border-radius: 50%;
-}
-
-.eye-pupil
-{
-	position: absolute;
-	left: 8px;
-	top: 1px;
-	width: 4px;
-	height: 4px;
-	background-color: $vital-amber;
-	border-radius: 50%;
 }

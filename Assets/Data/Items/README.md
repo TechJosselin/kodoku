@@ -105,7 +105,8 @@ remain safe so older resources with missing metadata still deserialize.
 - `StorageWidth`, `StorageHeight`: include both with positive values when the
   item creates storage. In the current model this includes backpacks and also
   equipment such as tactical rigs or cargo pants. Omit both for
-  items that do not create storage. `StorageWidth` is capped at 8.
+  items that do not create storage. `StorageWidth` is capped at 6
+  (`ItemDefinition.MaxStorageWidth`).
 
 ### Kind, slot, and folder
 
@@ -158,7 +159,7 @@ no stacking, `MaxStack: 1`, `Weight: 0.1`, and no storage.
   "IsStackable": false,
   "MaxStack": 1,
   "Weight": 1.0,
-  "StorageWidth": 8,
+  "StorageWidth": 6,
   "StorageHeight": 16
 }
 ```
@@ -194,7 +195,7 @@ no stacking, `MaxStack: 1`, `Weight: 0.1`, and no storage.
 - [ ] All paths use `/` (never `\`) and are relative to `Assets/`
 - [ ] If `IsStackable: true`, set `MaxStack` to a value > 1
 - [ ] If `IsStackable: false`, set `MaxStack: 1`
-- [ ] For backpacks and containers, set both `StorageWidth` and `StorageHeight` to positive values (`StorageWidth` ≤ 8)
+- [ ] For backpacks and containers, set both `StorageWidth` and `StorageHeight` to positive values (`StorageWidth` ≤ 6)
 - [ ] For non-container items, omit `StorageWidth`/`StorageHeight` or leave them at 0
 - [ ] Register the path constant in `KodokuItemAssetPaths.cs`
 - [ ] If the item should appear in the debug menu, register it in `DebugInventoryBootstrapper`
