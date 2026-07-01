@@ -3,18 +3,18 @@ OptionsPage
 	width: 100%;
 	height: 100%;
 	display: flex;
+	flex-direction: column;
+	gap: 16px;
 
-	.page-placeholder
+	.options-section
 	{
-		flex-grow: 1;
-		align-items: center;
-		justify-content: center;
 		flex-direction: column;
 		background-color: #11140f;
 		border: 1px solid rgba( 116, 125, 103, 0.32 );
+		padding: 18px 20px;
 	}
 
-	.placeholder-label
+	.options-section-label
 	{
 		color: #8f9882;
 		font-size: 12px;
@@ -24,9 +24,50 @@ OptionsPage
 
 	h2
 	{
-		margin-top: 10px;
+		margin-top: 6px;
+		margin-bottom: 12px;
 		color: #f0ead9;
 		font-size: 24px;
 		font-weight: 700;
+	}
+
+	.options-placeholder
+	{
+		color: rgba( 200, 192, 168, 0.58 );
+		font-size: 13px;
+	}
+
+	.options-button-row
+	{
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 10px;
+	}
+
+	.options-button
+	{
+		background-color: rgba( 255, 255, 255, 0.06 );
+		border: 1px solid rgba( 255, 255, 255, 0.1 );
+		color: rgba( 236, 228, 204, 0.82 );
+		padding: 10px 16px;
+		font-size: 13px;
+		font-weight: 600;
+	}
+
+	.options-button:hover
+	{
+		background-color: rgba( 255, 255, 255, 0.13 );
+	}
+
+	.options-button--primary
+	{
+		background-color: rgba( 154, 189, 118, 0.18 );
+		border-color: rgba( 154, 189, 118, 0.48 );
+		color: rgba( 200, 235, 160, 0.92 );
+	}
+
+	.options-button--primary:hover
+	{
+		background-color: rgba( 154, 189, 118, 0.28 );
 	}
 }

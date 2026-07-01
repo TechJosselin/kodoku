@@ -1,8 +1,33 @@
 @namespace Kodoku.Lib.UI.Pages
 
 <root class="game-menu-page options-page">
-	<div class="page-placeholder">
-		<span class="placeholder-label">Options</span>
-		<h2>Options page placeholder</h2>
+	<div class="options-section">
+		<span class="options-section-label">Kodoku</span>
+		<h2>Kodoku Settings</h2>
+		<div class="options-placeholder">
+			Gameplay, HUD and accessibility settings will appear here.
+		</div>
+	</div>
+
+	<div class="options-section">
+		<span class="options-section-label">s&amp;box</span>
+		<h2>System</h2>
+		<div class="options-button-row">
+			<button class="options-button options-button--primary" onclick=@OpenSandboxPauseMenu>s&amp;box Menu</button>
+			<button class="options-button" onclick=@OpenSandboxKeybinds>Controls</button>
+			<button class="options-button" onclick=@OpenSandboxAudioSettings>Audio</button>
+			<button class="options-button" onclick=@OpenSandboxVideoSettings>Video</button>
+		</div>
 	</div>
 </root>
+
+@code
+{
+	// Wrappers around Sandbox.Game.Overlay so the markup only calls named methods.
+	// Confirmed present in the current s&box SDK (Sandbox.Engine.dll). If a future
+	// SDK update renames/removes Game.Overlay, only these methods need to change.
+	void OpenSandboxPauseMenu() => Game.Overlay.ShowPauseMenu();
+	void OpenSandboxKeybinds() => Game.Overlay.ShowSettingsModal( "keybinds" );
+	void OpenSandboxAudioSettings() => Game.Overlay.ShowSettingsModal( "audio" );
+	void OpenSandboxVideoSettings() => Game.Overlay.ShowSettingsModal( "video" );
+}

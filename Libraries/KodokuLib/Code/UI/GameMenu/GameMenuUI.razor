@@ -51,6 +51,8 @@
 
 	[Property] public bool OpenOnStart { get; set; }
 	[Property] public string ToggleKey { get; set; } = "TAB";
+	[Property] public string MapKey { get; set; } = "M";
+	[Property] public string StatsKey { get; set; } = "I";
 
 	private GameMenuState MenuState { get; } = new();
 	private InventoryComponent Inventory { get; set; }
@@ -99,20 +101,65 @@
 		if ( DebugMenu is null || !DebugMenu.IsValid() )
 			DebugMenu = Scene.GetAllComponents<DebugMenuUI>().FirstOrDefault();
 
-		if ( string.IsNullOrWhiteSpace( ToggleKey ) )
-		{
-			UpdateMouseVisibility();
-			return;
-		}
+		HandleEscapeShortcut();
 
-		if ( Input.Keyboard.Pressed( ToggleKey ) )
+		if ( !string.IsNullOrWhiteSpace( ToggleKey ) && Input.Keyboard.Pressed( ToggleKey ) )
+			ToggleTab( GameMenuTab.Inventory );
+
+		if ( !IsBlockingUiActive() )
 		{
-			MenuState.Toggle( GameMenuTab.Inventory );
-			StateHasChanged();
+			if ( !string.IsNullOrWhiteSpace( MapKey ) && Input.Keyboard.Pressed( MapKey ) )
+				ToggleTab( GameMenuTab.Map );
+
+			if ( !string.IsNullOrWhiteSpace( StatsKey ) && Input.Keyboard.Pressed( StatsKey ) )
+				ToggleTab( GameMenuTab.Stats );
 		}
 
 		UpdateMouseVisibility();
 	}
+
+	// Escape is consumed here so s&box's own pause menu never opens on top of / instead of ours.
+	// If an s&box overlay is already open (pause menu, Steam overlay, etc.), Escape is left
+	// untouched so that overlay can handle it itself (e.g. closing it) instead of fighting it.
+	private void HandleEscapeShortcut()
+	{
+		if ( !Input.EscapePressed )
+			return;
+
+		if ( IsSandboxOverlayOpen() )
+			return;
+
+		Input.EscapePressed = false;
+		ToggleTab( GameMenuTab.Options );
+	}
+
+	private void ToggleTab( GameMenuTab tab )
+	{
+		MenuState.Toggle( tab );
+		StateHasChanged();
+	}
+
+	// Guards the Map/Stats shortcuts against firing while an s&box overlay or another
+	// blocking panel (debug menu) is active. Kodoku has no text-entry fields yet — once one
+	// is added, extend this with a focus check (e.g. Sandbox.UI.Panel.HasFocus) so typing
+	// "m" or "i" into a field doesn't also trigger these shortcuts.
+	private bool IsBlockingUiActive()
+	{
+		if ( IsSandboxOverlayOpen() )
+			return true;
+
+		if ( DebugMenu is not null && DebugMenu.IsValid() && DebugMenu.IsOpen )
+			return true;
+
+		return false;
+	}
+
+	// Sandbox.Game.Overlay.IsOpen/IsPauseMenuOpen are instance properties even though every
+	// Show*/Close method on that same type is static (confirmed via reflection against the
+	// installed SDK's Sandbox.Engine.dll). There is no other public static way to query overlay
+	// state, so a throwaway instance is used here. If a future SDK exposes a proper static
+	// accessor, switch to it here.
+	private static bool IsSandboxOverlayOpen() => new global::Sandbox.Game.Overlay().IsOpen;
 
 	protected override void OnDisabled()
 	{
@@ -185,6 +232,8 @@
 		hash = (hash * 397) ^ MenuState.IsOpen.GetHashCode();
 		hash = (hash * 397) ^ OpenOnStart.GetHashCode();
 		hash = (hash * 397) ^ (ToggleKey?.GetHashCode() ?? 0);
+		hash = (hash * 397) ^ (MapKey?.GetHashCode() ?? 0);
+		hash = (hash * 397) ^ (StatsKey?.GetHashCode() ?? 0);
 		hash = (hash * 397) ^ (DebugMenu?.IsOpen == true).GetHashCode();
 		return hash;
 	}
