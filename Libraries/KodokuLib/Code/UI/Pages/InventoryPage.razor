@@ -342,6 +342,8 @@
 				hash = (hash * 397) ^ (hotbarItemId?.GetHashCode() ?? 0);
 				hash = (hash * 397) ^ (hotbarItem?.Quantity ?? 0);
 			}
+			hash = (hash * 397) ^ Inventory.Hotbar.ActiveSlotIndex;
+			hash = (hash * 397) ^ (Inventory.Hotbar.ActiveItemId?.GetHashCode() ?? 0);
 		}
 
 		if ( !string.IsNullOrWhiteSpace( HeldItemId ) )
@@ -685,6 +687,9 @@
 	{
 		var classes = "hotbar-slot";
 		classes += item is null ? " empty" : " assigned";
+
+		if ( Inventory?.Hotbar?.ActiveSlotIndex == index )
+			classes += " active";
 
 		if ( !string.IsNullOrWhiteSpace( HeldItemId ) )
 			classes += " hotbar-drop-target";

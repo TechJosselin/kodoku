@@ -13,6 +13,9 @@ public sealed class HotbarComponent : Component
 	[Property] public bool HandleNumberInput { get; set; } = true;
 	[Property] public bool LogActionResults { get; set; } = true;
 
+	public int ActiveSlotIndex { get; private set; } = -1;
+	public string ActiveItemId { get; private set; }
+
 	InventoryComponent _inventory;
 	readonly string[] _slots = new string[SlotCount];
 
@@ -39,6 +42,7 @@ public sealed class HotbarComponent : Component
 		if ( item is null )
 		{
 			_slots[index] = null;
+			ClearActiveIfSlot( index );
 			return null;
 		}
 
@@ -70,6 +74,7 @@ public sealed class HotbarComponent : Component
 			return InventoryActionResult.Fail( $"Invalid hotbar slot {index}." );
 
 		_slots[index] = null;
+		ClearActiveIfSlot( index );
 		return InventoryActionResult.Ok( $"Slot {index + 1} cleared." );
 	}
 
@@ -85,13 +90,25 @@ public sealed class HotbarComponent : Component
 		if ( item.Definition.ItemKind == InventoryItemKind.Weapon )
 		{
 			if ( _inventory?.Loadout?.FindItemSlot( item.InstanceId ).HasValue == true )
+			{
+				ActiveSlotIndex = index;
+				ActiveItemId = item.InstanceId;
 				return InventoryActionResult.Ok( $"{item.DisplayName} selected." );
+			}
 
-			return _inventory?.TryEquipWeaponItem( item.InstanceId )
-				?? InventoryActionResult.Fail( "No inventory." );
+			return InventoryActionResult.Fail( $"{item.DisplayName} must be equipped before use." );
 		}
 
 		return InventoryActionResult.Fail( $"{item.DisplayName} has no use action yet." );
+	}
+
+	void ClearActiveIfSlot( int index )
+	{
+		if ( index == ActiveSlotIndex )
+		{
+			ActiveSlotIndex = -1;
+			ActiveItemId = null;
+		}
 	}
 
 	protected override void OnUpdate()
