@@ -1,0 +1,65 @@
+@using Kodoku.Lib.Inventory
+@using Kodoku.Lib.Items
+@namespace Kodoku.Lib.UI.GameHud.Components.Hotbar
+
+<div class="hotbar-hud">
+	<div class="hotbar-hud-slots">
+		@for ( var i = 0; i < HotbarComponent.SlotCount; i++ )
+		{
+			var index = i;
+			var item = GetItem( index );
+			<button class="@GetSlotClass( index, item )" onclick=@( () => UseSlot( index ) )>
+				@if ( item is not null )
+				{
+					<div class="hotbar-hud-item-icon" style="@GetItemIconStyle( item )"></div>
+				}
+				<span class="hotbar-hud-slot-number">@( index + 1 )</span>
+			</button>
+		}
+	</div>
+</div>
+
+@code
+{
+	[Parameter] public InventoryComponent Inventory { get; set; }
+
+	ItemInstance GetItem( int index ) => Inventory?.Hotbar?.GetItem( index );
+
+	string GetSlotClass( int index, ItemInstance item )
+	{
+		var cls = "hotbar-hud-slot";
+		cls += item is null ? " empty" : " assigned";
+		if ( Inventory?.Hotbar?.ActiveSlotIndex == index )
+			cls += " active";
+		return cls;
+	}
+
+	void UseSlot( int index )
+	{
+		Inventory?.Hotbar?.UseSlot( index );
+	}
+
+	string GetItemIconStyle( ItemInstance item )
+	{
+		var path = item?.Definition?.GetIconPath() ?? ItemDefinition.DefaultIconPath;
+		if ( !path.StartsWith( "/" ) )
+			path = $"/{path}";
+		return $"background-image: url( {path} );";
+	}
+
+	protected override int BuildHash()
+	{
+		var hash = 0;
+		if ( Inventory?.Hotbar is not null )
+		{
+			for ( var i = 0; i < HotbarComponent.SlotCount; i++ )
+			{
+				hash = (hash * 397) ^ (Inventory.Hotbar.GetItemId( i )?.GetHashCode() ?? 0);
+				hash = (hash * 397) ^ (Inventory.Hotbar.GetItem( i )?.Quantity ?? 0);
+			}
+			hash = (hash * 397) ^ Inventory.Hotbar.ActiveSlotIndex;
+			hash = (hash * 397) ^ (Inventory.Hotbar.ActiveItemId?.GetHashCode() ?? 0);
+		}
+		return hash;
+	}
+}

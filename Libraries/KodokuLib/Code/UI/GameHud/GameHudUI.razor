@@ -1,0 +1,55 @@
+@using Kodoku.Lib.Inventory
+@using Kodoku.Lib.UI
+@using Kodoku.Lib.UI.GameHud.Components.Hotbar
+@inherits PanelComponent
+@namespace Kodoku.Lib.UI.GameHud
+@attribute [Title( "Game HUD UI" )]
+@attribute [Category( "Kodoku/UI" )]
+@attribute [Icon( "videogame_asset" )]
+
+<root class="@RootClass">
+	<HotbarHud Inventory="@Inventory" />
+</root>
+
+@code
+{
+	private InventoryComponent Inventory { get; set; }
+	private GameMenuUI _gameMenu;
+
+	private string RootClass => _gameMenu is not null && _gameMenu.IsValid() && _gameMenu.IsOpen
+		? "game-hud-hidden"
+		: "game-hud-visible";
+
+	protected override void OnStart()
+	{
+		ResolveReferences();
+	}
+
+	protected override void OnUpdate()
+	{
+		ResolveReferences();
+	}
+
+	private void ResolveReferences()
+	{
+		if ( Inventory is null || !Inventory.IsValid() )
+		{
+			Inventory = Scene.GetAllComponents<InventoryComponent>()
+				.FirstOrDefault( c => c.GameObject?.Name == "Inventory" )
+				?? Scene.GetAllComponents<InventoryComponent>().FirstOrDefault();
+		}
+
+		if ( Inventory is not null && Inventory.IsValid() )
+			Inventory.EnsureInitialized();
+
+		if ( _gameMenu is null || !_gameMenu.IsValid() )
+			_gameMenu = Scene.GetAllComponents<GameMenuUI>().FirstOrDefault();
+	}
+
+	protected override int BuildHash()
+	{
+		var hash = Inventory?.GetHashCode() ?? 0;
+		hash = (hash * 397) ^ (_gameMenu is not null && _gameMenu.IsValid() && _gameMenu.IsOpen).GetHashCode();
+		return hash;
+	}
+}
